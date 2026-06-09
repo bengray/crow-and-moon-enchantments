@@ -28,13 +28,11 @@
         <meta name="apple-mobile-web-app-title" content="Starter Kit"/>
         <link rel="manifest" href="/assets/favicons/site.webmanifest"/>
 
-        <!-- Preloads -->
-        <link rel="preload" as="image" href="/assets/svgs/logo-black.svg">
-        <link rel="preload" as="font" type="font/woff2" href="/assets/fonts/roboto-v29-latin-regular.woff2" crossorigin>
-        <link rel="preload" as="font" type="font/woff2" href="/assets/fonts/roboto-v29-latin-700.woff2" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@100;200;300;400;500;600&family=Cormorant+Garamond:wght@100;200;300;400;500;600&family=Inter:wght@100;200;300;400;500;600&display=swap" rel="stylesheet">
 
         <!-- Sitewide Stylesheets and Scripts -->
-        <link rel="stylesheet" href="/assets/css/root.css">
+        <!-- <link rel="stylesheet" href="/assets/css/root.css"> -->
+        <link rel="stylesheet" href="/assets/css/base.css">
         <script defer src="/assets/js/dark.js"></script>
         <script defer src="/assets/js/nav.js"></script>
 
@@ -50,6 +48,9 @@
         <main id="main">
             {% block body %}{% endblock %}
         </main>
+        <div id="clt-about-section">
+            {% include "sections/about.html" %}
+        </div>
         {% include "sections/footer.html" %}
 
     </body>
