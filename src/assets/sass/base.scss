@@ -19,7 +19,7 @@
     --secondaryLight: #ffba43;
     --headerColor: #fbead3;
     --bodyTextColor: #fbead3;
-    --bodyTextColorWhite: #fafbfc;
+    --bodyTextColorWhite: #fbead3;
 
     --headerFont: "Cormorant Garamond", serif;
     --bodyFont: "Cormorant Garamond", serif;
@@ -39,7 +39,7 @@
     background-size: cover;
     // Code Less Traveled:
     // Font weight should be 100 everywhere on this site, makes the text look more elegant and airy. If you want to change it, just update it here and it will apply everywhere. You can also set different font weights for headers and body text by creating separate variables for each and using them in the appropriate places.
-    font-weight: 100;
+    font-weight: 400;
   }
 
   *,
@@ -132,7 +132,7 @@
     h4,
     h5,
     h6 {
-      color: #fff;
+      color: var(--bodyTextColor);
     }
   }
 }
@@ -902,7 +902,7 @@
       }
 
       .cs-li-link {
-        color: var(--bodyTextColorWhite);
+        // color: var(--bodyTextColorWhite);
       }
 
       .cs-li-link {
@@ -946,7 +946,7 @@
       text-align: center;
       max-width: calc(700 / 16 * 1rem);
       margin: 0 auto calc(12 / 16 * 1rem);
-      color: var(--bodyTextColorWhite);
+      // color: var(--bodyTextColorWhite);
       position: relative;
     }
 
@@ -961,7 +961,7 @@
       font-size: clamp(0.875rem, 1.5vw, 1rem);
       line-height: 1.2em;
       text-decoration: none;
-      color: var(--bodyTextColorWhite);
+      // color: var(--bodyTextColorWhite);
       position: relative;
       display: flex;
       justify-content: center;
@@ -1057,17 +1057,33 @@
     }
 
     h3.card-title {
-      font-size: calc(24 / 16 * 1rem);
+      display: flex;
+      justify-content: center;
+      padding-bottom: calc(16 / 16 * 1rem);
+      font-size: calc(28 / 16 * 1rem);
       line-height: 1.2em;
       font-weight: 100;
       letter-spacing: 0.05em;
       justify-content: center;
+
+      &.faded-bottom-border {
+        border-bottom: 1px solid;
+        /* Gradient: Color -> Transparent -> Color */
+        border-image: linear-gradient(
+            to right,
+            transparent,
+            var(--bodyTextColor) 50%,
+            transparent
+          )
+          1;
+        border-bottom-width: 1px;
+      }
     }
 
     .clt-cta-subtitle {
       font-size: calc(18 / 16 * 1rem);
       line-height: 1.5em;
-      font-weight: 100;
+      font-weight: 400;
       letter-spacing: 0.05em;
       margin-top: 5px;
     }
@@ -1084,9 +1100,11 @@
       width: 300px;
       height: 332px;
       padding: calc(50 / 16 * 1rem);
+      margin-right: calc(16 / 16 * 1rem);
+      margin-left: calc(16 / 16 * 1rem);
       display: flex;
       flex-direction: column;
-      gap: calc(16 / 16 * 1rem);
+      gap: calc(24 / 16 * 1rem);
       &.first-card {
         background: url("/assets/images/box-transparent-1.png");
       }
@@ -1094,7 +1112,14 @@
         background: url("/assets/images/box-transparent-3.png");
       }
       &.third-card {
-        background: url("/assets/images/box-transparent-3.png");
+        background: url("/assets/images/box-transparent-2.png");
+      }
+
+      .card-description {
+        font-size: calc(18 / 16 * 1rem);
+        line-height: 1.5em;
+        font-weight: 400;
+        letter-spacing: 0.05em;
       }
     }
   }
@@ -1128,9 +1153,9 @@
       justify-content: center;
       align-items: flex-start;
       gap: calc(16 / 16 * 1rem);
-      font-size: calc(18 / 16 * 1rem);
+      font-size: calc(20 / 16 * 1rem);
       line-height: 1.5em;
-      font-weight: 100;
+      font-weight: 400;
       letter-spacing: 0.05em;
 
       h2.clt-title {
@@ -1158,7 +1183,7 @@
 
     a.clt-button-link {
       font-family: var(--bodyFont);
-      font-weight: 100;
+      font-weight: 400;
       letter-spacing: 0.1em;
       background-image: url("/assets/images/button-background.gif");
       background-repeat: no-repeat;
@@ -1213,9 +1238,8 @@
         justify-content: center;
         align-items: flex-start;
         gap: calc(16 / 16 * 1rem);
-        font-size: calc(18 / 16 * 1rem);
+        font-size: calc(20 / 16 * 1rem);
         line-height: 1.5em;
-        font-weight: 100;
         letter-spacing: 0.05em;
       }
 
@@ -1278,7 +1302,7 @@
     p.cs-footer-text {
       text-align: center;
       margin: 0;
-      color: var(--bodyTextColorWhite);
+      // color: var(--bodyTextColorWhite);
       font-size: calc(14 / 16 * 1rem);
       line-height: 1.5em;
     }
