@@ -1301,21 +1301,26 @@
     background-color: var(--medium);
     display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: flex-end;
     height: 100px;
     margin-top: calc(50 / 16 * 1rem);
+    padding-bottom: 10px;
     background: linear-gradient(
       to bottom,
       rgba(0, 0, 0, 0) 0%,
-      rgba(0, 0, 0, 0.4) 25%,
-      rgba(0, 0, 0, 0.7) 50%,
-      rgba(0, 0, 0, 0.4) 75%,
-      rgba(0, 0, 0, 0) 100%
+      rgba(0, 0, 0, 1) 100%
     );
+    opacity: 0;
+    transition: opacity 1s ease-in-out;
 
-    p.cs-footer-text {
+    &.visible {
+      opacity: 1;
+    }
+
+    .clt-footer-text {
+      opacity: 1;
       text-align: center;
-      font-size: calc(16 / 16 * 1rem);
+      font-size: calc(18 / 16 * 1rem);
     }
   }
 }

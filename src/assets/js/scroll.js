@@ -12,7 +12,8 @@ window.onscroll = function () {
 let isTopOfPage = null;
 const slideBox = document.querySelector("#slide-box");
 const logoImage = document.querySelector("img#clt-logo");
-// const logoImageMini = document.querySelector("#logo-mini");
+const footer = document.querySelector("#clt-footer");
+const footerText = document.querySelector(".clt-footer-text");
 
 function setIsTopOfPage(value) {
   isTopOfPage = !!value;
@@ -54,6 +55,12 @@ function scrollFunction() {
     // toggleReverse(logoImage);
     displayTopGradient(true);
   }
+
+  if (isElementInViewport(footerText)) {
+    footer.classList.add("visible");
+  } else {
+    footer.classList.remove("visible");
+  }
 }
 
 function toggleReverse(image) {
@@ -66,9 +73,7 @@ function toggleReverse(image) {
   }
 }
 
-function displayTopGradient(value) {
-  const shouldDisplay = !!value;
-
+function displayTopGradient(shouldDisplay) {
   if (shouldDisplay) {
     // attach a new class to the div that will slide it in to view
     slideBox.classList.add("visible");
@@ -77,4 +82,15 @@ function displayTopGradient(value) {
     // Remove said class to let it slide out of view
     slideBox.classList.remove("visible");
   } else return;
+}
+
+function isElementInViewport(el) {
+  const rect = el.getBoundingClientRect();
+  return (
+    rect.top >= 0 &&
+    rect.left >= 0 &&
+    rect.bottom <=
+      (window.innerHeight || document.documentElement.clientHeight) &&
+    rect.right <= (window.innerWidth || document.documentElement.clientWidth)
+  );
 }
