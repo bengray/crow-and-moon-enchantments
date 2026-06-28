@@ -1,3 +1,50 @@
+img#clt-logo {
+  position: fixed; // Fixed position - sit on top of the page
+  z-index: 999;
+  cursor: pointer;
+
+  &.mini-logo {
+    animation: slideUpLeftDown 1s ease-in-out forwards;
+  }
+}
+
+@keyframes slideUpLeftDown {
+  0% {
+    transform: scale(0.33) translate(0, 0);
+  }
+  50% {
+    /* Finish sliding UP 400px first */
+    transform: scale(0.33) translate(0, -400px);
+  }
+  75% {
+    /* Then slide LEFT 1,800px (while staying up) */
+    transform: scale(0.33) translate(-1800px, -400px);
+  }
+  100% {
+    /* Return to original position */
+    transform: scale(0.33) translate(-1800px, 0);
+  }
+}
+
+#slide-box {
+  width: 100%;
+  height: 150px;
+  position: fixed;
+  pointer-events: none; // Allows user to click through this element to a link underneath
+  z-index: 1;
+  background: linear-gradient(
+    to bottom,
+    rgb(0, 0, 0, 1) 5%,
+    rgba(0, 0, 0, 0) 100%
+  );
+  opacity: 0;
+  transition: all 0.8s ease;
+
+  &.visible {
+    opacity: 1;
+  }
+}
+
 #clt-header {
   top: 0;
   left: 0;
@@ -7,6 +54,7 @@
   align-items: center;
 
   #clt-sub-header {
+    margin-top: 350px;
     max-width: 1024px;
     margin-bottom: 0px;
     text-align: center;

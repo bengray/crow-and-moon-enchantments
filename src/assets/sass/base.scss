@@ -32,11 +32,8 @@
     overflow-x: hidden;
     font-family: var(--bodyFont);
     font-size: 100%;
-    transition: background-color 0.3s;
     color: var(--bodyTextColor);
-    background-image: url("/assets/images/star-background.png");
-    background-repeat: no-repeat;
-    background-size: cover;
+
     // Code Less Traveled:
     // Font weight should be 100 everywhere on this site, makes the text look more elegant and airy. If you want to change it, just update it here and it will apply everywhere. You can also set different font weights for headers and body text by creating separate variables for each and using them in the appropriate places.
     font-weight: 400;
@@ -49,6 +46,23 @@
     box-sizing: border-box;
     margin: 0;
     padding: 0;
+  }
+
+  body {
+    background-image:
+      linear-gradient(
+        to bottom,
+        rgba(0, 0, 0, 0) 0%,
+        rgba(0, 0, 0, 0.3) 25%,
+        rgba(0, 0, 0, 0.7) 50%,
+        rgba(0, 0, 0, 0.6) 75%,
+        rgba(0, 0, 0, 0) 100%
+      ),
+      url("/assets/images/background.png");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-attachment: fixed;
+    // background-position-y: -20px; // Moves the image up 20px
   }
 
   .cs-text {
@@ -902,10 +916,6 @@
       }
 
       .cs-li-link {
-        // color: var(--bodyTextColorWhite);
-      }
-
-      .cs-li-link {
         &:before {
           background-color: var(--primaryLight);
         }
@@ -1060,6 +1070,7 @@
       display: flex;
       justify-content: center;
       padding-bottom: calc(16 / 16 * 1rem);
+      padding-top: calc(16 / 16 * 1rem);
       font-size: calc(28 / 16 * 1rem);
       line-height: 1.2em;
       font-weight: 100;
@@ -1105,14 +1116,15 @@
       display: flex;
       flex-direction: column;
       gap: calc(24 / 16 * 1rem);
+      background-size: contain;
       &.first-card {
-        background: url("/assets/images/box-transparent-1.png");
+        background-image: url("/assets/images/card-background-1.png");
       }
       &.second-card {
-        background: url("/assets/images/box-transparent-3.png");
+        background-image: url("/assets/images/card-background-2.png");
       }
       &.third-card {
-        background: url("/assets/images/box-transparent-2.png");
+        background-image: url("/assets/images/card-background-3.png");
       }
 
       .card-description {
@@ -1147,7 +1159,7 @@
 
     .clt-about-left {
       width: 70%;
-      padding: calc(50 / 16 * 1rem) calc(50 / 16 * 1rem) 0 calc(50 / 16 * 1rem);
+      padding: calc(10 / 16 * 1rem) calc(50 / 16 * 1rem) 0 calc(50 / 16 * 1rem);
       display: flex;
       flex-direction: column;
       justify-content: center;
@@ -1167,7 +1179,7 @@
     }
     .clt-about-right {
       width: 30%;
-      padding: calc(50 / 16 * 1rem) calc(50 / 16 * 1rem) 0 calc(50 / 16 * 1rem);
+      padding: calc(30 / 16 * 1rem) calc(50 / 16 * 1rem) 0 calc(50 / 16 * 1rem);
       margin-left: calc(32 / 16 * 1rem);
       display: flex;
       justify-content: center;
@@ -1245,32 +1257,26 @@
 
       .clt-order-inquire-right {
         width: 30%;
-        padding: calc(50 / 16 * 1rem);
         display: flex;
         flex-direction: column;
         justify-content: center;
-        align-items: center;
+        align-items: flex-start;
+        width: 500px;
 
         .clt-social-links {
           display: flex;
-          flex-direction: column;
+          flex-direction: row;
+          flex-wrap: wrap;
           gap: calc(16 / 16 * 1rem);
         }
 
-        a.clt-social-link {
+        a.clt-social-link img {
+          width: 150px;
           color: var(--bodyTextColor);
-          background: brown;
-          padding: 10px 20px;
-          border-radius: 3px;
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          transition:
-            color 0.3s,
-            background-color 0.3s;
+          transition: transform 0.3s ease-in-out;
 
           &:hover {
-            color: var(--primary);
+            transform: translate(2, 2);
           }
         }
 
@@ -1292,19 +1298,24 @@
 @media only screen and (min-width: 0px) {
   #clt-footer {
     width: 100%;
-    padding: var(--sectionPadding);
     background-color: var(--medium);
     display: flex;
     justify-content: center;
     align-items: center;
+    height: 100px;
     margin-top: calc(50 / 16 * 1rem);
+    background: linear-gradient(
+      to bottom,
+      rgba(0, 0, 0, 0) 0%,
+      rgba(0, 0, 0, 0.4) 25%,
+      rgba(0, 0, 0, 0.7) 50%,
+      rgba(0, 0, 0, 0.4) 75%,
+      rgba(0, 0, 0, 0) 100%
+    );
 
     p.cs-footer-text {
       text-align: center;
-      margin: 0;
-      // color: var(--bodyTextColorWhite);
-      font-size: calc(14 / 16 * 1rem);
-      line-height: 1.5em;
+      font-size: calc(16 / 16 * 1rem);
     }
   }
 }
