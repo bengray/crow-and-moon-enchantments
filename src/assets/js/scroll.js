@@ -1,6 +1,6 @@
 // Scroll to the top of the page when it's loaded. This overrides default browser behavior
 window.onbeforeunload = function () {
-  // window.scrollTo(0, 0);
+  window.scrollTo(0, 0);
 };
 
 // When the user scrolls down 50px from the top of the document, resize the logo and move it.
