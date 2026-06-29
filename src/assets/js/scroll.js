@@ -47,6 +47,9 @@ function scrollFunction() {
     const scale = Math.max(0.33, 1 - scrollPositionY / 350); // Adjust divisor for sensitivity
     logoImage.style.transform = `scale(${scale})`; // Scale based on distance scrolled
     logoImage.style.transformOrigin = "top";
+    logoImage.style.transition = "all 0.2s ease";
+    logoImageMini.style.transition = "all 0.2s ease";
+
     logoImageMini.style.transform = "scale(0.33) translateY(-400px)";
 
     displayTopGradient(false);
@@ -54,7 +57,10 @@ function scrollFunction() {
 
   if (!isTopOfPage) {
     logoImage.style.transform = "scale(0.33) translateY(-400px)";
+
     logoImageMini.style.transform = "scale(0.33) translateY(0)";
+    logoImage.style.transition = "all 0.2s ease";
+    logoImageMini.style.transition = "all 0.2s ease";
     displayTopGradient(true);
   }
 

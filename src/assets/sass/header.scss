@@ -1,8 +1,7 @@
 img#clt-logo {
-  position: fixed; // Fixed position - sit on top of the page
+  position: fixed;
   z-index: 420;
   transform: translateY(0);
-  transition: all 0.2s ease;
 }
 
 img#clt-logo-mini {
@@ -12,7 +11,6 @@ img#clt-logo-mini {
   cursor: pointer;
   z-index: 69;
   left: 0;
-  transition: all 0.2s ease;
 }
 
 @keyframes slideUpLeftDown {
