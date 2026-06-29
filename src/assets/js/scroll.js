@@ -9,18 +9,15 @@ window.onscroll = function () {
 };
 
 // Global variables
-let isTopOfPage = null;
+let isTopOfPage = true;
 const slideBox = document.querySelector("#slide-box");
 const logoImage = document.querySelector("img#clt-logo");
+const logoImageMini = document.querySelector("#clt-logo-mini");
 const footer = document.querySelector("#clt-footer");
 const footerText = document.querySelector(".clt-footer-text");
 
-function setIsTopOfPage(value) {
-  isTopOfPage = !!value;
-}
-
 // Attach an onclick handler to the image, when clicked returns to top of the page
-logoImage.addEventListener("click", function () {
+logoImageMini.addEventListener("click", function () {
   // scroll to top smoothly
   window.scrollTo({
     top: 0,
@@ -28,8 +25,15 @@ logoImage.addEventListener("click", function () {
   });
 });
 
+function setIsTopOfPage(value) {
+  isTopOfPage = !!value;
+}
+
 function scrollFunction() {
   let scrollPositionY = window.scrollY;
+
+  // Background Parallax
+  document.body.style.backgroundPositionY = -scrollPositionY * 0.08 + "px";
 
   if (scrollPositionY > 230) {
     setIsTopOfPage(false);
@@ -43,16 +47,14 @@ function scrollFunction() {
     const scale = Math.max(0.33, 1 - scrollPositionY / 350); // Adjust divisor for sensitivity
     logoImage.style.transform = `scale(${scale})`; // Scale based on distance scrolled
     logoImage.style.transformOrigin = "top";
-    logoImage.classList.remove("mini-logo");
-    // toggleReverse(logoImage);
+    logoImageMini.style.transform = "scale(0.33) translateY(-400px)";
+
     displayTopGradient(false);
-    console.log("animation direction: ", logoImage.style.animationDirection);
   }
 
   if (!isTopOfPage) {
-    logoImage.style.transform = "scale(0.33)";
-    logoImage.classList.add("mini-logo");
-    // toggleReverse(logoImage);
+    logoImage.style.transform = "scale(0.33) translateY(-400px)";
+    logoImageMini.style.transform = "scale(0.33) translateY(0)";
     displayTopGradient(true);
   }
 
@@ -60,16 +62,6 @@ function scrollFunction() {
     footer.classList.add("visible");
   } else {
     footer.classList.remove("visible");
-  }
-}
-
-function toggleReverse(image) {
-  if (image.style.animationDirection === "reverse") {
-    console.log("normal direction");
-    image.style.animationDirection = "normal";
-  } else {
-    console.log("reversing direction");
-    image.style.animationDirection = "reverse";
   }
 }
 
