@@ -73,10 +73,6 @@ img#clt-logo-mini {
       padding: 5px 0;
       transition: color 1s;
       color: var(--bodyTextColor);
-      cursor: pointer;
-      &:hover {
-        color: red;
-      }
     }
   }
 

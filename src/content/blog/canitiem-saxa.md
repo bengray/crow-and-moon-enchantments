@@ -5,9 +5,9 @@ description: Lorem markdownum trabeati dicere deus.
 author: Code Stitch
 date: 2023-06-08T15:28:08.486Z
 tags:
-    - post
-    - featured
-image: /assets/images/blog/landing.jpg
+  - post
+  - featured
+# image: /assets/images/blog/landing.jpg
 imageAlt: Kitchen
 ---
 
@@ -31,10 +31,10 @@ Fera vident; me que adfixa ama mota venabula fertur pectore totoque perculit meo
 
 Enim altam tamen cur magis admiratur [tegebat](http://nepotum-sequantur.org/) Iuppiter forma _perdere possit_. Aniles illum deos longoque, quae si venit tetigit. Huc ferae **refugit**, proles, suggerit videt reliquit, et.
 
--   Dixit videt sustineat
--   Deduxit et genu
--   Uti contentus sub pater habet arboribus ut
--   Dixit facibusque illas sigillis petitus
+- Dixit videt sustineat
+- Deduxit et genu
+- Uti contentus sub pater habet arboribus ut
+- Dixit facibusque illas sigillis petitus
 
 Ubi aequoreae, vult huic, transibant dederat, liceret: vidi sacra o securi turaque. Superat hebeti, contortam honoris, di tibi. Vertex exsiluere.
 

@@ -1296,10 +1296,11 @@
 /* Mobile - 360px */
 @media only screen and (min-width: 0px) {
   #clt-footer {
+    font-weight: 400;
     width: 100%;
-    background-color: var(--medium);
+    letter-spacing: 0.05em;
     display: flex;
-    justify-content: center;
+    justify-content: space-around;
     align-items: flex-end;
     height: 100px;
     margin-top: calc(50 / 16 * 1rem);
@@ -1317,9 +1318,12 @@
     }
 
     .clt-footer-text {
-      opacity: 1;
       text-align: center;
       font-size: calc(18 / 16 * 1rem);
+    }
+
+    #code-less-traveled img {
+      height: 10px;
     }
   }
 }

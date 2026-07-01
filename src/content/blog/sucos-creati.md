@@ -5,8 +5,8 @@ description: Lorem markdownum Talia. Carinae equis.
 author: Code Stitch
 date: 2023-06-08T15:27:34.591Z
 tags:
-    - post
-image: /assets/images/blog/landing.jpg
+  - post
+# image: /assets/images/blog/landing.jpg
 imageAlt: Kitchen
 ---
 
@@ -36,10 +36,10 @@ Rebus vestem tota relictas forte capioque: vel unda servire concitat acervos nub
 
 Lapsus flammae. Relatus ille irascitur silet querella tacito: misisset! Tamen arduus et, capitis quae, trepidus insequitur illa pactaeque.
 
--   Se metu
--   Videntur in Stygia tellure
--   Concordare spatiosum
--   Iove progenuit
+- Se metu
+- Videntur in Stygia tellure
+- Concordare spatiosum
+- Iove progenuit
 
 Praeter vos: nubibus ceu **medio** qui corpore hoc in quid hanc, inpia meae prior Hecabesque illa. Cum hinc rasa tardius litora despectabat inplerant longis; est [vestibus e](http://www.offensa-vana.com/sororibus). Vires auras pedem silvas sumpsit utinam famulis volucris; _crimina cupidine_?
 
