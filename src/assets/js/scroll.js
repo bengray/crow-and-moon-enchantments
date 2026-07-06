@@ -9,13 +9,11 @@ window.onscroll = function () {
 };
 
 // Global variables
-let isTopOfPage = false;
-const slideBox = document.querySelector("#top-gradient");
-const logoImage = document.querySelector("img#clt-logo");
+let isTopOfPage = true;
+const topGradient = document.querySelector("#top-gradient");
 const logoImageMini = document.querySelector("#clt-logo-mini");
 const footer = document.querySelector("#clt-footer");
 const footerText = document.querySelector(".clt-footer-text");
-const quickScrollElement = document.querySelector(".quick-scroll");
 const astroWheel = document.querySelector(".clt-about-right img");
 
 // Attach an onclick handler to the image, when clicked returns to top of the page
@@ -28,46 +26,32 @@ logoImageMini.addEventListener("click", function () {
 });
 
 function setIsTopOfPage(value) {
-  isTopOfPage = !!value;
+  if (isTopOfPage !== value) {
+    isTopOfPage = value;
+  }
 }
 
 function scrollFunction() {
+  // First, get the current scroll position
   let scrollPositionY = window.scrollY;
 
-  // Background Parallax
+  // Then, apply the parallax effect to the background, this always will scroll.
   document.body.style.backgroundPositionY = scrollPositionY * -0.08 + "px";
 
-  // Astro Wheel Parallax
-  if (quickScrollElement) {
-    quickScrollElement.classList.toggle("slide-in");
-  }
-
-  if (scrollPositionY > 230) {
+  // Check if the user has scrolled down more than 340px from the top of the page, if so,
+  if (scrollPositionY > 340 && isTopOfPage) {
     setIsTopOfPage(false);
-  }
-
-  if (scrollPositionY < 230) {
+  } else if (scrollPositionY < 340 && !isTopOfPage) {
     setIsTopOfPage(true);
+  } else {
+    // Do nothing, the state hasn't changed
   }
 
   if (isTopOfPage) {
-    // If we're within the top 230px of the page, scale the logo based on how far down we've scrolled
-    // Also, if we're at the top of the page, reset the logo to its original size and position
-    // Also, display a gradient at the top of the page to indicate that there's more content below
-    const scale = Math.max(0.33, 1 - scrollPositionY / 350); // Adjust divisor for sensitivity
-    logoImage.style.transform = `scale(${scale})`; // Scale based on distance scrolled
-    logoImage.style.transformOrigin = "top";
-    logoImage.style.transition = "all 0.2s ease";
-    logoImageMini.style.transition = "all 0.2s ease";
-    logoImageMini.style.transform = "scale(0.33) translateY(-400px)";
+    logoImageMini.style.transform = "translateY(-400px)";
     displayTopGradient(false);
-  }
-
-  if (!isTopOfPage) {
-    logoImage.style.transform = "scale(0.33) translateY(-400px)";
-    logoImageMini.style.transform = "scale(0.33) translateY(0)";
-    logoImage.style.transition = "all 0.2s ease";
-    logoImageMini.style.transition = "all 0.2s ease";
+  } else {
+    logoImageMini.style.transform = "translateY(0)";
     displayTopGradient(true);
   }
 
@@ -98,11 +82,11 @@ function isElementInMiddle(element) {
 function displayTopGradient(shouldDisplay) {
   if (shouldDisplay) {
     // attach a new class to the div that will slide it in to view
-    slideBox.classList.add("visible");
+    topGradient.classList.add("visible");
   }
   if (!shouldDisplay) {
     // Remove said class to let it slide out of view
-    slideBox.classList.remove("visible");
+    topGradient.classList.remove("visible");
   } else return;
 }
 

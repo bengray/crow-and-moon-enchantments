@@ -1,34 +1,16 @@
 img#clt-logo {
-  position: fixed;
   z-index: 420;
-  transform: translateY(0);
 }
 
 img#clt-logo-mini {
   transform: translateY(-500px);
-  transform-origin: top center;
+  transform-origin: top;
   position: fixed;
+  width: 111px;
   cursor: pointer;
   z-index: 69;
-  left: 0;
-}
-
-@keyframes slideUpLeftDown {
-  0% {
-    transform: scale(0.33) translate(0, 0);
-  }
-  50% {
-    /* Finish sliding UP 400px first */
-    transform: scale(0.33) translate(0, -400px);
-  }
-  75% {
-    /* Then slide LEFT 1,800px (while staying up) */
-    transform: scale(0.33) translate(-1800px, -400px);
-  }
-  100% {
-    /* Return to original position */
-    transform: scale(0.33) translate(-1800px, 0);
-  }
+  left: 5vw;
+  transition: all 0.2s ease-in-out;
 }
 
 #top-gradient {
@@ -59,9 +41,7 @@ img#clt-logo-mini {
   align-items: center;
 
   #clt-sub-header {
-    margin-top: 350px;
     max-width: 1024px;
-    margin-bottom: 0px;
     text-align: center;
     font-size: 1.5rem;
     letter-spacing: 0.1em;
@@ -71,7 +51,7 @@ img#clt-logo-mini {
 
     ul {
       max-width: 500px;
-      margin: 0 auto;
+      margin: 25px auto;
       display: flex;
       flex-direction: row;
       align-items: center;
@@ -111,14 +91,11 @@ img#clt-logo-mini {
 // Mobile-specific styles for the header
 @media only screen and (max-width: 1023.5px) {
   img#clt-logo {
-    position: fixed;
-    z-index: 420;
-    transform: translateY(0);
+    width: 80vw;
   }
   img#clt-logo-mini {
-    transform-origin: top right;
     left: auto;
-    right: 0;
+    right: 5vw;
   }
 
   #clt-header {
