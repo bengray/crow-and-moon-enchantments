@@ -5,6 +5,10 @@ window.onbeforeunload = function () {
   window.scrollTo(0, 0);
 };
 
+window.onload = function () {
+  // Do something
+};
+
 // When the user scrolls down 50px from the top of the document, resize the logo and move it.
 window.onscroll = function () {
   scrollFunction();
@@ -18,7 +22,7 @@ const logoImageMini = document.querySelector("#clt-logo-mini");
 const footer = document.querySelector("#clt-footer");
 const footerText = document.querySelector(".clt-footer-text");
 const astroWheel = document.querySelector(".clt-about-right img");
-const parallaxBackground = document.querySelector("#parallax-background");
+const parallaxImage = document.getElementById(".foobar");
 
 // Attach an onclick handler to the image, when clicked returns to top of the page
 logoImageMini.addEventListener("click", function () {
@@ -38,11 +42,6 @@ function setIsTopOfPage(value) {
 function scrollFunction() {
   // First, get the current scroll position
   let scrollPositionY = window.scrollY;
-  if (!isMobile && !isMobileDevice()) {
-    // Parallax background effect, disabled on mobile devices for performance reasons
-    parallaxBackground.style.backgroundPositionY =
-      scrollPositionY * -0.08 + "px";
-  }
 
   // Check if the user has scrolled down more than 340px from the top of the page, if so,
   if (scrollPositionY > 340 && isTopOfPage) {

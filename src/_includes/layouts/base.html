@@ -46,13 +46,13 @@
     <script defer src="/assets/js/dark.js"></script>
     <script defer src="/assets/js/nav.js"></script>
     <script defer src="/assets/js/scroll.js"></script>
-
+    <script defer src="/assets/js/lax.js"></script>
     {% block head %}{% endblock %}
 
     <title>{{ title }}</title>
   </head>
   <body>
-    <div id="parallax-background">
+    <div class="lax" data-lax-translate-y="-100">
       <!--Screen reader skip main nav-->
       <a class="skip" aria-label="skip to main content" href="#main"
         >Click To Skip To Main Content</a
