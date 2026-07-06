@@ -9,12 +9,14 @@ window.onscroll = function () {
 };
 
 // Global variables
-let isTopOfPage = true;
-const slideBox = document.querySelector("#slide-box");
+let isTopOfPage = false;
+const slideBox = document.querySelector("#top-gradient");
 const logoImage = document.querySelector("img#clt-logo");
 const logoImageMini = document.querySelector("#clt-logo-mini");
 const footer = document.querySelector("#clt-footer");
 const footerText = document.querySelector(".clt-footer-text");
+const quickScrollElement = document.querySelector(".quick-scroll");
+const astroWheel = document.querySelector(".clt-about-right img");
 
 // Attach an onclick handler to the image, when clicked returns to top of the page
 logoImageMini.addEventListener("click", function () {
@@ -33,7 +35,12 @@ function scrollFunction() {
   let scrollPositionY = window.scrollY;
 
   // Background Parallax
-  document.body.style.backgroundPositionY = -scrollPositionY * 0.08 + "px";
+  document.body.style.backgroundPositionY = scrollPositionY * -0.08 + "px";
+
+  // Astro Wheel Parallax
+  if (quickScrollElement) {
+    quickScrollElement.classList.toggle("slide-in");
+  }
 
   if (scrollPositionY > 230) {
     setIsTopOfPage(false);
@@ -44,20 +51,20 @@ function scrollFunction() {
   }
 
   if (isTopOfPage) {
+    // If we're within the top 230px of the page, scale the logo based on how far down we've scrolled
+    // Also, if we're at the top of the page, reset the logo to its original size and position
+    // Also, display a gradient at the top of the page to indicate that there's more content below
     const scale = Math.max(0.33, 1 - scrollPositionY / 350); // Adjust divisor for sensitivity
     logoImage.style.transform = `scale(${scale})`; // Scale based on distance scrolled
     logoImage.style.transformOrigin = "top";
     logoImage.style.transition = "all 0.2s ease";
     logoImageMini.style.transition = "all 0.2s ease";
-
     logoImageMini.style.transform = "scale(0.33) translateY(-400px)";
-
     displayTopGradient(false);
   }
 
   if (!isTopOfPage) {
     logoImage.style.transform = "scale(0.33) translateY(-400px)";
-
     logoImageMini.style.transform = "scale(0.33) translateY(0)";
     logoImage.style.transition = "all 0.2s ease";
     logoImageMini.style.transition = "all 0.2s ease";
@@ -69,6 +76,23 @@ function scrollFunction() {
   } else {
     footer.classList.remove("visible");
   }
+
+  if (isElementInMiddle(astroWheel)) {
+    astroWheel.classList.add("twinkle");
+  } else {
+    astroWheel.classList.remove("twinkle");
+  }
+}
+
+function isElementInMiddle(element) {
+  const rect = element.getBoundingClientRect();
+  const elementCenterY = rect.top + rect.height / 2;
+  const viewportCenterY = window.innerHeight / 2;
+
+  // Define a tolerance (e.g., 50px) around the center
+  const tolerance = 100;
+
+  return Math.abs(elementCenterY - viewportCenterY) <= tolerance;
 }
 
 function displayTopGradient(shouldDisplay) {

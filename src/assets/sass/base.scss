@@ -62,6 +62,7 @@
     background-repeat: no-repeat;
     background-size: cover;
     background-attachment: fixed;
+    background-position: top;
   }
 
   .cs-text {
@@ -1043,6 +1044,14 @@
   display: block;
   margin-top: 50px;
   margin-bottom: 50px;
+  max-width: 600px;
+}
+@media only screen and (max-width: 1023.5px) {
+  .clt-divider {
+    margin-top: 30px;
+    margin-bottom: 30px;
+    width: 100%;
+  }
 }
 
 /*-- -------------------------- -->
@@ -1161,8 +1170,8 @@
       padding: calc(10 / 16 * 1rem) calc(50 / 16 * 1rem) 0 calc(50 / 16 * 1rem);
       display: flex;
       flex-direction: column;
+      flex-wrap: wrap;
       justify-content: center;
-      align-items: flex-start;
       gap: calc(16 / 16 * 1rem);
       font-size: calc(20 / 16 * 1rem);
       line-height: 1.5em;
@@ -1175,6 +1184,22 @@
         font-weight: 100;
         letter-spacing: 0.1em;
       }
+
+      .about-text {
+        display: block;
+
+        img {
+          float: right;
+          height: 100%;
+          border-radius: calc(8 / 16 * 1rem);
+          margin: 0 calc(16 / 16 * 1rem) calc(16 / 16 * 1rem)
+            calc(16 / 16 * 1rem);
+        }
+      }
+      .clt-button {
+        align-self: start-end;
+        margin-top: calc(16 / 16 * 1rem);
+      }
     }
     .clt-about-right {
       width: 30%;
@@ -1183,6 +1208,15 @@
       display: flex;
       justify-content: center;
       align-items: center;
+
+      img {
+        opacity: 0.33;
+        transition: opacity 0.5s ease-in-out;
+
+        &.twinkle {
+          opacity: 1;
+        }
+      }
 
       .clt-about-img {
         width: 100%;

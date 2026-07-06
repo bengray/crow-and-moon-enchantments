@@ -5,7 +5,7 @@ img#clt-logo {
 }
 
 img#clt-logo-mini {
-  transform: scale(0.33) translateY(-400px);
+  transform: translateY(-500px);
   transform-origin: top center;
   position: fixed;
   cursor: pointer;
@@ -31,7 +31,7 @@ img#clt-logo-mini {
   }
 }
 
-#slide-box {
+#top-gradient {
   width: 100%;
   height: 150px;
   position: fixed;
@@ -65,14 +65,29 @@ img#clt-logo-mini {
     text-align: center;
     font-size: 1.5rem;
     letter-spacing: 0.1em;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 
-    li {
-      display: inline-block;
-      margin: 15px 5px 25px;
-      position: relative;
-      padding: 5px 0;
-      transition: color 1s;
-      color: var(--bodyTextColor);
+    ul {
+      max-width: 500px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+
+      li {
+        display: inline-block;
+        transition: color 1s;
+        color: var(--bodyTextColor);
+        &:hover {
+          color: red;
+        }
+      }
+      span {
+        margin: 0 10px;
+        padding-bottom: 5px;
+      }
     }
   }
 
@@ -88,6 +103,37 @@ img#clt-logo-mini {
     font-size: 1.2rem;
     line-height: 1.5;
     margin: 10px auto 0;
-    width: 800px;
+    max-width: 800px;
+    padding: 0 20px;
+  }
+}
+
+// Mobile-specific styles for the header
+@media only screen and (max-width: 1023.5px) {
+  img#clt-logo {
+    position: fixed;
+    z-index: 420;
+    transform: translateY(0);
+  }
+  img#clt-logo-mini {
+    transform-origin: top right;
+    left: auto;
+    right: 0;
+  }
+
+  #clt-header {
+    #clt-sub-header {
+      font-size: 1.2rem;
+      ul {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: space-around;
+        margin: 10px auto 10px;
+        li {
+          margin: 5px 5px 5px;
+        }
+      }
+    }
   }
 }
