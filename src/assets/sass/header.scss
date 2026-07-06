@@ -3,7 +3,7 @@ img#clt-logo {
 }
 
 img#clt-logo-mini {
-  transform: translateY(-500px);
+  transform: translateY(-400px);
   transform-origin: top;
   position: fixed;
   width: 111px;
@@ -41,7 +41,7 @@ img#clt-logo-mini {
   align-items: center;
 
   #clt-sub-header {
-    max-width: 1024px;
+    max-width: 960px;
     text-align: center;
     font-size: 1.5rem;
     letter-spacing: 0.1em;
@@ -55,17 +55,19 @@ img#clt-logo-mini {
       display: flex;
       flex-direction: row;
       align-items: center;
+      list-style: none;
 
-      li {
+      li a {
         display: inline-block;
-        transition: color 1s;
+        transition: all 1s ease-in-out;
         color: var(--bodyTextColor);
+        text-decoration: none;
         &:hover {
-          color: red;
+          color: rgb(193, 85, 255);
         }
       }
       span {
-        margin: 0 10px;
+        margin: 0 15px;
         padding-bottom: 5px;
       }
     }
@@ -93,10 +95,6 @@ img#clt-logo-mini {
   img#clt-logo {
     width: 80vw;
   }
-  img#clt-logo-mini {
-    left: auto;
-    right: 5vw;
-  }
 
   #clt-header {
     #clt-sub-header {
@@ -109,6 +107,9 @@ img#clt-logo-mini {
         margin: 10px auto 10px;
         li {
           margin: 5px 5px 5px;
+        }
+        span {
+          margin: 0 5px;
         }
       }
     }

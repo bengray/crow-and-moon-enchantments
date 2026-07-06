@@ -1,60 +1,70 @@
 <!-- A fully fleshed-out <head>, dynamically changing based on client.json and the page front matter -->
 
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-    <head>
-        <!-- Standard meta tags -->
-        <meta charset="UTF-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta name="description" content="{{ description }}">
-        <link rel="canonical" href="{{ client.domain }}{{ page.url }}">
-        <meta name="generator" content="{{ eleventy.generator }}">
+  <head>
+    <!-- Standard meta tags -->
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="{{ description }}" />
+    <link rel="canonical" href="{{ client.domain }}{{ page.url }}" />
+    <meta name="generator" content="{{ eleventy.generator }}" />
 
-        <!--Social Media Display-->
-        <meta property="og:title" content="{{ title }}"/>
-        <meta property="og:description" content="{{ description }}"/>
-        <meta property="og:type" content="website"/>
-        <meta property="og:url" content="{{ client.domain }}{{ page.url }}"/>
+    <!--Social Media Display-->
+    <meta property="og:title" content="{{ title }}" />
+    <meta property="og:description" content="{{ description }}" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="{{ client.domain }}{{ page.url }}" />
 
-        <!--Favicons-->
-        <!-- https://realfavicongenerator.net/ -->
-        <link rel="icon" type="image/png" href="/assets/favicons/favicon-96x96.png" sizes="96x96"/>
-        <link rel="icon" type="image/svg+xml" href="/assets/favicons/favicon.svg"/>
-        <link rel="shortcut icon" href="/assets/favicons/favicon.ico"/>
-        <link rel="apple-touch-icon" sizes="180x180" href="/assets/favicons/apple-touch-icon.png"/>
-        <meta name="apple-mobile-web-app-title" content="Starter Kit"/>
-        <link rel="manifest" href="/assets/favicons/site.webmanifest"/>
+    <!--Favicons-->
+    <!-- https://realfavicongenerator.net/ -->
+    <link
+      rel="icon"
+      type="image/png"
+      href="/assets/favicons/favicon-96x96.png"
+      sizes="96x96"
+    />
+    <link rel="icon" type="image/svg+xml" href="/assets/favicons/favicon.svg" />
+    <link rel="shortcut icon" href="/assets/favicons/favicon.ico" />
+    <link
+      rel="apple-touch-icon"
+      sizes="180x180"
+      href="/assets/favicons/apple-touch-icon.png"
+    />
+    <meta name="apple-mobile-web-app-title" content="Starter Kit" />
+    <link rel="manifest" href="/assets/favicons/site.webmanifest" />
 
-        <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@100;200;300;400;500;600&family=Cormorant+Garamond:wght@100;200;300;400;500;600&family=Inter:wght@100;200;300;400;500;600&display=swap" rel="stylesheet">
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cinzel:wght@100;200;300;400;500;600&family=Cormorant+Garamond:wght@100;200;300;400;500;600&family=Inter:wght@100;200;300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
 
-        <!-- Sitewide Stylesheets and Scripts -->
-        <!-- <link rel="stylesheet" href="/assets/css/root.css"> -->
-        <link rel="stylesheet" href="/assets/css/base.css">
-        <script defer src="/assets/js/dark.js"></script>
-        <script defer src="/assets/js/nav.js"></script>
-        <script defer src="/assets/js/scroll.js"></script>
+    <!-- Sitewide Stylesheets and Scripts -->
+    <!-- <link rel="stylesheet" href="/assets/css/root.css"> -->
+    <link rel="stylesheet" href="/assets/css/base.css" />
+    <script defer src="/assets/js/dark.js"></script>
+    <script defer src="/assets/js/nav.js"></script>
+    <script defer src="/assets/js/scroll.js"></script>
 
-        {% block head %}{% endblock %}
+    {% block head %}{% endblock %}
 
-        <title>{{ title }}</title>
-    </head>
-    <body>
-        <!--Screen reader skip main nav-->
-        <a class="skip" aria-label="skip to main content" href="#main">Click To Skip To Main Content</a>
+    <title>{{ title }}</title>
+  </head>
+  <body>
+    <div id="parallax-background">
+      <!--Screen reader skip main nav-->
+      <a class="skip" aria-label="skip to main content" href="#main"
+        >Click To Skip To Main Content</a
+      >
 
-        {% include "sections/header.html" %}
-        <main id="main">
-            {% block body %}{% endblock %}
-        </main>
-        <div id="clt-about-section">
-            {% include "sections/about.html" %}
-        </div>
-        <div id="clt-order-inquire-section">
-            {% include "sections/order-inquire.html" %}
-        </div>
-        {% include "sections/footer.html" %}
-        </div>
-
-    </body>
+      {% include "sections/header.html" %}
+      <main id="main">{% block body %}{% endblock %}</main>
+      <div id="clt-about-section">{% include "sections/about.html" %}</div>
+      <div id="clt-order-inquire-section">
+        {% include "sections/order-inquire.html" %}
+      </div>
+      {% include "sections/footer.html" %}
+    </div>
+  </body>
 </html>
