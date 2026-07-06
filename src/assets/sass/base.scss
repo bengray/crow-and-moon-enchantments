@@ -490,6 +490,7 @@
           display: flex;
           flex-direction: row;
           flex-wrap: wrap;
+          justify-content: space-around;
           gap: calc(16 / 16 * 1rem);
         }
 
@@ -530,8 +531,7 @@
         .clt-social-links {
           display: flex;
           flex-direction: row;
-          justify-content: center;
-          justify-items: center;
+          justify-content: space-around;
           align-items: center;
           padding: calc(10 / 16 * 1rem) calc(16 / 16 * 1rem) 0
             calc(16 / 16 * 1rem);
