@@ -1,5 +1,4 @@
 "use strict";
-
 function _classCallCheck(instance, Constructor) {
   if (!(instance instanceof Constructor)) {
     throw new TypeError("Cannot call a class as a function");
@@ -953,6 +952,7 @@ function _arrayWithHoles(arr) {
       _defineProperty(this, "findAndAddElements", function () {
         _this3.elements = [];
         var elements = document.querySelectorAll(".lax");
+        console.log("elements = ", elements);
         elements.forEach(function (domElement) {
           var driverName = "scrollY";
           var presets = [];
