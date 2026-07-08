@@ -45,19 +45,18 @@
     <link rel="stylesheet" href="/assets/css/base.css" />
     <script defer src="/assets/js/dark.js"></script>
     <script defer src="/assets/js/nav.js"></script>
-    <script defer src="/assets/js/scroll.js"></script>
+    <script defer src="/assets/js/clt-scroll.js"></script>
 
     {% block head %}{% endblock %}
 
     <title>{{ title }}</title>
   </head>
   <body>
+    <!--Screen reader skip main nav-->
+    <a class="skip" aria-label="skip to main content" href="#main"
+      >Click To Skip To Main Content</a
+    >
     <div class="parallax-background">
-      <!--Screen reader skip main nav-->
-      <a class="skip" aria-label="skip to main content" href="#main"
-        >Click To Skip To Main Content</a
-      >
-
       {% include "sections/header.html" %}
       <main id="main">{% block body %}{% endblock %}</main>
       <div id="clt-about-section">{% include "sections/about.html" %}</div>

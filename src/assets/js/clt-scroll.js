@@ -1,12 +1,8 @@
-import { isMobileDevice } from "./utils.js";
+import { isMobileDevice } from "./clt-utils.js";
 
 // Scroll to the top of the page when it's loaded. This overrides default browser behavior
 window.onbeforeunload = function () {
   window.scrollTo(0, 0);
-};
-
-window.onload = function () {
-  // Do something
 };
 
 // When the user scrolls down 50px from the top of the document, resize the logo and move it.
@@ -22,7 +18,7 @@ const logoImageMini = document.querySelector("#clt-logo-mini");
 const footer = document.querySelector("#clt-footer");
 const footerText = document.querySelector(".clt-footer-text");
 const astroWheel = document.querySelector(".clt-about-right img");
-const parallaxImage = document.getElementById(".foobar");
+const parallaxImage = document.querySelector(".parallax-background");
 
 // Attach an onclick handler to the image, when clicked returns to top of the page
 logoImageMini.addEventListener("click", function () {
@@ -39,9 +35,22 @@ function setIsTopOfPage(value) {
   }
 }
 
+function getScrollSpeed(scrollPosition) {
+  let result;
+  if (isMobile) {
+    result = scrollPosition * 0.8 + "px";
+  } else {
+    result = -scrollPosition * 0.08 + "px";
+  }
+  return result;
+}
+
 function scrollFunction() {
   // First, get the current scroll position
   let scrollPositionY = window.scrollY;
+
+  // Then, apply the parallax effect to the background, this always will scroll.
+  parallaxImage.style.backgroundPositionY = getScrollSpeed(scrollPositionY);
 
   // Check if the user has scrolled down more than 340px from the top of the page, if so,
   if (scrollPositionY > 340 && isTopOfPage) {
