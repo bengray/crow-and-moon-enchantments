@@ -26,27 +26,5 @@ tags: "sitemap" # content/content.json will make sure that all pages in content/
 
 {% else %}
 <link rel="stylesheet" href="/assets/css/local.css" />
-{% endif %}
-
-<!-- To ensure proper validation, prevent errors, and encourage developers to check, schema's are an opt-in feature. They're very bespoke and requires some customising  -->
-<!-- Uncomment the code below to enable Structured Data, and test it when you deploy to Netlify - https://developers.google.com/search/docs/appearance/structured-data -->
-<!-- {% include "components/home-schema.html" %} -->
-{% endblock %} {% block body %}
-
-<!-- ============================================ -->
-<!--                    Hero                      -->
-<!-- ============================================ -->
-
-<section id="clt-hero">
-  <!-- Hero content goes here -->
-</section>
-
-<!-- ============================================ -->
-<!--                    Body                      -->
-<!-- ============================================ -->
-
-<section id="clt-body">
-  <!-- Body content goes here -->
-</section>
-
-{% include 'sections/cta.html' %} {% endblock %}
+{% endif %} {% endblock %} {% block body %} {% include 'sections/cta.html' %} {%
+endblock %}

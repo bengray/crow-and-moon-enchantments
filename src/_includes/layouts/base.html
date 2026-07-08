@@ -45,16 +45,16 @@
     <script defer src="/assets/js/dark.js"></script>
     <script defer src="/assets/js/scroll.js"></script>
 
-    {% block head %}{% endblock %}
-
     <title>{{ title }}</title>
+    {% block head %}{% endblock %}
   </head>
   <body>
     <!--Screen reader skip main nav-->
-    <a class="skip" aria-label="skip to main content" href="#main"
+    <a id="skip" aria-label="skip to main content" href="#main"
       >Click To Skip To Main Content</a
     >
     <div class="parallax-background">
+      <div id="top-gradient"></div>
       {% include "sections/header.html" %}
       <main id="main">{% block body %}{% endblock %}</main>
       <div id="clt-about-section">{% include "sections/about.html" %}</div>

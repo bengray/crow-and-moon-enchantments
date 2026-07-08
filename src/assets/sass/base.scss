@@ -44,7 +44,7 @@
 /* Components + Utilities */
 @media only screen and (min-width: 0px) {
   // Hidden screen reader skip nav button
-  .skip {
+  #skip {
     z-index: -1111111;
     position: absolute;
     top: 0;
