@@ -1,4 +1,4 @@
-import { isMobileDevice } from "./clt-utils.js";
+import { isMobileDevice } from "./utils.js";
 
 // Scroll to the top of the page when it's loaded. This overrides default browser behavior
 window.onbeforeunload = function () {
@@ -20,12 +20,19 @@ const footerText = document.querySelector(".clt-footer-text");
 const astroWheel = document.querySelector(".clt-about-right img");
 const parallaxImage = document.querySelector(".parallax-background");
 
-// Attach an onclick handler to the image, when clicked returns to top of the page
-logoImageMini.addEventListener("click", function () {
-  // scroll to top smoothly
-  window.scrollTo({
-    top: 0,
-    behavior: "smooth",
+// If the href value starts with # then attach a click handler to it that scrolls smoothly to the element
+document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
+  anchor.addEventListener("click", function (e) {
+    e.preventDefault();
+    const targetId = this.getAttribute("href");
+    const targetElement = document.querySelector(targetId);
+
+    if (targetElement) {
+      targetElement.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
+    }
   });
 });
 
