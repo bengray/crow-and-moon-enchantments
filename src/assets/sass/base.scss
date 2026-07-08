@@ -8,14 +8,9 @@
 @media only screen and (min-width: 0px) {
   /* All elements in the library derive their variables and base styles from this central sheet, simplifying site-wide edits. For instance, if you want to modify how your h2's appear across the site, you just update it once in the global styles, and the changes apply everywhere. */
   :root {
-    --primary: #ff6a3e;
-    --primaryLight: #ffba43;
-    --secondary: #ffba43;
-    --secondaryLight: #ffba43;
+    --primary: #882fb8;
     --headerColor: #fbead3;
     --bodyTextColor: #fbead3;
-    --bodyTextColorWhite: #fbead3;
-
     --headerFont: "Cormorant Garamond", serif;
     --bodyFont: "Cormorant Garamond", serif;
   }

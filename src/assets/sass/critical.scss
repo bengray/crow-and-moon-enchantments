@@ -105,14 +105,12 @@
       font-size: 1.2rem;
 
       .clt-title {
-        color: var(--bodyTextColor);
         font-weight: 100;
         font-size: 3.25rem;
         text-align: center;
       }
 
       .clt-tagline {
-        color: var(--bodyTextColor);
         font-weight: 400;
         font-size: 1.2rem;
         line-height: 1.5;
@@ -132,11 +130,11 @@
         li a {
           margin: 5px 5px 5px;
           transition: all 1s ease-in-out;
-          color: var(--bodyTextColor);
           text-decoration: none;
+          color: var(--bodyTextColor);
 
           &:hover {
-            color: rgb(193, 85, 255);
+            color: var(--primary);
           }
         }
 

@@ -210,25 +210,6 @@
         border-radius: calc(8 / 16 * 1rem);
       }
     }
-
-    a.clt-button-link {
-      font-family: var(--bodyFont);
-      font-weight: 400;
-      letter-spacing: 0.1em;
-      background-image: url("/assets/images/button-background.gif");
-      background-repeat: no-repeat;
-      background-size: contain;
-      color: var(--bodyTextColor);
-      text-decoration: none;
-      border: none;
-      font-size: 20px;
-      padding: 7px 20px;
-      transition: all 1s ease-in-out;
-
-      &:hover {
-        color: rgb(193, 85, 255);
-      }
-    }
   }
 }
 
