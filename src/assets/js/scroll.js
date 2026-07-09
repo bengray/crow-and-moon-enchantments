@@ -20,7 +20,8 @@ const footerText = document.querySelector(".clt-footer-text");
 const astroWheel = document.querySelector(".clt-about-right img");
 const parallaxImage = document.querySelector(".parallax-background");
 
-// If the href value starts with # then attach a click handler to it that scrolls smoothly to the element
+// Search the entire page for anchor tags.
+// If the href value starts with # then attach a click handler to it that scrolls smoothly to the element.
 document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
   anchor.addEventListener("click", function (e) {
     e.preventDefault();
@@ -37,6 +38,7 @@ document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
 });
 
 function setIsTopOfPage(value) {
+  // Only set the variable value passed in if it's different than the one stored.
   if (isTopOfPage !== value) {
     isTopOfPage = value;
   }
