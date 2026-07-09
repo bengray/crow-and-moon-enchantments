@@ -9,12 +9,12 @@
 <---     SECTION DIVIDERS       -->
 <--- -------------------------- -*/
 .clt-divider {
-  display: block;
   margin-top: 50px;
   margin-bottom: 50px;
   max-width: 600px;
 }
 
+// Desktop styling
 @media only screen and (max-width: 64rem) {
   .clt-divider {
     margin-top: 30px;
@@ -240,6 +240,7 @@
   #clt-order-inquire {
     width: 100%;
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
 
