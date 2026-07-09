@@ -49,7 +49,7 @@ function getScrollSpeed(scrollPosition) {
   if (isMobile) {
     result = scrollPosition * 0.8 + "px";
   } else {
-    result = -scrollPosition * 0.08 + "px";
+    result = -scrollPosition * 0.16 + "px";
   }
   return result;
 }
