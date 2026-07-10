@@ -17,7 +17,7 @@ const topGradient = document.querySelector("#top-gradient");
 const logoImageMini = document.querySelector("#clt-logo-mini");
 const footer = document.querySelector("#clt-footer");
 const footerText = document.querySelector(".clt-footer-text");
-const astroWheel = document.querySelector(".clt-about-right img");
+const astroWheel = document.querySelector(".clt-inner-right");
 const parallaxImage = document.querySelector(".parallax-background");
 
 // Search the entire page for anchor tags.
