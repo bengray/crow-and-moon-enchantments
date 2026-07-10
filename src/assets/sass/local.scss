@@ -6,74 +6,82 @@
 // ─────────────────────────────────────────────────────────────────────────────
 
 /*-- -------------------------- -->
+<---      SECTION STYLING       -->
+<--- -------------------------- -*/
+
+.clt-section {
+  padding: var(--sectionPadding);
+
+  h2.clt-section-title {
+    font-size: 2.5rem;
+    line-height: 1.5em;
+  }
+}
+
+// Desktop
+@media only screen and (min-width: 64rem) {
+  .clt-section {
+    padding: 0;
+  }
+}
+
+/*-- -------------------------- -->
 <---     SECTION DIVIDERS       -->
 <--- -------------------------- -*/
 .clt-divider {
-  margin-top: 50px;
-  margin-bottom: 50px;
-  max-width: 600px;
+  text-align: center;
+  margin: 50px auto 50px;
+  width: 100%;
 }
 
-// Desktop styling
-@media only screen and (max-width: 64rem) {
+@media only screen and (min-width: 64rem) {
   .clt-divider {
-    margin-top: 30px;
-    margin-bottom: 30px;
-    width: 100%;
+    &.one {
+      width: 600px;
+    }
+    &.two {
+      width: 500px;
+      margin-top: 75px;
+    }
+    &.three {
+      width: 400px;
+    }
   }
 }
 
 /*-- -------------------------- -->
 <---            CTA             -->
+<---          Offerings         -->
 <--- -------------------------- -*/
 
 /* Desktop */
 @media only screen and (min-width: 0px) {
   #clt-cta {
-    padding: var(--sectionPadding);
     align-items: center;
     justify-content: center;
     display: flex;
     flex-direction: column;
 
-    h2.clt-cta-title {
-      font-size: 2.75rem;
-      line-height: 1.2em;
-      font-weight: 100;
-      letter-spacing: 0.1em;
-    }
-
     h3.card-title {
       display: flex;
       justify-content: center;
+      font-size: var(--cardTitleFontSize);
       padding-bottom: calc(16 / 16 * 1rem);
       padding-top: calc(16 / 16 * 1rem);
-      font-size: calc(28 / 16 * 1rem);
-      line-height: 1.2em;
       font-weight: 100;
-      letter-spacing: 0.05em;
       justify-content: center;
 
       &.faded-bottom-border {
         border-bottom: 1px solid;
-        /* Gradient: Color -> Transparent -> Color */
         border-image: linear-gradient(
             to right,
             transparent,
-            var(--bodyTextColor) 50%,
+            var(--bodyColor) 50%,
             transparent
           )
           1;
         border-bottom-width: 1px;
       }
-    }
-
-    .clt-cta-subtitle {
-      font-size: calc(18 / 16 * 1rem);
-      line-height: 1.5em;
-      font-weight: 400;
-      letter-spacing: 0.05em;
-      margin-top: 5px;
     }
 
     .clt-cta-card-row {
@@ -87,13 +95,14 @@
       // Height and width are based on the image size, but you can adjust them as needed. Just make sure to keep the aspect ratio the same if you change one of them.
       width: 300px;
       height: 332px;
-      padding: calc(50 / 16 * 1rem);
-      margin-right: calc(16 / 16 * 1rem);
-      margin-left: calc(16 / 16 * 1rem);
+      padding: calc(50 / 16 * 1rem) calc(30 / 16 * 1rem) 0;
+      margin: 0 calc(16 / 16 * 1rem);
       display: flex;
       flex-direction: column;
       gap: calc(24 / 16 * 1rem);
       background-size: contain;
+      font-size: var(--defaultFontSize);
+      letter-spacing: var(--defaultLetterSpacing);
       &.first-card {
         background-image: url("/assets/images/card-background-1.png");
       }
@@ -103,13 +112,6 @@
       &.third-card {
         background-image: url("/assets/images/card-background-3.png");
       }
-
-      .card-description {
-        font-size: calc(18 / 16 * 1rem);
-        line-height: 1.5em;
-        font-weight: 400;
-        letter-spacing: 0.05em;
-      }
     }
   }
 }
@@ -117,11 +119,6 @@
 /* Mobile */
 @media only screen and (max-width: 64rem) {
   #clt-cta {
-    .clt-cta-subtitle {
-      text-align: center;
-      width: 80vw;
-    }
-
     .clt-cta-card-row {
       flex-direction: column;
       align-items: center;
@@ -144,36 +141,19 @@
     flex-direction: column;
     align-items: center;
 
-    .clt-about-container {
-      max-width: calc(960 / 16 * 1rem);
+    .clt-inner-container {
       display: flex;
       justify-content: center;
       align-items: flex-start;
     }
 
-    .clt-about-left {
-      width: 70%;
-      padding: calc(10 / 16 * 1rem) calc(50 / 16 * 1rem) 0 calc(50 / 16 * 1rem);
+    .clt-inner-left {
       display: flex;
       flex-direction: column;
       flex-wrap: wrap;
       justify-content: center;
-      gap: calc(16 / 16 * 1rem);
-      font-size: calc(20 / 16 * 1rem);
-      line-height: 1.5em;
-      font-weight: 400;
-      letter-spacing: 0.05em;
-
-      h2.clt-title {
-        font-size: 2.75rem;
-        line-height: 1.2em;
-        font-weight: 100;
-        letter-spacing: 0.1em;
-      }
 
       .about-text {
-        display: block;
-
         img {
           float: right;
           height: 100%;
@@ -181,19 +161,9 @@
           margin: calc(16 / 16 * 1rem);
         }
       }
-      .clt-button {
-        align-self: start-end;
-        margin-top: calc(16 / 16 * 1rem);
-      }
     }
-    .clt-about-right {
-      width: 30%;
-      padding: calc(30 / 16 * 1rem) calc(50 / 16 * 1rem) 0 calc(50 / 16 * 1rem);
-      margin-left: calc(32 / 16 * 1rem);
-      display: flex;
-      justify-content: center;
-      align-items: center;
 
+    .clt-inner-right {
       img {
         opacity: 0.33;
         transition: opacity 0.5s ease-in-out;
@@ -204,29 +174,19 @@
       }
 
       .clt-about-img {
-        width: 100%;
-        height: auto;
         max-width: calc(400 / 16 * 1rem);
-        border-radius: calc(8 / 16 * 1rem);
       }
     }
   }
 }
 
 /* Mobile */
-@media only screen and (max-width: 1023.5px) {
+@media only screen and (max-width: 64rem) {
   #clt-about {
     .clt-about-container {
+      display: flex;
       flex-direction: column;
       align-items: center;
-      .clt-about-left {
-        width: 98vw;
-        padding: calc(10 / 16 * 1rem) calc(16 / 16 * 1rem) 0
-          calc(16 / 16 * 1rem);
-      }
-      .clt-about-right {
-        display: none;
-      }
     }
   }
 }
@@ -235,46 +195,18 @@
 <---        Order/Inquire.      -->
 <--- -------------------------- -*/
 
-/* Desktop */
 @media only screen and (min-width: 0px) {
   #clt-order-inquire {
-    width: 100%;
     display: flex;
     flex-direction: column;
-    justify-content: center;
     align-items: center;
+    justify-content: center;
 
     .clt-order-inquire-container {
-      max-width: calc(960 / 16 * 1rem);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      flex-direction: row;
-      gap: calc(32 / 16 * 1rem);
-
-      h2.clt-title {
-        font-size: 2.75rem;
-        line-height: 1.2em;
-        font-weight: 100;
-        letter-spacing: 0.1em;
-      }
-
       .clt-order-inquire-left {
-        width: 65%;
-        padding: 0 calc(50 / 16 * 1rem);
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: flex-start;
-        gap: calc(16 / 16 * 1rem);
-        font-size: calc(20 / 16 * 1rem);
-        line-height: 1.5em;
-        letter-spacing: 0.05em;
       }
 
       .clt-order-inquire-right {
-        width: 35%;
-
         .clt-social-links {
           display: flex;
           flex-direction: row;
@@ -283,39 +215,6 @@
           gap: calc(16 / 16 * 1rem);
         }
 
-        a.clt-social-link img {
-          width: 135px;
-          transition: transform 0.3s ease-in-out;
-
-          &:hover {
-            transform: translate(2, 2);
-          }
-        }
-
-        .clt-order-inquire-img {
-          width: 100%;
-          height: auto;
-          max-width: calc(400 / 16 * 1rem);
-          border-radius: calc(8 / 16 * 1rem);
-        }
-      }
-    }
-  }
-}
-
-/* Mobile */
-@media only screen and (max-width: 1023.5px) {
-  #clt-order-inquire {
-    .clt-order-inquire-container {
-      flex-direction: column;
-      align-items: center;
-      .clt-order-inquire-left {
-        width: 98vw;
-        padding: calc(10 / 16 * 1rem) calc(16 / 16 * 1rem) 0
-          calc(16 / 16 * 1rem);
-      }
-      .clt-order-inquire-right {
-        width: 98vw;
         .clt-social-links {
           display: flex;
           flex-direction: row;
@@ -324,6 +223,34 @@
           padding: calc(10 / 16 * 1rem) calc(16 / 16 * 1rem) 0
             calc(16 / 16 * 1rem);
         }
+
+        a.clt-social-link img {
+          width: 135px;
+          transform: translate(0, 0);
+          transition: all 0.3s ease-in-out;
+
+          &:hover {
+            transform: translate(2, 2);
+          }
+        }
+      }
+    }
+  }
+}
+
+/* Desktop */
+@media only screen and (min-width: 64rem) {
+  #clt-order-inquire {
+    .clt-order-inquire-container {
+      display: flex;
+      flex-direction: row;
+
+      .clt-order-inquire-left {
+        width: 65%;
+      }
+
+      .clt-order-inquire-right {
+        width: 35%;
       }
     }
   }
@@ -337,13 +264,13 @@
 @media only screen and (min-width: 0px) {
   #clt-footer {
     font-weight: 400;
-    letter-spacing: 0.05em;
+    letter-spacing: var(--defaultLetterSpacing);
     display: flex;
     justify-content: space-around;
     align-items: flex-end;
     height: 100px;
     margin-top: calc(50 / 16 * 1rem);
-    padding-bottom: 10px;
+    padding: calc(16 / 16 * 1rem);
     background: linear-gradient(
       to bottom,
       rgba(11, 0, 15, 0) 0%,
@@ -354,10 +281,6 @@
 
     &.visible {
       opacity: 1;
-    }
-
-    .clt-footer-text {
-      font-size: calc(18 / 16 * 1rem);
     }
 
     #code-less-traveled img {
@@ -373,10 +296,8 @@
     justify-content: center;
     align-items: center;
     height: auto;
-    padding: calc(16 / 16 * 1rem) 0;
 
     .clt-footer-text {
-      font-size: calc(16 / 16 * 1rem);
       text-align: center;
       margin-bottom: calc(8 / 16 * 1rem);
     }

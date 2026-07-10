@@ -8,11 +8,22 @@
 @media only screen and (min-width: 0px) {
   /* All elements in the library derive their variables and base styles from this central sheet, simplifying site-wide edits. For instance, if you want to modify how your h2's appear across the site, you just update it once in the global styles, and the changes apply everywhere. */
   :root {
-    --primary: #882fb8;
+    --primary: darkred;
+
     --headerColor: #fbead3;
-    --bodyTextColor: #fbead3;
+    --headerLetterSpacing: 0.1em;
     --headerFont: "Cormorant Garamond", serif;
+
+    --subHeaderLineHeight: 1.5rem;
+
+    --bodyColor: #fbead3;
     --bodyFont: "Cormorant Garamond", serif;
+    --bodyFontSize: calc(20 / 16 * 1rem);
+    --cardTitleFontSize: calc(28 / 16 * 1rem);
+    --defaultLineHeight: 1.2em;
+    --defaultLetterSpacing: 0.05em;
+
+    --sectionPadding: calc(20 / 16 * 1rem);
   }
 
   html,
@@ -21,7 +32,7 @@
     padding: 0;
     font-family: var(--bodyFont);
     font-size: 100%;
-    color: var(--bodyTextColor);
+    color: var(--bodyColor);
     font-weight: 400;
     background-color: #020104;
   }
@@ -48,12 +59,14 @@
   }
 }
 
-/* Desktop Utilities */
-@media only screen and (min-width: 64rem) {
+/* Hide Utilities */
+@media only screen and (max-width: 64rem) {
   .hide-on-mobile {
-    display: block !important;
+    display: none !important;
   }
+}
 
+@media only screen and (min-width: 64rem) {
   .hide-on-desktop {
     display: none !important;
   }
@@ -68,20 +81,23 @@
   h5,
   h6 {
     font-family: var(--headerFont);
-    line-height: 1.2em;
     color: var(--headerColor);
+    font-weight: 100;
+    letter-spacing: var(--headerLetterSpacing);
+    line-height: 1em;
   }
 
   p,
   li,
   a {
-    font-size: calc(16 / 16 * 1rem);
-    line-height: 1.5em;
+    letter-spacing: var(--defaultLetterSpacing);
+    line-height: var(--defaultLineHeight);
+    font-size: var(--bodyFontSize);
   }
 
   p,
   li {
-    color: var(--bodyTextColor);
+    color: var(--bodyColor);
 
     a {
       color: var(--primary);
@@ -106,7 +122,7 @@
     h4,
     h5,
     h6 {
-      color: var(--bodyTextColor);
+      color: var(--bodyColor);
     }
   }
 }

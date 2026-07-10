@@ -74,9 +74,13 @@
 
       <main id="main">
         {% include "sections/header.html" %}
-        <div id="clt-cta-section">{% include 'sections/cta.html' %}</div>
-        <div id="clt-about-section">{% include 'sections/about.html' %}</div>
-        <div id="clt-order-inquire-section">
+        <div id="clt-cta-section" class="clt-section">
+          {% include 'sections/cta.html' %}
+        </div>
+        <div id="clt-about-section" class="clt-section">
+          {% include 'sections/about.html' %}
+        </div>
+        <div id="clt-order-inquire-section" class="clt-section">
           {% include 'sections/order-inquire.html' %}
         </div>
       </main>

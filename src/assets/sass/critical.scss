@@ -9,7 +9,7 @@
 <---    Parallax Background     -->
 <--- -------------------------- -*/
 // Desktop gets a bigger background image
-@media only screen and (min-width: 1024px) {
+@media only screen and (min-width: 64rem) {
   .parallax-background {
     z-index: -1;
     background-image: url("/assets/images/background.png");
@@ -52,9 +52,12 @@
 }
 
 // Make the website content sit above the #body-gradient
+// Limit the width of everything below the header
 #main {
   z-index: 10;
   position: relative;
+  max-width: 64rem;
+  margin: 0 auto;
 }
 
 /*-- -------------------------- -->
@@ -64,7 +67,7 @@
 // Mobile styles for the header. Most of the styling is here.
 @media only screen and (min-width: 0rem) {
   #top-gradient {
-    width: 100%;
+    width: 100vw;
     height: 125px;
     position: fixed;
     pointer-events: none; // Allows user to click through this element to a link underneath
@@ -111,11 +114,12 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
 
-    .clt-title {
-      font-weight: 100;
-      font-size: 3.25rem;
+    h1.company-name {
+      font-size: 3.5rem;
       text-align: center;
+      margin-bottom: 10px;
     }
 
     ul {
@@ -131,53 +135,45 @@
         a {
           transition: all 1s ease-in-out;
           text-decoration: none;
-          color: var(--bodyTextColor);
+          color: var(--bodyColor);
+          letter-spacing: var(--defaultLetterSpacing);
+
           &:hover {
             color: var(--primary);
           }
         }
       }
 
-      span {
+      span.tilde {
         margin: 0 10px;
         font-size: 1.5em;
         padding-bottom: 8px;
       }
     }
-    #clt-sub-header {
-      letter-spacing: 0.1em;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      font-size: 1.2rem;
 
+    #clt-sub-header {
       .clt-tagline {
         font-weight: 400;
-        font-size: 1.2rem;
-        line-height: 1.5;
+        font-size: 1.5rem;
+        line-height: var(--subTitleLineHeight);
         margin: 10px auto 0;
-        max-width: 960px;
+        padding: 10px;
         text-align: center;
-        padding: 0 20px;
       }
     }
   }
 }
 
 /*-- -------------------------- -->
-<---  Desktop Specific Style    -->
+<---     Desktop Specific       -->
+<---      Header Styles         -->
 <--- -------------------------- -*/
 
 @media screen and (min-width: 64rem) {
   #clt-logo {
     width: 380px;
   }
-  ul#navigation {
-    li a {
-      font-size: 1.3em;
-      letter-spacing: 0.05em;
-    }
+  ul#clt-navigation {
     span {
       font-size: 2em;
     }
