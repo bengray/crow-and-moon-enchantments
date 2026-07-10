@@ -11,7 +11,7 @@
     --primary: darkred;
 
     --headerColor: #fbead3;
-    --headerLetterSpacing: 0.1em;
+    --headerLetterSpacing: 0.08em;
     --headerFont: "Cormorant Garamond", serif;
 
     --subHeaderLineHeight: 1.5rem;
@@ -20,8 +20,9 @@
     --bodyFont: "Cormorant Garamond", serif;
     --bodyFontSize: calc(20 / 16 * 1rem);
     --cardTitleFontSize: calc(28 / 16 * 1rem);
+
     --defaultLineHeight: 1.2em;
-    --defaultLetterSpacing: 0.05em;
+    --defaultLetterSpacing: 0.03em;
 
     --sectionPadding: calc(20 / 16 * 1rem);
   }
