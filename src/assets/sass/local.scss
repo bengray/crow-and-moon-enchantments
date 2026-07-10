@@ -85,47 +85,51 @@
     }
 
     .clt-cta-card-row {
-      margin-top: calc(32 / 16 * 1rem);
+      margin: calc(32 / 16 * 1rem) auto 0;
       display: flex;
       flex-wrap: wrap;
-      flex-direction: row;
+      flex-direction: column;
+      gap: 25px;
     }
 
     .clt-cta-card {
       // Height and width are based on the image size, but you can adjust them as needed. Just make sure to keep the aspect ratio the same if you change one of them.
-      width: 300px;
-      height: 332px;
-      padding: calc(50 / 16 * 1rem) calc(30 / 16 * 1rem) 0;
-      margin: 0 calc(16 / 16 * 1rem);
+      max-width: 350px;
+      height: 400px;
+      padding: calc(60 / 16 * 1rem) calc(30 / 16 * 1rem) 0;
       display: flex;
       flex-direction: column;
       gap: calc(24 / 16 * 1rem);
       background-size: contain;
+      background-repeat: no-repeat;
+      background-position: top center;
       font-size: var(--defaultFontSize);
       letter-spacing: var(--defaultLetterSpacing);
       &.first-card {
         background-image: url("/assets/images/card-background-1.png");
       }
       &.second-card {
-        background-image: url("/assets/images/card-background-2.png");
+        background-image: url("/assets/images/card-background-3.png");
       }
       &.third-card {
-        background-image: url("/assets/images/card-background-3.png");
+        background-image: url("/assets/images/card-background-2.png");
       }
     }
   }
 }
 
-/* Mobile */
-@media only screen and (max-width: 64rem) {
+/* Desktop */
+@media only screen and (min-width: 64rem) {
   #clt-cta {
     .clt-cta-card-row {
-      flex-direction: column;
-      align-items: center;
-
-      .clt-cta-card {
-        margin: calc(16 / 16 * 1rem) 0;
-      }
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      width: 100%;
+      gap: unset;
+    }
+    .clt-cta-card {
+      max-width: 320px;
     }
   }
 }
@@ -207,6 +211,7 @@
       }
 
       .clt-order-inquire-right {
+        margin-top: 50px;
         .clt-social-links {
           display: flex;
           flex-direction: row;
@@ -244,6 +249,7 @@
     .clt-order-inquire-container {
       display: flex;
       flex-direction: row;
+      gap: 50px;
 
       .clt-order-inquire-left {
         width: 65%;
