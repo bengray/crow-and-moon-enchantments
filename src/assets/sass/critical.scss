@@ -102,7 +102,7 @@
       position: fixed;
       cursor: pointer;
       top: 0;
-      left: 5vw;
+      right: 5vw;
       transition: transform 0.5s ease-in-out;
 
       img {
@@ -175,6 +175,10 @@
 @media screen and (min-width: 64rem) {
   #clt-logo {
     width: 380px;
+  }
+  #clt-logo-mini {
+    right: unset;
+    left: 5vw;
   }
   ul#clt-navigation {
     display: flex;
