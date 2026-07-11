@@ -9,7 +9,7 @@
   /* All elements in the library derive their variables and base styles from this central sheet, simplifying site-wide edits. For instance, if you want to modify how your h2's appear across the site, you just update it once in the global styles, and the changes apply everywhere. */
   :root {
     --primary: darkred;
-
+    --canvas: #020104;
     --headerColor: #fbead3;
     --headerLetterSpacing: 0.08em;
     --headerFont: "Cormorant Garamond", serif;
@@ -35,7 +35,7 @@
     font-size: 100%;
     color: var(--bodyColor);
     font-weight: 400;
-    background-color: #020104;
+    background-color: var(--canvas);
   }
 
   *,
@@ -86,6 +86,7 @@
     font-weight: 100;
     letter-spacing: var(--headerLetterSpacing);
     line-height: 1em;
+    text-shadow: 0px 0px 3px #000;
   }
 
   p,
@@ -94,6 +95,7 @@
     letter-spacing: var(--defaultLetterSpacing);
     line-height: var(--defaultLineHeight);
     font-size: var(--bodyFontSize);
+    text-shadow: 0px 0px 3px #000;
   }
 
   p,

@@ -106,13 +106,13 @@
       font-size: var(--defaultFontSize);
       letter-spacing: var(--defaultLetterSpacing);
       &.first-card {
-        background-image: url("/assets/images/card-background-1.png");
+        background-image: url("/assets/images/card-background-1.gif");
       }
       &.second-card {
-        background-image: url("/assets/images/card-background-3.png");
+        background-image: url("/assets/images/card-background-3.gif");
       }
       &.third-card {
-        background-image: url("/assets/images/card-background-2.png");
+        background-image: url("/assets/images/card-background-2.gif");
       }
     }
   }
@@ -264,6 +264,7 @@
 
       .clt-order-inquire-right {
         width: 35%;
+        margin-top: 0;
       }
     }
   }
