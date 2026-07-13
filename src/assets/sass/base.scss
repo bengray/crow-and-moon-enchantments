@@ -1,63 +1,62 @@
+@use "tools";
+
 // ─────────────────────────────────────────────────────────────────────────────
 // GLOBAL STYLES
 // Only put styles here that can apply literally everywhere
 // This also contains a couple utility classes for hiding elements and dark mode
 // ─────────────────────────────────────────────────────────────────────────────
-
 /* Core Styles + Reset */
-@media only screen and (min-width: 0px) {
-  /* All elements in the library derive their variables and base styles from this central sheet, simplifying site-wide edits. For instance, if you want to modify how your h2's appear across the site, you just update it once in the global styles, and the changes apply everywhere. */
-  :root {
-    --primary: darkred;
-    --canvas: #020104;
-    --headerColor: #fbead3;
-    --headerLetterSpacing: 0.08em;
-    --headerFont: "Cormorant Garamond", serif;
+/* All elements in the library derive their variables and base styles from this central sheet, simplifying site-wide edits. For instance, if you want to modify how your h2's appear across the site, you just update it once in the global styles, and the changes apply everywhere. */
+:root {
+  --primary: rgb(182, 123, 255);
+  --canvas: #020104;
 
-    --subHeaderLineHeight: 1.5rem;
+  --headerFont: "Cormorant Garamond", serif;
+  --headerLetterSpacing: 0.08em;
 
-    --bodyColor: #fbead3;
-    --bodyFont: "Cormorant Garamond", serif;
-    --bodyFontSize: calc(20 / 16 * 1rem);
-    --cardTitleFontSize: calc(28 / 16 * 1rem);
+  --bodyColor: #fbead3;
+  --bodyColorDark: #c9a86a;
 
-    --defaultLineHeight: 1.2em;
-    --defaultLetterSpacing: 0.03em;
+  --bodyFont: "Cormorant Garamond", serif;
+  --bodyFontSize: #{tools.rem(22)};
+  --cardFontSize: #{tools.rem(20)};
+  --cardTitleFontSize: #{tools.rem(30)};
 
-    --sectionPadding: calc(20 / 16 * 1rem);
-  }
+  --defaultLineHeight: 1.3;
+  --subHeaderLineHeight: 1.5;
+  --defaultLetterSpacing: 0.03em;
 
-  html,
-  body {
-    margin: 0;
-    padding: 0;
-    font-family: var(--bodyFont);
-    font-size: 100%;
-    color: var(--bodyColor);
-    font-weight: 400;
-    background-color: var(--canvas);
-  }
+  --sectionPadding: #{tools.rem(20)};
+}
 
-  *,
-  *:before,
-  *:after {
-    /* prevents padding from affecting height and width */
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-  }
+html,
+body {
+  margin: 0;
+  padding: 0;
+  font-family: var(--bodyFont);
+  font-size: 100%;
+  color: var(--bodyColor);
+  font-weight: 400;
+  background-color: var(--canvas);
+}
+
+*,
+*:before,
+*:after {
+  /* prevents padding from affecting height and width */
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
 /* Components + Utilities */
-@media only screen and (min-width: 0px) {
-  // Hidden screen reader skip nav button
-  #skip {
-    z-index: -1111111;
-    position: absolute;
-    top: 0;
-    left: 0;
-    opacity: 0;
-  }
+// Hidden screen reader skip nav button
+#skip {
+  z-index: -1111111;
+  position: absolute;
+  top: 0;
+  left: 0;
+  opacity: 0;
 }
 
 /* Hide Utilities */
@@ -74,120 +73,107 @@
 }
 
 /* Base Element Styles */
-@media only screen and (min-width: 0px) {
-  h1,
-  h2,
-  h3,
-  h4,
-  h5,
-  h6 {
-    font-family: var(--headerFont);
-    color: var(--headerColor);
-    font-weight: 100;
-    letter-spacing: var(--headerLetterSpacing);
-    line-height: 1em;
-    text-shadow: 0px 0px 3px #000;
-  }
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--headerFont);
+  color: var(--bodyColor);
+  font-weight: 100;
+  letter-spacing: var(--headerLetterSpacing);
+  line-height: 1em;
+  text-shadow: 0px 0px 3px #000;
+}
 
-  p,
-  li,
+p,
+li,
+a {
+  letter-spacing: var(--defaultLetterSpacing);
+  line-height: var(--defaultLineHeight);
+  font-size: var(--bodyFontSize);
+  text-shadow: 1px 1px 5px #000;
+}
+
+p,
+li {
+  color: var(--bodyColor);
+
   a {
-    letter-spacing: var(--defaultLetterSpacing);
-    line-height: var(--defaultLineHeight);
-    font-size: var(--bodyFontSize);
-    text-shadow: 0px 0px 3px #000;
-  }
-
-  p,
-  li {
     color: var(--bodyColor);
+    text-decoration: none;
+    border-bottom: 1px solid;
+    transition: all 0.5s ease;
 
-    a {
-      color: var(--primary);
-    }
-  }
-
-  a,
-  button {
     &:hover {
-      cursor: pointer;
-    }
-  }
-
-  body.dark-mode {
-    background-color: var(--dark);
-
-    p,
-    li,
-    h1,
-    h2,
-    h3,
-    h4,
-    h5,
-    h6 {
-      color: var(--bodyColor);
+      color: var(--bodyColorDark);
+      border-color: var(--primary);
     }
   }
 }
 
+a,
+button {
+  &:hover {
+    cursor: pointer;
+  }
+}
+
 /* Fonts */
-@media only screen and (min-width: 0px) {
-  // Grab your fonts to locally host from https://gwfh.mranftl.com/fonts
-  /* cormorant-garamond-italic */
-  @font-face {
-    font-style: italic;
-    font-family: "Cormorant Garamond";
-    font-weight: 400;
-    font-display: swap;
-    src:
-      url("/assets/fonts/cormorant-garamond-v21-latin-italic.woff2")
-        format("woff2"),
-      /* Chrome 26+, Opera 23+, Firefox 39+ */
-        url("/assets/fonts/cormorant-garamond-v21-latin-italic.woff")
-        format("woff"); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
-  }
+// Grab your fonts to locally host from https://gwfh.mranftl.com/fonts
+/* cormorant-garamond-italic */
+@font-face {
+  font-style: italic;
+  font-family: "Cormorant Garamond";
+  font-weight: 400;
+  font-display: swap;
+  src:
+    url("/assets/fonts/cormorant-garamond-v21-latin-italic.woff2")
+      format("woff2"),
+    /* Chrome 26+, Opera 23+, Firefox 39+ */
+      url("/assets/fonts/cormorant-garamond-v21-latin-italic.woff")
+      format("woff"); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+}
 
-  /* cormorant-garamond-regular */
-  @font-face {
-    font-style: normal;
-    font-family: "Cormorant Garamond";
-    font-weight: 400;
-    font-display: swap;
-    src:
-      url("/assets/fonts/cormorant-garamond-v21-latin-regular.woff2")
-        format("woff2"),
-      /* Chrome 26+, Opera 23+, Firefox 39+ */
-        url("/assets/fonts/cormorant-garamond-v21-latin-regular.woff")
-        format("woff"); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
-  }
+/* cormorant-garamond-regular */
+@font-face {
+  font-style: normal;
+  font-family: "Cormorant Garamond";
+  font-weight: 400;
+  font-display: swap;
+  src:
+    url("/assets/fonts/cormorant-garamond-v21-latin-regular.woff2")
+      format("woff2"),
+    /* Chrome 26+, Opera 23+, Firefox 39+ */
+      url("/assets/fonts/cormorant-garamond-v21-latin-regular.woff")
+      format("woff"); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+}
 
-  /* cormorant-garamond-regular-700 */
-  @font-face {
-    font-style: normal;
-    font-family: "Cormorant Garamond";
-    font-weight: 700;
-    font-display: swap;
-    src:
-      local(""),
-      url("/assets/fonts/cormorant-garamond-v21-latin-700.woff2")
-        format("woff2"),
-      /* Chrome 26+, Opera 23+, Firefox 39+ */
-        url("/assets/fonts/cormorant-garamond-v21-latin-700.woff")
-        format("woff"); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
-  }
+/* cormorant-garamond-regular-700 */
+@font-face {
+  font-style: normal;
+  font-family: "Cormorant Garamond";
+  font-weight: 700;
+  font-display: swap;
+  src:
+    local(""),
+    url("/assets/fonts/cormorant-garamond-v21-latin-700.woff2") format("woff2"),
+    /* Chrome 26+, Opera 23+, Firefox 39+ */
+      url("/assets/fonts/cormorant-garamond-v21-latin-700.woff") format("woff"); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+}
 
-  /* cormorant-garamond-italic-700 */
-  @font-face {
-    font-style: italic;
-    font-family: "Cormorant Garamond";
-    font-weight: 700;
-    font-display: swap;
-    src:
-      local(""),
-      url("/assets/fonts/cormorant-garamond-v21-latin-700italic.woff2")
-        format("woff2"),
-      /* Chrome 26+, Opera 23+, Firefox 39+ */
-        url("/assets/fonts/cormorant-garamond-v21-latin-700italic.woff")
-        format("woff"); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
-  }
+/* cormorant-garamond-italic-700 */
+@font-face {
+  font-style: italic;
+  font-family: "Cormorant Garamond";
+  font-weight: 700;
+  font-display: swap;
+  src:
+    local(""),
+    url("/assets/fonts/cormorant-garamond-v21-latin-700italic.woff2")
+      format("woff2"),
+    /* Chrome 26+, Opera 23+, Firefox 39+ */
+      url("/assets/fonts/cormorant-garamond-v21-latin-700italic.woff")
+      format("woff"); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
 }

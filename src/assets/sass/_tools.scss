@@ -1,0 +1,13 @@
+// ─────────────────────────────────────────────────────────────────────────────
+// REM CONVERT FUNCTION
+// Be kind to people who need larger default fonts on their computers.
+// .card {
+//   padding: #{tools.rem(16)}; // compiles to 1rem, or 16px which is the default font size for most browsers.
+// }
+// ─────────────────────────────────────────────────────────────────────────────
+
+@use "sass:math";
+
+@function rem($px) {
+  @return math.div($px, 16) * 1rem;
+}

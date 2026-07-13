@@ -1,3 +1,5 @@
+@use "tools";
+
 // ─────────────────────────────────────────────────────────────────────────────
 // HOME PAGE STYLES
 // Below-the-fold styles for the homepage that load after critical styles.
@@ -13,13 +15,20 @@
   padding: var(--sectionPadding);
 
   h2.clt-section-title {
-    font-size: 2.5rem;
-    line-height: 1.5em;
+    font-size: #{tools.rem(32)};
+    margin-bottom: 25px;
+    text-align: center;
+    text-transform: uppercase;
+    line-height: var(--defaulLineHeight);
+
+    span.bigger-letter {
+      font-size: #{tools.rem(46)};
+    }
   }
 }
 
-// Desktop
-@media only screen and (min-width: 64rem) {
+// Desktop (1024px or larger)
+@media only screen and (min-width: #{tools.rem(1024)}) {
   .clt-section {
     padding: 0;
   }
@@ -34,7 +43,7 @@
   width: 100%;
 }
 
-@media only screen and (min-width: 64rem) {
+@media only screen and (min-width: #{tools.rem(1024)}) {
   .clt-divider {
     &.one {
       width: 600px;
@@ -55,56 +64,34 @@
 <--- -------------------------- -*/
 
 /* Desktop */
-@media only screen and (min-width: 0px) {
-  #clt-cta {
-    align-items: center;
-    justify-content: center;
+#clt-cta {
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  flex-direction: column;
+
+  .clt-cta-card-row {
+    margin: 32px auto 0;
     display: flex;
+    flex-wrap: wrap;
     flex-direction: column;
-
-    h3.card-title {
-      display: flex;
-      justify-content: center;
-      font-size: var(--cardTitleFontSize);
-      padding-bottom: calc(16 / 16 * 1rem);
-      padding-top: calc(16 / 16 * 1rem);
-      font-weight: 100;
-      justify-content: center;
-
-      &.faded-bottom-border {
-        border-bottom: 1px solid;
-        border-image: linear-gradient(
-            to right,
-            transparent,
-            var(--bodyColor) 50%,
-            transparent
-          )
-          1;
-        border-bottom-width: 1px;
-      }
-    }
-
-    .clt-cta-card-row {
-      margin: calc(32 / 16 * 1rem) auto 0;
-      display: flex;
-      flex-wrap: wrap;
-      flex-direction: column;
-      gap: 25px;
-    }
-
+    gap: 25px;
     .clt-cta-card {
       // Height and width are based on the image size, but you can adjust them as needed. Just make sure to keep the aspect ratio the same if you change one of them.
       max-width: 350px;
       height: 400px;
-      padding: calc(60 / 16 * 1rem) calc(30 / 16 * 1rem) 0;
+      padding: #{tools.rem(60)} #{tools.rem(30)} 0;
       display: flex;
       flex-direction: column;
-      gap: calc(24 / 16 * 1rem);
+      text-align: center;
+      gap: #{tools.rem(24)};
       background-size: contain;
       background-repeat: no-repeat;
       background-position: top center;
-      font-size: var(--defaultFontSize);
       letter-spacing: var(--defaultLetterSpacing);
+      p.card-description {
+        font-size: var(--cardFontSize);
+      }
       &.first-card {
         background-image: url("/assets/images/card-background-1.gif");
       }
@@ -114,12 +101,34 @@
       &.third-card {
         background-image: url("/assets/images/card-background-2.gif");
       }
+
+      h3.card-title {
+        display: flex;
+        justify-content: center;
+        font-size: var(--cardTitleFontSize);
+        padding-bottom: #{tools.rem(16)};
+        padding-top: #{tools.rem(16)};
+        font-weight: 400;
+        justify-content: center;
+
+        &.faded-bottom-border {
+          border-bottom: 1px solid;
+          border-image: linear-gradient(
+              to right,
+              transparent,
+              rgba(251, 234, 211, 0.5) 50%,
+              transparent
+            )
+            1;
+          border-bottom-width: 1px;
+        }
+      }
     }
   }
 }
 
 /* Desktop */
-@media only screen and (min-width: 64rem) {
+@media only screen and (min-width: #{tools.rem(1024)}) {
   #clt-cta {
     .clt-cta-card-row {
       display: flex;
@@ -127,9 +136,9 @@
       justify-content: space-between;
       width: 100%;
       gap: unset;
-    }
-    .clt-cta-card {
-      max-width: 320px;
+      .clt-cta-card {
+        max-width: 330px;
+      }
     }
   }
 }
@@ -138,64 +147,76 @@
 <---          About             -->
 <--- -------------------------- -*/
 
-/* Desktop */
-@media only screen and (min-width: 0px) {
-  #clt-about {
+#clt-about {
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  flex-direction: column;
+
+  .clt-inner-container {
+    position: relative;
+  }
+
+  .clt-inner-left {
     display: flex;
+    position: relative;
     flex-direction: column;
+    z-index: 1000;
 
-    .clt-inner-container {
-      display: flex;
-      flex-direction: column;
-    }
-
-    .clt-inner-left {
-      display: flex;
-      flex-direction: column;
-      z-index: 30;
-
-      .about-text {
-        img {
-          float: right;
-          max-width: 100%;
-          border-radius: calc(8 / 16 * 1rem);
-          margin: calc(16 / 16 * 1rem);
-        }
-      }
-    }
-
-    .clt-inner-right {
-      opacity: 0.4;
-      transition: opacity 0.5s ease-in-out;
-      margin-top: -250px;
-      z-index: 20;
-
+    .about-text {
       img {
-        width: 250px;
-        margin: 0 0 10px 10px;
+        float: left;
+        max-width: 100%;
+        border-radius: calc(8 / 16 * 1rem);
+        margin: 15px 25px 5px 0;
       }
+    }
+  }
 
-      &.twinkle {
-        opacity: 1;
-      }
+  .clt-inner-right {
+    opacity: 0.33;
+    transition: opacity 0.5s ease-in-out;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    z-index: 20;
+
+    img {
+      width: 350px;
+      margin: 0 0 10px 10px;
+      z-index: 20;
+    }
+
+    &.twinkle {
+      opacity: 0.66;
     }
   }
 }
 
 /* Desktop */
-@media only screen and (min-width: 64rem) {
+@media only screen and (min-width: #{tools.rem(1024)}) {
   #clt-about {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
     .clt-inner-container {
+      margin: 25px 0;
       display: flex;
       flex-direction: row;
       gap: 50px;
     }
 
+    .clt-inner-left {
+      width: 75%;
+    }
+
     .clt-inner-right {
-      margin: auto 0;
+      top: -50px;
+      bottom: unset;
+
       img {
-        width: 350px;
-        margin-top: 25px;
+        width: 425px;
         height: auto;
       }
     }
@@ -206,65 +227,106 @@
 <---        Order/Inquire.      -->
 <--- -------------------------- -*/
 
-@media only screen and (min-width: 0px) {
-  #clt-order-inquire {
+#clt-order-inquire {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+
+  .contact-methods {
+    margin: 25px 0 50px;
+    text-align: left;
+
+    .email {
+      margin-bottom: 25px;
+
+      .pin-image {
+      }
+    }
+  }
+
+  .cta-bottom {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
+    width: 100%;
+    justify-content: space-between;
+    a {
+      text-decoration: none;
+      color: var(--bodyColor);
+    }
 
-    .clt-order-inquire-container {
-      .clt-order-inquire-left {
+    .bottom-box {
+      max-width: 350px;
+      height: 400px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: #{tools.rem(30)};
+      background: url("/assets/images/card-background-4.gif");
+      background-size: contain;
+      background-repeat: no-repeat;
+
+      p.bottom-card-content {
+        font-size: var(--cardFontSize);
       }
 
-      .clt-order-inquire-right {
-        margin-top: 50px;
-        .clt-social-links {
-          display: flex;
-          flex-direction: row;
-          flex-wrap: wrap;
-          justify-content: space-around;
-          gap: calc(16 / 16 * 1rem);
-        }
+      .card-title {
+        font-size: var(--cardTitleFontSize);
+        text-transform: uppercase;
+        line-height: #{tools.rem(30)}; // resetting the line height to font size so it doesn't fuck with the symetry of the padding.
+        padding: #{tools.rem(10)};
 
-        .clt-social-links {
+        &.shop {
+          line-height: #{tools.rem(30)}; // resetting the line height to font size so it doesn't fuck with the symetry of the padding.
+          background: var(--bodyColorDark);
+          color: var(--canvas);
+          font-weight: 900;
+          text-decoration: none;
+          text-shadow: none;
+          letter-spacing: var(--headerLetterSpacing);
+          transition: all 1s ease;
+        }
+      }
+
+      .bottom-card-content {
+        text-align: center;
+        font-size: var(--cardFontSize);
+
+        .card-name {
           display: flex;
-          flex-direction: row;
-          justify-content: space-around;
+          justify-content: center;
           align-items: center;
-          padding: calc(10 / 16 * 1rem) calc(16 / 16 * 1rem) 0
-            calc(16 / 16 * 1rem);
-        }
-
-        a.clt-social-link img {
-          width: 135px;
-          transform: translate(0, 0);
-          transition: all 0.3s ease-in-out;
-
-          &:hover {
-            transform: translate(2, 2);
-          }
+          margin: 0 auto;
+          width: 75%;
+          text-transform: uppercase;
+          font-size: #{tools.rem(20)};
+          color: var(--bodyColorDark);
+          border-bottom: 1px solid;
         }
       }
     }
   }
+  .clt-social-link img {
+    width: 125px;
+    height: 125px;
+    margin-top: 10px;
+    opacity: 0.9;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
 }
 
 /* Desktop */
-@media only screen and (min-width: 64rem) {
+@media only screen and (min-width: #{tools.rem(1024)}) {
   #clt-order-inquire {
-    .clt-order-inquire-container {
+    .cta-bottom {
       display: flex;
       flex-direction: row;
-      gap: 50px;
-
-      .clt-order-inquire-left {
-        width: 65%;
-      }
-
-      .clt-order-inquire-right {
-        width: 35%;
-        margin-top: 0;
+      .bottom-box {
+        max-width: 320px;
+        height: 400px;
       }
     }
   }
@@ -274,58 +336,47 @@
 <---          Footer            -->
 <--- -------------------------- -*/
 
-/* Mobile - 360px */
-@media only screen and (min-width: 0px) {
-  #clt-footer {
-    font-weight: 400;
-    letter-spacing: var(--defaultLetterSpacing);
-    display: flex;
-    justify-content: space-around;
-    align-items: flex-end;
-    height: 100px;
-    margin-top: calc(50 / 16 * 1rem);
-    padding: calc(16 / 16 * 1rem);
-    background: linear-gradient(
-      to bottom,
-      rgba(11, 0, 15, 0) 0%,
-      rgba(5, 0, 8, 100) 100%
-    );
-    opacity: 0;
-    transition: all 1s ease-in-out;
+#clt-footer {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  justify-content: space-around;
+  align-items: center;
+  height: 200px;
+  padding: #{tools.rem(10)};
+  background: linear-gradient(
+    to bottom,
+    rgba(11, 0, 15, 0) 0%,
+    rgba(2, 1, 4, 100) 100%
+  );
+  opacity: 0;
+  transition: all 1s ease-in-out;
 
-    &.visible {
-      opacity: 1;
-    }
+  &.visible {
+    opacity: 1;
+  }
 
-    #code-less-traveled img {
-      height: 13px;
-      margin-left: 3px;
-    }
+  #code-less-traveled img {
+    height: 13px;
+    margin-left: 3px;
   }
 }
 
-// Desktop - 1024px
-@media only screen and (max-width: 64rem) {
+// Desktop (1024px or larger)
+@media screen and (min-width: #{tools.rem(1024)}) {
   #clt-footer {
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    height: auto;
-
-    .clt-footer-text {
-      text-align: center;
-      margin-bottom: calc(8 / 16 * 1rem);
-    }
-
-    #code-less-traveled img {
-      height: 13px;
+    height: 100px;
+    flex-direction: row;
+    #code-less-traveled {
+      a {
+        border: none;
+      }
     }
   }
 }
 
 /* Dark Mode */
-@media only screen and (min-width: 0rem) {
-  body.dark-mode {
-    // I'll allow duplicate styles here, but only if they need to change from light mode.
-  }
+body.dark-mode {
+  // I'll allow duplicate styles here, but only if they need to change from light mode.
+  margin: inherit;
 }

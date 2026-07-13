@@ -1,3 +1,5 @@
+@use "tools"; // There's a rem function I use in here
+
 // ─────────────────────────────────────────────────────────────────────────────
 // CRITICAL PAGE STYLES
 // Above-the-fold and high-priority styles for the home page's landing section.
@@ -8,8 +10,8 @@
 /*-- -------------------------- -->
 <---    Parallax Background     -->
 <--- -------------------------- -*/
-// Desktop gets a bigger background image
-@media only screen and (min-width: 64rem) {
+// Desktop (1024px or larger) gets a bigger background image
+@media only screen and (min-width: #{tools.rem(1024)}) {
   .parallax-background {
     z-index: -1;
     background-image: url("/assets/images/background.gif");
@@ -21,8 +23,8 @@
 }
 
 // Mobile gets a smaller background image
-// Also have to pull some weird shit to make this look decent on an iPhone.  Check the scroll.js file.
-@media only screen and (max-width: 640px) {
+// Also have to pull some weird shit to make this look decent on an iPhone. Check the scroll.js file.
+@media only screen and (max-width: #{tools.rem(640)}) {
   .parallax-background {
     z-index: -1;
     background-image: url("/assets/images/background-mobile.gif");
@@ -45,10 +47,10 @@
   background: linear-gradient(
     to bottom,
     rgba(0, 0, 0, 0) 0%,
-    rgba(5, 0, 8, 0.3) 25%,
-    rgba(5, 0, 8, 0.8) 50%,
-    rgba(5, 0, 8, 0.6) 75%,
-    rgba(5, 0, 8, 0) 100%
+    rgba(2, 1, 4, 0.3) 25%,
+    rgba(2, 1, 4, 0.8) 50%,
+    rgba(2, 1, 4, 0.6) 75%,
+    rgba(2, 1, 4, 0) 100%
   );
 }
 
@@ -57,7 +59,7 @@
 #main {
   z-index: 10;
   position: relative;
-  max-width: 64rem;
+  max-width: #{tools.rem(1024)};
   margin: 0 auto;
 }
 
@@ -66,113 +68,134 @@
 <--- -------------------------- -*/
 
 // Mobile styles for the header. Most of the styling is here.
-@media only screen and (min-width: 0rem) {
-  #top-gradient {
-    width: 100vw;
-    height: 125px;
+#top-gradient {
+  width: 100vw;
+  height: 125px;
+  position: fixed;
+  pointer-events: none; // Allows user to click through this element to a link underneath
+  z-index: 100;
+  background: linear-gradient(
+    to bottom,
+    rgb(5, 0, 8) 5%,
+    rgba(11, 0, 15, 0) 100%
+  );
+  opacity: 0;
+  transition: all 1.5s ease;
+
+  &.visible {
+    opacity: 1;
+  }
+}
+
+#clt-super-header {
+  display: flex;
+  justify-content: center;
+
+  #clt-logo {
+    position: relative;
+    z-index: 1000;
+    width: 350px;
+  }
+
+  a#clt-logo-mini {
+    z-index: 1000;
+    transform: translateY(-400px);
     position: fixed;
-    pointer-events: none; // Allows user to click through this element to a link underneath
-    z-index: 100;
-    background: linear-gradient(
-      to bottom,
-      rgb(5, 0, 8) 5%,
-      rgba(11, 0, 15, 0) 100%
-    );
-    opacity: 0;
-    transition: all 1.5s ease;
+    cursor: pointer;
+    top: 0;
+    right: 5vw;
+    transition: transform 0.5s ease-in-out;
 
-    &.visible {
-      opacity: 1;
-    }
-  }
-
-  #clt-super-header {
-    display: flex;
-    justify-content: center;
-
-    #clt-logo {
-      position: relative;
-      z-index: 1000;
-      width: 350px;
-    }
-
-    a#clt-logo-mini {
-      z-index: 1000;
-      transform: translateY(-400px);
-      position: fixed;
-      cursor: pointer;
-      top: 0;
-      right: 5vw;
-      transition: transform 0.5s ease-in-out;
-
-      img {
-        width: 111px;
-      }
-    }
-  }
-
-  #clt-header {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-
-    h1.company-name {
-      font-size: 3.5rem;
-      text-align: center;
-      margin-bottom: 10px;
-    }
-
-    ul {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: space-around;
-      margin: 20px auto 20px;
-      list-style: none;
-
-      li {
-        margin: 5px auto 5px;
-        a {
-          transition: all 1s ease-in-out;
-          text-decoration: none;
-          color: var(--bodyColor);
-          letter-spacing: var(--headerLetterSpacing);
-          font-size: calc(24 / 16 * 1rem);
-
-          &:hover {
-            color: var(--primary);
-            text-shadow: 0px 0px 10px rgb(167, 0, 0);
-          }
-        }
-
-        span.tilde {
-          margin: 0 10px;
-          font-size: calc(48 / 16 * 1rem);
-          opacity: 0.6;
-        }
-      }
-    }
-
-    #clt-sub-header {
-      .clt-tagline {
-        font-weight: 400;
-        font-size: 1.5rem;
-        line-height: var(--subTitleLineHeight);
-        margin: 10px auto 0;
-        padding: 10px;
-        text-align: center;
-      }
+    img {
+      width: 111px;
     }
   }
 }
 
-/*-- -------------------------- -->
-<---     Desktop Specific       -->
-<---      Header Styles         -->
-<--- -------------------------- -*/
+#clt-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 
-@media screen and (min-width: 64rem) {
+  h1.company-name {
+    font-size: #{tools.rem(40)};
+    text-transform: uppercase;
+    text-align: center;
+    margin-bottom: 10px;
+
+    span.bigger-letter {
+      font-size: #{tools.rem(48)};
+    }
+  }
+
+  ul {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+    margin: 20px auto 50px;
+    list-style: none;
+
+    li {
+      display: flex;
+      flex-direction: row;
+      align-items: baseline;
+
+      a {
+        transition: all 0.5s ease-in-out;
+        padding: 5px;
+        text-decoration: none;
+        color: var(--bodyColor);
+        letter-spacing: var(--headerLetterSpacing);
+        font-size: #{tools.rem(24)};
+        border-top: 1px solid;
+        border-bottom: 1px solid;
+        border-image: linear-gradient(
+            to right,
+            transparent,
+            rgba(251, 234, 211, 0.5) 50%,
+            transparent
+          )
+          1;
+        border-bottom-width: 1px;
+
+        &:hover {
+          color: var(--bodyColorDark);
+          border-image: linear-gradient(
+              to right,
+              transparent,
+              rgba(182, 123, 255, 0.75) 50%,
+              transparent
+            )
+            1;
+          border-bottom-width: 1px;
+          border-top-width: 1px;
+        }
+      }
+
+      .tilde {
+        margin: 0 10px;
+        font-size: #{tools.rem(48)};
+        opacity: 0.6;
+      }
+    }
+  }
+
+  #clt-sub-header {
+    .clt-tagline {
+      font-weight: 400;
+      font-size: 1.5rem;
+      line-height: var(--subTitleLineHeight);
+      margin: 10px auto 0;
+      padding: 10px;
+      text-align: center;
+    }
+  }
+}
+
+// Desktop (1024px or larger)
+@media screen and (min-width: #{tools.rem(1024)}) {
   #clt-logo {
     width: 380px;
   }
@@ -180,11 +203,22 @@
     right: unset;
     left: 5vw;
   }
-  ul#clt-navigation {
-    display: flex;
-    flex-direction: row;
-    span {
-      font-size: 2em;
+  #clt-header {
+    h1.company-name {
+      font-size: #{tools.rem(46)};
+
+      span.bigger-letter {
+        font-size: #{tools.rem(60)};
+      }
+    }
+
+    ul {
+      align-items: baseline;
+    }
+
+    ul#clt-navigation {
+      display: flex;
+      flex-direction: row;
     }
   }
 }
