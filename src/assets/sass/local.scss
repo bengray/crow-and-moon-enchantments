@@ -99,24 +99,24 @@
         display: flex;
         justify-content: center;
         font-size: var(--cardTitleFontSize);
-        padding-bottom: #{tools.rem(16)};
-        padding-top: #{tools.rem(16)};
+        padding-bottom: #{tools.rem(30)};
+        padding-top: #{tools.rem(10)};
         font-weight: 400;
         color: var(--bodyColorDark);
-
         justify-content: center;
-
-        &.faded-bottom-border {
-          border-bottom: 1px solid;
-          border-image: linear-gradient(
-              to right,
-              transparent,
-              rgba(251, 234, 211, 0.5) 50%,
-              transparent
-            )
-            1;
-          border-bottom-width: 1px;
-        }
+        background: url("/assets/images/card-title-bg.gif") no-repeat bottom
+          center;
+        // &.faded-bottom-border {
+        //   border-bottom: 1px solid;
+        //   border-image: linear-gradient(
+        //       to right,
+        //       transparent,
+        //       rgba(251, 234, 211, 0.5) 50%,
+        //       transparent
+        //     )
+        //     1;
+        //   border-bottom-width: 1px;
+        // }
       }
     }
   }
@@ -184,6 +184,30 @@
 
     &.twinkle {
       opacity: 0.66;
+      animation: shiny 3s ease-in-out infinite;
+    }
+
+    @keyframes shiny {
+      0%,
+      100% {
+        filter: brightness(0.8) sepia(3%);
+      }
+
+      18% {
+        filter: brightness(1.02) sepia(24%) saturate(1.05);
+      }
+
+      47% {
+        filter: brightness(0.99) sepia(11%) saturate(1.05);
+      }
+
+      56% {
+        filter: brightness(0.8) sepia(3%);
+      }
+
+      71% {
+        filter: brightness(1.13) sepia(16%);
+      }
     }
   }
 }
