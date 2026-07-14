@@ -47,8 +47,8 @@
   background: linear-gradient(
     to bottom,
     rgba(0, 0, 0, 0) 0%,
-    rgba(2, 1, 4, 0.3) 25%,
-    rgba(2, 1, 4, 0.8) 50%,
+    rgba(2, 1, 4, 0.6) 25%,
+    rgba(2, 1, 4, 0.9) 50%,
     rgba(2, 1, 4, 0.6) 75%,
     rgba(2, 1, 4, 0) 100%
   );
@@ -132,15 +132,15 @@
   ul {
     display: flex;
     flex-direction: column;
-    align-items: center;
-    justify-content: space-around;
     margin: 20px auto 50px;
     list-style: none;
 
     li {
       display: flex;
       flex-direction: row;
-      align-items: baseline;
+      text-align: left;
+      align-items: center;
+      margin-top: 25px;
 
       a {
         transition: all 0.5s ease-in-out;
@@ -149,19 +149,13 @@
         color: var(--bodyColor);
         letter-spacing: var(--headerLetterSpacing);
         font-size: #{tools.rem(24)};
-        border-top: 1px solid;
-        border-bottom: 1px solid;
-        border-image: linear-gradient(
-            to right,
-            transparent,
-            rgba(251, 234, 211, 0.5) 50%,
-            transparent
-          )
-          1;
-        border-bottom-width: 1px;
+        padding: 1px 0;
+        border: none;
 
         &:hover {
+          padding: 0px;
           color: var(--bodyColorDark);
+          border-style: solid;
           border-image: linear-gradient(
               to right,
               transparent,
@@ -169,15 +163,17 @@
               transparent
             )
             1;
-          border-bottom-width: 1px;
-          border-top-width: 1px;
+          border-left: none;
+          border-right: none;
+          border-width: 1px;
         }
       }
 
-      .tilde {
-        margin: 0 10px;
-        font-size: #{tools.rem(48)};
-        opacity: 0.6;
+      .moon {
+        height: #{tools.rem(30)};
+        width: auto;
+        margin-right: 15px;
+        opacity: 0.8;
       }
     }
   }
@@ -213,12 +209,17 @@
     }
 
     ul {
-      align-items: baseline;
-    }
-
-    ul#clt-navigation {
       display: flex;
       flex-direction: row;
+
+      li {
+        a {
+        }
+        .moon {
+          height: #{tools.rem(30)};
+          margin: 25px 50px;
+        }
+      }
     }
   }
 }

@@ -80,7 +80,8 @@
       // Height and width are based on the image size, but you can adjust them as needed. Just make sure to keep the aspect ratio the same if you change one of them.
       max-width: 350px;
       height: 400px;
-      padding: #{tools.rem(60)} #{tools.rem(30)} 0;
+      background-image: url("/assets/images/card-background-1.gif");
+      padding: #{tools.rem(30)};
       display: flex;
       flex-direction: column;
       text-align: center;
@@ -91,15 +92,7 @@
       letter-spacing: var(--defaultLetterSpacing);
       p.card-description {
         font-size: var(--cardFontSize);
-      }
-      &.first-card {
-        background-image: url("/assets/images/card-background-1.gif");
-      }
-      &.second-card {
-        background-image: url("/assets/images/card-background-3.gif");
-      }
-      &.third-card {
-        background-image: url("/assets/images/card-background-2.gif");
+        color: var(--bodyColorDark);
       }
 
       h3.card-title {
@@ -109,6 +102,8 @@
         padding-bottom: #{tools.rem(16)};
         padding-top: #{tools.rem(16)};
         font-weight: 400;
+        color: var(--bodyColorDark);
+
         justify-content: center;
 
         &.faded-bottom-border {
@@ -137,7 +132,7 @@
       width: 100%;
       gap: unset;
       .clt-cta-card {
-        max-width: 330px;
+        max-width: 320px;
       }
     }
   }
@@ -212,7 +207,7 @@
     }
 
     .clt-inner-right {
-      top: -50px;
+      top: -25px;
       bottom: unset;
 
       img {
@@ -234,7 +229,7 @@
   flex-direction: column;
 
   .contact-methods {
-    margin: 25px 0 50px;
+    margin: 25px 0 25px;
     text-align: left;
 
     .email {
@@ -250,6 +245,7 @@
     flex-direction: column;
     align-items: center;
     width: 100%;
+    margin-top: 50px;
     justify-content: space-between;
     a {
       text-decoration: none;
@@ -257,64 +253,36 @@
     }
 
     .bottom-box {
+      margin-bottom: 25px;
       max-width: 350px;
-      height: 400px;
+      height: 383px;
       display: flex;
       flex-direction: column;
-      align-items: center;
-      padding: #{tools.rem(30)};
-      background: url("/assets/images/card-background-4.gif");
+      align-items: flex-end;
+      justify-content: flex-end;
+      padding: 0 #{tools.rem(30)} 0;
       background-size: contain;
       background-repeat: no-repeat;
 
+      &.etsy {
+        background-image: url("/assets/images/etsy-card.gif");
+      }
+
+      &.instagram {
+        background-image: url("/assets/images/instagram-card.gif");
+      }
+
+      &.facebook {
+        background-image: url("/assets/images/facebook-card.gif");
+      }
+
       p.bottom-card-content {
         font-size: var(--cardFontSize);
-      }
-
-      .card-title {
-        font-size: var(--cardTitleFontSize);
-        text-transform: uppercase;
-        line-height: #{tools.rem(30)}; // resetting the line height to font size so it doesn't fuck with the symetry of the padding.
-        padding: #{tools.rem(10)};
-
-        &.shop {
-          line-height: #{tools.rem(30)}; // resetting the line height to font size so it doesn't fuck with the symetry of the padding.
-          background: var(--bodyColorDark);
-          color: var(--canvas);
-          font-weight: 900;
-          text-decoration: none;
-          text-shadow: none;
-          letter-spacing: var(--headerLetterSpacing);
-          transition: all 1s ease;
-        }
-      }
-
-      .bottom-card-content {
+        padding-bottom: 50px;
         text-align: center;
-        font-size: var(--cardFontSize);
-
-        .card-name {
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          margin: 0 auto;
-          width: 75%;
-          text-transform: uppercase;
-          font-size: #{tools.rem(20)};
-          color: var(--bodyColorDark);
-          border-bottom: 1px solid;
-        }
+        color: var(--bodyColorDark);
       }
     }
-  }
-  .clt-social-link img {
-    width: 125px;
-    height: 125px;
-    margin-top: 10px;
-    opacity: 0.9;
-    display: flex;
-    justify-content: center;
-    align-items: center;
   }
 }
 
@@ -326,7 +294,7 @@
       flex-direction: row;
       .bottom-box {
         max-width: 320px;
-        height: 400px;
+        height: 350px;
       }
     }
   }
@@ -337,6 +305,8 @@
 <--- -------------------------- -*/
 
 #clt-footer {
+  position: relative;
+  z-index: 999;
   display: flex;
   flex-direction: column;
   text-align: center;
@@ -356,9 +326,14 @@
     opacity: 1;
   }
 
-  #code-less-traveled img {
-    height: 13px;
-    margin-left: 3px;
+  #code-less-traveled {
+    img {
+      height: 13px;
+      margin-left: 3px;
+    }
+    a {
+      border: none;
+    }
   }
 }
 
@@ -367,6 +342,8 @@
   #clt-footer {
     height: 100px;
     flex-direction: row;
+    align-items: flex-end;
+
     #code-less-traveled {
       a {
         border: none;
