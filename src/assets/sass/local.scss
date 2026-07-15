@@ -272,12 +272,31 @@
   .contact-methods {
     margin: 25px 0 25px;
     text-align: left;
+    margin-bottom: 25px;
 
     .email {
-      margin-bottom: 25px;
+      background-image: url("/assets/images/email.png");
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-repeat: no-repeat;
+      height: 80px;
+      max-width: 740px;
+      margin: 25px auto;
+      p.email-text {
+        padding-left: 50px;
+        a {
+          letter-spacing: 0;
+        }
+      }
     }
-    .pin-image {
-      position: relative;
+
+    .schedule {
+      background-image: url("/assets/images/schedule-mobile.png");
+      background-repeat: no-repeat;
+      background-size: contain;
+      padding: 30px 20px 30px 45px;
+      margin: 25px 0 25px;
     }
   }
 
@@ -330,6 +349,34 @@
 /* Desktop */
 @media only screen and (min-width: #{tools.rem(1024)}) {
   #clt-order-inquire {
+    .contact-methods {
+      .email {
+        background-image: url("/assets/images/email.png");
+        background-position: 150px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-repeat: no-repeat;
+        height: 80px;
+        max-width: 740px;
+        margin: 25px auto;
+        p.email-text {
+          padding-left: 0;
+          a {
+            letter-spacing: 0;
+          }
+        }
+      }
+      .schedule {
+        background-image: url("/assets/images/schedule.png");
+        background-size: contain;
+        background-position: top;
+        height: 150px;
+        max-width: 740px;
+        padding: 40px 60px 30px 176px;
+        margin: 25px auto;
+      }
+    }
     .cta-bottom {
       display: flex;
       flex-direction: row;
