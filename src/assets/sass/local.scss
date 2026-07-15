@@ -284,9 +284,9 @@
       max-width: 740px;
       margin: 25px auto;
       p.email-text {
-        padding-left: 50px;
         a {
           letter-spacing: 0;
+          font-size: var(--cardFontSize);
         }
       }
     }
@@ -295,8 +295,14 @@
       background-image: url("/assets/images/schedule-mobile.png");
       background-repeat: no-repeat;
       background-size: contain;
-      padding: 30px 20px 30px 45px;
+      padding: 30px 20px 50px 45px;
       margin: 25px 0 25px;
+      p {
+        font-size: var(--cardFontSize);
+        a {
+          font-size: var(--cardFontSize);
+        }
+      }
     }
   }
 
@@ -352,7 +358,7 @@
     .contact-methods {
       .email {
         background-image: url("/assets/images/email.png");
-        background-position: 150px;
+        background-position: 175px;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -361,7 +367,6 @@
         max-width: 740px;
         margin: 25px auto;
         p.email-text {
-          padding-left: 0;
           a {
             letter-spacing: 0;
           }
