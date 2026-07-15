@@ -192,26 +192,24 @@
   }
   .clt-inner-right {
     opacity: 0.33;
-    transition: opacity 0.5s ease-in-out;
     position: absolute;
     bottom: 0;
     right: 0;
     z-index: 20;
 
     &.twinkle {
-      opacity: 0.66;
       animation: shiny 10s ease-in-out infinite;
     }
 
     @keyframes shiny {
       0% {
-        filter: brightness(100%) sepia(0%);
+        opacity: 0.33;
       }
       50% {
-        filter: brightness(50%) sepia(5%);
+        opacity: 0.99;
       }
       100% {
-        filter: brightness(100%) sepia(3%);
+        opacity: 0.33;
       }
     }
   }
