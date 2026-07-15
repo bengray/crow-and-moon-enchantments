@@ -20,7 +20,24 @@ const footer = document.querySelector("#clt-footer");
 const footerText = document.querySelector(".clt-footer-text");
 const astroWheel = document.querySelector(".clt-inner-right");
 const parallaxImage = document.querySelector(".parallax-background");
+const dust = document.getElementById("dust");
 
+for (let i = 0; i < 80; i++) {
+  const mote = document.createElement("span");
+  mote.className = "dust";
+  mote.style.left = Math.random() * 100 + "vw";
+  mote.style.top = Math.random() * 100 + "vh";
+  mote.style.animationDelay = Math.random() * 20 + "s";
+  mote.style.animationDuration = 18 + Math.random() * 25 + "s";
+  mote.style.opacity = 0.02 + Math.random() * 0.08;
+  mote.style.transform = `scale(${0.3 + Math.random() * 1.7})`;
+  if (i % 5 === 0) {
+    mote.style.width = "5px";
+    mote.style.height = "5px";
+  }
+
+  dust.appendChild(mote);
+}
 // Search the entire page for anchor tags.
 // If the href value starts with # then attach a click handler to it that scrolls smoothly to the element.
 document.querySelectorAll('a[href^="#"]').forEach((anchor) => {

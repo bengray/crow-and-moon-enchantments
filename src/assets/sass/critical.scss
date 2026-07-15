@@ -8,6 +8,48 @@
 // ─────────────────────────────────────────────────────────────────────────────
 
 /*-- -------------------------- -->
+<---         Dust Motes         -->
+<--- -------------------------- -*/
+
+#dust {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 300;
+  .dust {
+    position: absolute;
+    width: 3px;
+    height: 3px;
+    border-radius: 50%;
+    background: #ffe8b6;
+    box-shadow: 0 0 6px rgba(255, 230, 180, 0.8);
+    animation:
+      drift linear infinite,
+      flicker ease-in-out infinite;
+  }
+  @keyframes drift {
+    from {
+      transform: translateY(0px) translateX(0);
+    }
+
+    to {
+      transform: translateY(-120vh) translateX(123px);
+    }
+  }
+  @keyframes flicker {
+    0%,
+    100% {
+      opacity: 0.03;
+    }
+
+    50% {
+      opacity: 0.09;
+    }
+  }
+}
+
+/*-- -------------------------- -->
 <---    Parallax Background     -->
 <--- -------------------------- -*/
 // Desktop (1024px or larger) gets a bigger background image
@@ -27,7 +69,7 @@
 @media only screen and (max-width: #{tools.rem(640)}) {
   .parallax-background {
     z-index: -1;
-    // background-image: url("/assets/images/background-mobile.gif");
+    background-image: url("/assets/images/background-mobile.gif");
     background-size: contain;
     background-repeat: no-repeat;
     background-attachment: fixed;
@@ -94,6 +136,7 @@
   #clt-logo,
   #clt-logo-mini {
     animation: candle 3s ease-in-out infinite;
+    z-index: 200;
   }
 
   @keyframes candle {
@@ -117,12 +160,10 @@
 
   #clt-logo {
     position: relative;
-    z-index: 1000;
     width: 350px;
   }
 
   a#clt-logo-mini {
-    z-index: 1000;
     transform: translateY(-400px);
     position: fixed;
     cursor: pointer;
@@ -146,7 +187,7 @@
     font-size: #{tools.rem(40)};
     text-transform: uppercase;
     text-align: center;
-    margin-bottom: 10px;
+    margin-top: 25px;
 
     span.bigger-letter {
       font-size: #{tools.rem(48)};
@@ -154,50 +195,37 @@
   }
 
   ul {
+    position: relative;
+    z-index: 100;
     display: flex;
     flex-direction: column;
-    margin: 20px auto 50px;
+    align-items: center;
+    margin: 20px auto 20px;
     list-style: none;
+    background: rgba(5, 5, 10, 0.25);
+    backdrop-filter: blur(4px);
+    border-top: 1px solid rgba(201, 175, 130, 0.18);
+    border-bottom: 1px solid rgba(201, 175, 130, 0.18);
+    padding: 24px 0;
 
     li {
-      display: flex;
-      flex-direction: row;
-      text-align: left;
-      align-items: center;
-      margin-top: 25px;
-
       a {
         transition: all 0.5s ease-in-out;
-        padding: 5px;
+        padding-left: 50px;
+        padding-right: 50px;
+        line-height: #{tools.rem(40)};
         text-decoration: none;
+        border: none;
         color: var(--bodyColor);
         letter-spacing: var(--headerLetterSpacing);
         font-size: #{tools.rem(24)};
-        padding: 1px 0;
-        border: none;
-
+        transition:
+          color 0.4s ease,
+          text-shadow 0.4s ease,
+          transform 0.4s ease;
         &:hover {
-          padding: 0px;
           color: var(--bodyColorDark);
-          border-style: solid;
-          border-image: linear-gradient(
-              to right,
-              transparent,
-              rgba(182, 123, 255, 0.75) 50%,
-              transparent
-            )
-            1;
-          border-left: none;
-          border-right: none;
-          border-width: 1px;
         }
-      }
-
-      .moon {
-        height: #{tools.rem(30)};
-        width: auto;
-        margin-right: 15px;
-        opacity: 0.8;
       }
     }
   }
@@ -235,14 +263,8 @@
     ul {
       display: flex;
       flex-direction: row;
-
       li {
-        a {
-        }
-        .moon {
-          height: #{tools.rem(30)};
-          margin: 25px 50px;
-        }
+        padding: 0;
       }
     }
   }

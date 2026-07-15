@@ -41,6 +41,19 @@
   text-align: center;
   margin: 50px auto 50px;
   width: 100%;
+  animation: pulse 12s ease-in-out infinite;
+  opacity: 0.7;
+}
+@keyframes pulse {
+  0% {
+    filter: brightness(100%) sepia(0%);
+  }
+  50% {
+    filter: brightness(50%) sepia(5%);
+  }
+  100% {
+    filter: brightness(100%) sepia(3%);
+  }
 }
 
 @media only screen and (min-width: #{tools.rem(1024)}) {
@@ -78,8 +91,8 @@
     gap: 25px;
     .clt-cta-card {
       // Height and width are based on the image size, but you can adjust them as needed. Just make sure to keep the aspect ratio the same if you change one of them.
-      max-width: 350px;
-      height: 400px;
+      max-width: 300px;
+      height: 350px;
       background-image: url("/assets/images/card-background-1.gif");
       padding: #{tools.rem(30)};
       display: flex;
@@ -106,17 +119,6 @@
         justify-content: center;
         background: url("/assets/images/card-title-bg.gif") no-repeat bottom
           center;
-        // &.faded-bottom-border {
-        //   border-bottom: 1px solid;
-        //   border-image: linear-gradient(
-        //       to right,
-        //       transparent,
-        //       rgba(251, 234, 211, 0.5) 50%,
-        //       transparent
-        //     )
-        //     1;
-        //   border-bottom-width: 1px;
-        // }
       }
     }
   }
@@ -130,10 +132,6 @@
       flex-direction: row;
       justify-content: space-between;
       width: 100%;
-      gap: unset;
-      .clt-cta-card {
-        max-width: 320px;
-      }
     }
   }
 }
@@ -159,15 +157,51 @@
     z-index: 1000;
 
     .about-text {
-      img {
+      .portrait-frame {
+        width: 200px;
         float: left;
-        max-width: 100%;
-        border-radius: calc(8 / 16 * 1rem);
         margin: 15px 25px 5px 0;
+        aspect-ratio: 4/5;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 15px;
+        background:
+          radial-gradient(
+            circle at top,
+            rgba(255, 220, 140, 0.18),
+            transparent 60%
+          ),
+          #161412;
+        border: 2px solid #8f6d32;
+        border-radius: 48%;
+        box-shadow:
+          inset 0 0 0 1px rgba(255, 220, 170, 0.18),
+          0 20px 50px rgba(0, 0, 0, 0.65);
+      }
+
+      .portrait-frame img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: 48%;
+        border: 4px solid #d3b16a;
+        filter: contrast(1.15) sepia(50%) brightness(0.98);
+      }
+      .portrait-frame::after {
+        content: "";
+        margin-top: 18px;
+        height: 208px;
+        width: 165px;
+        position: absolute;
+        inset: 18px;
+        border-radius: 48%;
+        // box-shadow: inset 0 0 60px rgba(0, 0, 0, 0.95);
+        box-shadow: inset 0 0 60px rgba(0, 0, 0, 0.5);
+        pointer-events: none;
       }
     }
   }
-
   .clt-inner-right {
     opacity: 0.33;
     transition: opacity 0.5s ease-in-out;
@@ -176,37 +210,20 @@
     right: 0;
     z-index: 20;
 
-    img {
-      width: 350px;
-      margin: 0 0 10px 10px;
-      z-index: 20;
-    }
-
     &.twinkle {
       opacity: 0.66;
-      animation: shiny 3s ease-in-out infinite;
+      animation: shiny 10s ease-in-out infinite;
     }
 
     @keyframes shiny {
-      0%,
+      0% {
+        filter: brightness(100%) sepia(0%);
+      }
+      50% {
+        filter: brightness(50%) sepia(5%);
+      }
       100% {
-        filter: brightness(0.8) sepia(3%);
-      }
-
-      18% {
-        filter: brightness(1.02) sepia(24%) saturate(1.05);
-      }
-
-      47% {
-        filter: brightness(0.99) sepia(11%) saturate(1.05);
-      }
-
-      56% {
-        filter: brightness(0.8) sepia(3%);
-      }
-
-      71% {
-        filter: brightness(1.13) sepia(16%);
+        filter: brightness(100%) sepia(3%);
       }
     }
   }
@@ -231,7 +248,7 @@
     }
 
     .clt-inner-right {
-      top: -25px;
+      top: -50px;
       bottom: unset;
 
       img {
@@ -258,9 +275,9 @@
 
     .email {
       margin-bottom: 25px;
-
-      .pin-image {
-      }
+    }
+    .pin-image {
+      position: relative;
     }
   }
 
@@ -274,37 +291,37 @@
     a {
       text-decoration: none;
       color: var(--bodyColor);
-    }
 
-    .bottom-box {
-      margin-bottom: 25px;
-      max-width: 350px;
-      height: 383px;
-      display: flex;
-      flex-direction: column;
-      align-items: flex-end;
-      justify-content: flex-end;
-      padding: 0 #{tools.rem(30)} 0;
-      background-size: contain;
-      background-repeat: no-repeat;
+      .bottom-box {
+        margin-bottom: 25px;
+        max-width: 300px;
+        height: 350px;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+        justify-content: flex-end;
+        padding: 0 #{tools.rem(30)} 0;
+        background-size: contain;
+        background-repeat: no-repeat;
 
-      &.etsy {
-        background-image: url("/assets/images/etsy-card.gif");
-      }
+        &.etsy {
+          background-image: url("/assets/images/etsy-card.gif");
+        }
 
-      &.instagram {
-        background-image: url("/assets/images/instagram-card.gif");
-      }
+        &.instagram {
+          background-image: url("/assets/images/instagram-card.gif");
+        }
 
-      &.facebook {
-        background-image: url("/assets/images/facebook-card.gif");
-      }
+        &.facebook {
+          background-image: url("/assets/images/facebook-card.gif");
+        }
 
-      p.bottom-card-content {
-        font-size: var(--cardFontSize);
-        padding-bottom: 50px;
-        text-align: center;
-        color: var(--bodyColorDark);
+        p.bottom-card-content {
+          font-size: var(--cardFontSize);
+          padding-bottom: 50px;
+          text-align: center;
+          color: var(--bodyColorDark);
+        }
       }
     }
   }
