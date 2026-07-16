@@ -181,11 +181,11 @@
       }
       .portrait-frame::after {
         content: "";
-        height: 250px;
-        width: 200px;
+        height: 182px;
+        width: 145px;
         position: absolute;
         border-radius: 15px;
-        box-shadow: inset 0 0 60px rgba(0, 0, 0, 0.5);
+        box-shadow: inset 0 0 60px rgba(0, 0, 0, 1.5);
         pointer-events: none;
       }
     }
