@@ -401,13 +401,22 @@
   opacity: 0;
   transition: all 1s ease-in-out;
 
+  p.clt-footer-text {
+    font-size: var(--footerFontSize);
+    color: var(--bodyColorDark);
+  }
+
   &.visible {
     opacity: 1;
   }
 
   #code-less-traveled {
+    p {
+      font-size: var(--footerFontSize);
+      color: var(--bodyColorDark);
+    }
     img {
-      height: 13px;
+      height: 10px;
       margin-left: 3px;
     }
     a {
