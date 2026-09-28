@@ -298,8 +298,9 @@
     align-items: center;
     width: 100%;
     margin-top: 50px;
-    justify-content: space-evenly;
+    justify-content: center;
     a {
+      scale: 0.8;
       text-decoration: none;
       color: var(--bodyColor);
 
@@ -400,6 +401,17 @@
   );
   opacity: 0;
   transition: all 1s ease-in-out;
+
+  .bendoylegray-logo {
+    text-decoration: none;
+    font-family: sans-serif;
+    font-size: tools.rem(14);
+    color: var(--bodyColorDark);
+
+    &:hover {
+      color: var(--bodyColor);
+    }
+  }
 
   p.clt-footer-text {
     font-size: var(--footerFontSize);
