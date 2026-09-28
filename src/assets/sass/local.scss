@@ -406,10 +406,10 @@
     text-decoration: none;
     font-family: sans-serif;
     font-size: tools.rem(14);
-    color: var(--bodyColorDark);
+    color: var(--bodyColor);
 
     &:hover {
-      color: var(--bodyColor);
+      color: var(--bodyColorDark);
     }
   }
 
