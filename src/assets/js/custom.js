@@ -102,6 +102,8 @@ function scrollFunction() {
     footer.classList.remove("visible");
   }
 
+  // The astro wheel only exists on the home page
+  if (!astroWheel) return;
   if (!isMobile && isElementInMiddle(astroWheel)) {
     astroWheel.classList.add("twinkle");
   } else {
