@@ -77,7 +77,7 @@
       </div>
 
       <main id="main">
-        {% include "sections/header.html" %}
+        {% block main %} {% include "sections/header.html" %}
         <div id="clt-cta-section" class="clt-section">
           {% include 'sections/cta.html' %}
         </div>
@@ -87,6 +87,7 @@
         <div id="clt-order-inquire-section" class="clt-section">
           {% include 'sections/order-inquire.html' %}
         </div>
+        {% endblock %}
       </main>
       {% include 'sections/footer.html' %}
     </div>

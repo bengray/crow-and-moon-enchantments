@@ -20,6 +20,7 @@ const javascript = require("./src/config/processors/javascript");
 // 🛠️ Utilities
 const filterPostDate = require("./src/config/filters/postDate");
 const filterIsoDate = require("./src/config/filters/isoDate");
+const shopFilters = require("./src/config/filters/shop");
 const isProduction = process.env.ELEVENTY_ENV === "PROD";
 
 module.exports = async function (eleventyConfig) {
@@ -110,6 +111,14 @@ module.exports = async function (eleventyConfig) {
    * Powered by Luxon: https://moment.github.io/luxon/api-docs/
    */
   eleventyConfig.addFilter("isoDate", filterIsoDate);
+
+  /*
+   * 🛒 Shop Filters
+   * Usage: {{ product.price | money }}  →  "$28"
+   *        {{ product.stock | stockLabel }}  →  "Only 2 left"
+   */
+  eleventyConfig.addFilter("money", shopFilters.money);
+  eleventyConfig.addFilter("stockLabel", shopFilters.stockLabel);
 
   // ═════════════════════════════════════════════════════════════════════════
   // SHORTCODES
