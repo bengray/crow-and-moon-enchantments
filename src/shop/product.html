@@ -1,0 +1,96 @@
+---
+pagination:
+  data: products
+  size: 1
+  alias: product
+permalink: "/shop/{{ product.slug }}/"
+tags: "sitemap"
+eleventyComputed:
+  title: "{{ product.name }} | Crow & Moon Enchantments"
+  description: "{{ product.tagline }}. {{ product.description }}"
+---
+
+{% extends "layouts/base.html" %}
+
+{% block head %}
+<link rel="stylesheet" href="/assets/css/critical.css" />
+<link rel="stylesheet" href="/assets/css/local.css" />
+<link rel="stylesheet" href="/assets/css/shop.css" />
+<script defer src="/assets/js/shop.js"></script>
+{% endblock %}
+
+{% block main %}
+{% include "sections/header.html" %}
+
+<div id="clt-product-section" class="clt-section">
+  <section
+    id="clt-product"
+    class="{% if product.stock <= 0 %}is-sold-out{% endif %}"
+    data-variation-id="{{ product.variationId }}"
+  >
+    <a class="shop-back" href="/shop/">&larr; Back to the shop</a>
+
+    <div class="product-layout">
+      <div class="product-photo{% if not product.image %} is-placeholder{% endif %}">
+        {% if product.image %}
+        <img src="{{ product.image }}" alt="{{ product.name }}" width="800" height="800" />
+        {% else %}
+        <img src="/assets/images/moon.png" alt="" />
+        <span class="photo-coming">Photo coming soon</span>
+        {% endif %}
+      </div>
+
+      <div class="product-info">
+        <p class="product-category">{{ product.category }}</p>
+        <h2 class="product-name">{{ product.name }}</h2>
+        <p class="product-tagline">{{ product.tagline }}</p>
+        <img src="/assets/images/card-title-bg.gif" alt="" class="product-flourish" />
+
+        <p class="product-price">{{ product.price | money }}</p>
+        <p class="shop-stock product-stock" data-stock="{{ product.stock }}">
+          {{ product.stock | stockLabel }}
+        </p>
+
+        <form class="product-buy" data-variation-id="{{ product.variationId }}">
+          <div class="quantity" {% if product.stock <= 0 %}hidden{% endif %}>
+            <label for="qty">Quantity</label>
+            <div class="quantity-stepper">
+              <button type="button" class="quantity-down" aria-label="One fewer">&minus;</button>
+              <input
+                id="qty"
+                name="quantity"
+                type="number"
+                inputmode="numeric"
+                min="1"
+                max="{{ product.stock }}"
+                value="1"
+              />
+              <button type="button" class="quantity-up" aria-label="One more">&plus;</button>
+            </div>
+          </div>
+          <button type="submit" class="buy-button" {% if product.stock <= 0 %}disabled{% endif %}>
+            {% if product.stock <= 0 %}Sold out{% else %}Buy now{% endif %}
+          </button>
+          <p class="buy-note" role="status" aria-live="polite"></p>
+        </form>
+
+        <div class="product-description">
+          <p>{{ product.description }}</p>
+          {% if product.details and product.details.length %}
+          <ul class="product-details">
+            {% for detail in product.details %}
+            <li>{{ detail }}</li>
+            {% endfor %}
+          </ul>
+          {% endif %}
+        </div>
+
+        <p class="product-small-print">
+          Handmade, so every one is a little different.
+          {# TODO: shipping and pickup details once Nadine decides them #}
+        </p>
+      </div>
+    </div>
+  </section>
+</div>
+{% endblock %}

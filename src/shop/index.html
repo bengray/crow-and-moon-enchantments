@@ -1,0 +1,86 @@
+---
+title: "Shop | Crow & Moon Enchantments"
+description: "Handmade candles, ritual oils, spell jars, and herbal blends from Crow & Moon Enchantments, poured and blended in small batches."
+permalink: "/shop/"
+tags: "sitemap"
+---
+
+{% extends "layouts/base.html" %}
+
+{% block head %}
+<link rel="stylesheet" href="/assets/css/critical.css" />
+<link rel="stylesheet" href="/assets/css/local.css" />
+<link rel="stylesheet" href="/assets/css/shop.css" />
+<script defer src="/assets/js/shop.js"></script>
+{% endblock %}
+
+{% block main %}
+{% include "sections/header.html" %}
+
+<div id="clt-shop-section" class="clt-section">
+  <section id="clt-shop">
+    <img
+      src="/assets/images/section-divider-1.png"
+      alt=""
+      class="clt-divider one"
+    />
+    <h2 class="clt-section-title">
+      <span class="bigger-letter">T</span>he
+      <span class="bigger-letter">S</span>hop
+    </h2>
+    <p class="clt-section-description shop-intro">
+      Everything here is poured, blended, and bottled by hand in small batches.
+      The same shelf stocks my fair table, so when something's gone, it's gone
+      until the next batch.
+    </p>
+
+    {# Category filter. Hidden until shop.js runs, so without JavaScript you simply see everything. #}
+    {% set categories = [] %}
+    {% for product in products %}
+      {% if product.category not in categories %}
+        {% set categories = (categories.push(product.category), categories) %}
+      {% endif %}
+    {% endfor %}
+    <div class="shop-filter" role="group" aria-label="Filter by category" hidden>
+      <button type="button" class="shop-filter-button" data-category="all" aria-pressed="true">All</button>
+      {% for category in categories %}
+      <button type="button" class="shop-filter-button" data-category="{{ category }}" aria-pressed="false">{{ category }}</button>
+      {% endfor %}
+    </div>
+
+    <ul class="shop-grid">
+      {% for product in products %}
+      <li
+        class="shop-card{% if product.stock <= 0 %} is-sold-out{% endif %}"
+        data-category="{{ product.category }}"
+        data-variation-id="{{ product.variationId }}"
+      >
+        <a class="shop-card-link" href="/shop/{{ product.slug }}/">
+          <div class="shop-card-photo{% if not product.image %} is-placeholder{% endif %}">
+            {% if product.image %}
+            <img src="{{ product.image }}" alt="{{ product.name }}" loading="lazy" width="800" height="800" />
+            {% else %}
+            <img src="/assets/images/moon.png" alt="" loading="lazy" />
+            <span class="photo-coming">Photo coming soon</span>
+            {% endif %}
+          </div>
+          <h3 class="card-title">{{ product.name }}</h3>
+          <p class="shop-card-tagline">{{ product.tagline }}</p>
+          <p class="shop-card-meta">
+            <span class="shop-price">{{ product.price | money }}</span>
+            <span class="shop-stock" data-stock="{{ product.stock }}">{{ product.stock | stockLabel }}</span>
+          </p>
+        </a>
+      </li>
+      {% endfor %}
+    </ul>
+
+    <p class="shop-footnote">
+      Looking for something you saw at a fair? Stock moves fast on fair
+      weekends. Send me a note at
+      <a href="mailto:crowandmoonenchantments@gmail.com">crowandmoonenchantments@gmail.com</a>
+      and I'll tell you when the next batch is poured.
+    </p>
+  </section>
+</div>
+{% endblock %}
