@@ -1,0 +1,45 @@
+<!-- ============================================ -->
+<!--                   Basket                     -->
+<!-- ============================================ -->
+{# Behaviour lives in src/assets/js/basket.js. The toggle stays hidden until there's something in the basket. #}
+
+<button type="button" id="basket-toggle" class="basket-toggle" data-basket-open hidden>
+  <svg class="basket-icon" viewBox="0 0 32 32" aria-hidden="true" focusable="false">
+    <path d="M6 12h20l-2.2 13.2a2 2 0 0 1-2 1.8H10.2a2 2 0 0 1-2-1.8L6 12Z" />
+    <path d="M11 12a5 5 0 0 1 10 0" />
+    <path d="M16 4.5l.7 1.6 1.6.7-1.6.7-.7 1.6-.7-1.6-1.6-.7 1.6-.7Z" class="basket-icon-star" />
+  </svg>
+  <span class="basket-toggle-count" data-basket-count>0</span>
+</button>
+
+<dialog id="basket" class="basket-drawer" aria-labelledby="basket-title">
+  <div class="basket-inner">
+    <div class="basket-header">
+      <h2 id="basket-title" class="basket-title">
+        <span class="bigger-letter">Y</span>our
+        <span class="bigger-letter">B</span>asket
+      </h2>
+      <button type="button" class="basket-close" data-basket-close aria-label="Close basket">&times;</button>
+    </div>
+    <img src="/assets/images/card-title-bg.gif" alt="" class="basket-flourish" />
+
+    <ul class="basket-lines"></ul>
+
+    <div class="basket-empty" hidden>
+      <p>Nothing in your basket yet.</p>
+      <a href="/shop/" class="basket-empty-link">Visit the shop</a>
+    </div>
+
+    <p class="basket-note" role="status" aria-live="polite"></p>
+
+    <div class="basket-footer" hidden>
+      <p class="basket-subtotal">
+        <span>Subtotal</span>
+        <span class="basket-subtotal-amount">$0</span>
+      </p>
+      <p class="basket-fineprint">Shipping and tax are added at checkout. Payment is handled securely by Square.</p>
+      <button type="button" class="buy-button basket-checkout">Checkout</button>
+      <button type="button" class="basket-keep" data-basket-close>Keep browsing</button>
+    </div>
+  </div>
+</dialog>

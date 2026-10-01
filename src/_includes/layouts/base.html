@@ -45,11 +45,12 @@
     <link rel="stylesheet" href="/assets/css/base.css" />
     <script defer src="/assets/js/dark.js"></script>
     <script defer src="/assets/js/custom.js"></script>
+    <script defer src="/assets/js/basket.js"></script>
 
     <title>{{ title }}</title>
     {% block head %}{% endblock %}
   </head>
-  <body>
+  <body data-shop-live="{{ 'true' if shop.live else 'false' }}">
     <!--Screen reader skip main nav-->
     <a id="skip" aria-label="skip to main content" href="#main"
       >Click To Skip To Main Content</a
@@ -77,6 +78,7 @@
       </div>
 
       <main id="main">
+        {% block main %}
         {% include "sections/header.html" %}
         <div id="clt-cta-section" class="clt-section">
           {% include 'sections/cta.html' %}
@@ -87,8 +89,10 @@
         <div id="clt-order-inquire-section" class="clt-section">
           {% include 'sections/order-inquire.html' %}
         </div>
+        {% endblock %}
       </main>
       {% include 'sections/footer.html' %}
     </div>
+    {% include 'sections/basket.html' %}
   </body>
 </html>

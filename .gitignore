@@ -5,3 +5,13 @@ public
 RAW-photos
 .firebase/hosting.*
 .firebase/hosting.cHVibGlj.cache
+
+# Secrets and local settings for the shop (see SHOP-SETUP.md)
+.env
+.env.*
+!.env.example
+.runtimeconfig.json
+.secret.local
+*-debug.log
+functions/node_modules
+firebase-debug.log

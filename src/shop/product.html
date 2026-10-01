@@ -1,0 +1,123 @@
+---
+pagination:
+  data: shop.products
+  size: 1
+  alias: product
+permalink: "/shop/{{ product.slug }}/"
+tags: "sitemap"
+eleventyComputed:
+  title: "{{ product.name }} | Crow & Moon Enchantments"
+  description: "{% if product.tagline %}{{ product.tagline }}. {% endif %}{{ product.paragraphs[0] }}"
+---
+
+{% extends "layouts/base.html" %}
+
+{% block head %}
+<link rel="stylesheet" href="/assets/css/critical.css" />
+<link rel="stylesheet" href="/assets/css/local.css" />
+<link rel="stylesheet" href="/assets/css/shop.css" />
+<script defer src="/assets/js/shop.js"></script>
+{% endblock %}
+
+{% block main %}
+{% include "sections/header.html" %}
+
+{# The first option that isn't sold out is selected to start #}
+{% set first = product.defaultVariation %}
+
+<div id="clt-product-section" class="clt-section">
+  <section id="clt-product" class="{% if product.stock === 0 %}is-sold-out{% endif %}">
+    <a class="shop-back" href="/shop/">&larr; Back to the shop</a>
+
+    <div class="product-layout">
+      <div class="product-photo{% if not product.image %} is-placeholder{% endif %}">
+        {% if product.image %}
+        <img src="{{ product.image }}" alt="{{ product.name }}" width="800" height="800" />
+        {% else %}
+        <img src="/assets/images/moon.png" alt="" />
+        <span class="photo-coming">Photo coming soon</span>
+        {% endif %}
+      </div>
+
+      <div class="product-info">
+        <p class="product-category">{{ product.category }}</p>
+        <h2 class="product-name">{{ product.name }}</h2>
+        {% if product.tagline %}<p class="product-tagline">{{ product.tagline }}</p>{% endif %}
+        <img src="/assets/images/card-title-bg.gif" alt="" class="product-flourish" />
+
+        <p class="product-price">{{ first.price | money }}</p>
+        <p class="shop-stock product-stock" data-stock="{{ first.stock | stockAttr }}">
+          {{ first.stock | stockLabel }}
+        </p>
+
+        <form
+          class="product-buy"
+          data-variation-id="{{ first.id }}"
+          data-stock="{{ first.stock | stockAttr }}"
+        >
+          {% if product.hasOptions %}
+          <fieldset class="product-options">
+            <legend>Choose</legend>
+            <div class="product-option-list">
+              {% for v in product.variations %}
+              <label class="product-option{% if v.stock === 0 %} is-sold-out{% endif %}">
+                <input
+                  type="radio"
+                  name="variation"
+                  value="{{ v.id }}"
+                  data-price="{{ v.price }}"
+                  data-stock="{{ v.stock | stockAttr }}"
+                  {% if v.id == first.id %}checked{% endif %}
+                />
+                <span class="product-option-name">{{ v.name or "Standard" }}</span>
+                <span class="product-option-price">{{ v.price | money }}</span>
+              </label>
+              {% endfor %}
+            </div>
+          </fieldset>
+          {% endif %}
+
+          <div class="quantity" {% if first.stock === 0 %}hidden{% endif %}>
+            <label for="qty">Quantity</label>
+            <div class="quantity-stepper">
+              <button type="button" class="quantity-down" aria-label="One fewer">&minus;</button>
+              <input
+                id="qty"
+                name="quantity"
+                type="number"
+                inputmode="numeric"
+                min="1"
+                max="{{ first.maxQuantity if first.maxQuantity > 0 else 1 }}"
+                value="1"
+              />
+              <button type="button" class="quantity-up" aria-label="One more">&plus;</button>
+            </div>
+          </div>
+          <button type="submit" class="buy-button" {% if first.stock === 0 %}disabled{% endif %}>
+            {% if first.stock === 0 %}Sold out{% else %}Add to basket{% endif %}
+          </button>
+          <p class="buy-note" role="status" aria-live="polite"></p>
+          <noscript><p class="buy-note">The basket needs JavaScript turned on.</p></noscript>
+        </form>
+
+        <div class="product-description">
+          {% for paragraph in product.paragraphs %}
+          <p>{{ paragraph }}</p>
+          {% endfor %}
+          {% if product.details and product.details.length %}
+          <ul class="product-details">
+            {% for detail in product.details %}
+            <li>{{ detail }}</li>
+            {% endfor %}
+          </ul>
+          {% endif %}
+        </div>
+
+        <p class="product-small-print">
+          Handmade, so every one is a little different.
+        </p>
+      </div>
+    </div>
+  </section>
+</div>
+{% endblock %}
