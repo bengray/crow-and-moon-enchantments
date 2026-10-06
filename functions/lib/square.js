@@ -180,6 +180,10 @@ function createClient(config = process.env, { fetchImpl = globalThis.fetch } = {
     getInStockCounts,
     retrieveObjects,
     createPaymentLink,
+    // Raw JSON call, for one-off scripts (see functions/scripts/seed-sandbox.js)
+    request: call,
+    base,
+    token,
   };
 }
 
@@ -265,6 +269,28 @@ function parseDescription(text) {
 }
 
 /**
+ * Square's description editor saves simple HTML (paragraphs, bold, bullet
+ * lists). Turn it into the plain-text form parseDescription understands:
+ * paragraphs separated by blank lines, list items as "* " lines.
+ */
+function htmlToText(html) {
+  const entities = { amp: "&", lt: "<", gt: ">", quot: '"', apos: "'", "#39": "'", nbsp: " " };
+  return String(html)
+    .replace(/<li[^>]*>/gi, "\n* ")
+    .replace(/<\/(li|ul|ol)>/gi, "\n")
+    .replace(/<br\s*\/?>/gi, "\n")
+    .replace(/<\/p>/gi, "\n\n")
+    .replace(/<[^>]+>/g, "")
+    .replace(/&(#\d+|#x[0-9a-f]+|\w+);/gi, (match, code) => {
+      if (code[0] === "#") {
+        const n = code[1].toLowerCase() === "x" ? parseInt(code.slice(2), 16) : parseInt(code.slice(1), 10);
+        return Number.isFinite(n) ? String.fromCodePoint(n) : match;
+      }
+      return entities[code.toLowerCase()] ?? match;
+    });
+}
+
+/**
  * Map raw catalog objects to the product shape the templates use.
  *
  * Shown on the site: items that aren't archived, exist at this location, have
@@ -320,7 +346,9 @@ function buildProducts(objects, { locationId, counts = {}, hideCategory = "Not O
     for (let n = 2; usedSlugs.has(slug); n++) slug = `${slugify(data.name)}-${n}`;
     usedSlugs.add(slug);
 
-    const { paragraphs, details } = parseDescription(data.description_plaintext || data.description || "");
+    const { paragraphs, details } = parseDescription(
+      data.description_html ? htmlToText(data.description_html) : data.description_plaintext || data.description || "",
+    );
     const imageUrls = (data.image_ids || []).map((id) => images.get(id)).filter(Boolean);
 
     products.push(summarize({
@@ -385,6 +413,7 @@ module.exports = {
   maxQuantity,
   isPresentAt,
   parseDescription,
+  htmlToText,
   slugify,
   isValidWebhookSignature,
 };

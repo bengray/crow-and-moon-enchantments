@@ -254,3 +254,12 @@ test("slugs and descriptions", () => {
     details: ["dot", "dash", "star"],
   });
 });
+
+test("Square's HTML descriptions become paragraphs and a details list", () => {
+  const html =
+    "<p>A fresh-start candle &amp; more.</p><p>Second <strong>part</strong>.</p><ul><li>Infused sweet orange</li><li>Wooden wick</li></ul>";
+  assert.deepEqual(square.parseDescription(square.htmlToText(html)), {
+    paragraphs: ["A fresh-start candle & more.", "Second part."],
+    details: ["Infused sweet orange", "Wooden wick"],
+  });
+});

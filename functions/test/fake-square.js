@@ -49,7 +49,7 @@ function item(id, name, { description = "", categories = [], images = [], variat
   };
 }
 
-function createFakeSquare() {
+function createFakeSquare({ empty = false } = {}) {
   const state = {
     requests: [],
     paymentLinks: [],
@@ -132,6 +132,12 @@ function createFakeSquare() {
       variations: [variation("VAR_VARIABLE", "ITEM_VARIABLE", "Regular", 0, { pricing_type: "VARIABLE_PRICING" })],
     }),
   ];
+
+  // Start with a blank account (for trying seed-sandbox.js)
+  if (empty) {
+    objects.length = 0;
+    state.inventory = {};
+  }
 
   function find(id) {
     for (const o of objects) {
@@ -223,6 +229,47 @@ function createFakeSquare() {
       };
     }
 
+    // Used by functions/scripts/seed-sandbox.js
+    if (method === "POST" && path === "/catalog/batch-upsert") {
+      const mappings = [];
+      let n = 0;
+      const realize = (id) => {
+        if (!id.startsWith("#")) return id;
+        let found = mappings.find((m) => m.client_object_id === id);
+        if (!found) {
+          found = { client_object_id: id, object_id: `SEEDED_${++n}` };
+          mappings.push(found);
+        }
+        return found.object_id;
+      };
+      for (const batch of body.batches) {
+        for (const object of batch.objects) {
+          const copy = JSON.parse(JSON.stringify(object), (key, value) =>
+            typeof value === "string" && value.startsWith("#") ? realize(value) : value,
+          );
+          if (copy.item_data && copy.item_data.description_html) {
+            copy.item_data.description_plaintext = copy.item_data.description_html.replace(/<[^>]+>/g, " ");
+          }
+          objects.push(copy);
+        }
+      }
+      return { status: 200, json: { objects: [], id_mappings: mappings } };
+    }
+
+    if (method === "POST" && path === "/inventory/changes/batch-create") {
+      for (const change of body.changes) {
+        const count = change.physical_count;
+        if (count.location_id !== LOCATION) return error(400, "BAD_LOCATION", "location");
+        state.inventory[count.catalog_object_id] = Number(count.quantity);
+      }
+      return { status: 200, json: { counts: [] } };
+    }
+
+    if (method === "POST" && path === "/catalog/images") {
+      // Multipart; the HTTP server below records it without parsing
+      return { status: 200, json: { image: { id: "IMG_SEEDED", type: "IMAGE" } } };
+    }
+
     return error(404, "NOT_FOUND", `${method} ${path}`);
   }
 
@@ -241,7 +288,7 @@ module.exports = { createFakeSquare };
 // Run as a server: node functions/test/fake-square.js
 if (require.main === module) {
   const http = require("node:http");
-  const fake = createFakeSquare();
+  const fake = createFakeSquare({ empty: process.env.FAKE_EMPTY === "1" });
   http
     .createServer((req, res) => {
       if (req.url.startsWith("/pay/")) {
@@ -262,7 +309,10 @@ if (require.main === module) {
           res.writeHead(200, { "Content-Type": "application/json" }).end(JSON.stringify(fake.state.paymentLinks));
           return;
         }
-        const { status, json } = fake.handle(req.method, req.url, req.headers, raw ? JSON.parse(raw) : null);
+        const isMultipart = (req.headers["content-type"] || "").startsWith("multipart/");
+        if (isMultipart) fake.state.uploads = (fake.state.uploads || 0) + 1;
+        const body = raw && !isMultipart ? JSON.parse(raw) : null;
+        const { status, json } = fake.handle(req.method, req.url, req.headers, body);
         res.writeHead(status, { "Content-Type": "application/json" });
         res.end(JSON.stringify(json));
       });

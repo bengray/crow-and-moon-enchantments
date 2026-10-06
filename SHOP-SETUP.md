@@ -32,7 +32,7 @@ Eleventy build ──► Firebase Hosting ──► /api/* ──► Firebase Fu
 | Mark something sold out without counting | Set it to **Sold out** at her location |
 | Offer sizes or scents | Add **variations**. They become choices on the product page. |
 | Set the photo | Upload an image to the item. The first image is used. |
-| Write the description | Use the item description. Lines starting with `* ` or `- ` become the starred details list. Blank lines separate paragraphs. |
+| Write the description | Use the item description. A bulleted list (or lines starting with `* ` or `- `) becomes the starred details list. Everything else becomes paragraphs. |
 | Charge sales tax | Set up taxes on the items in Square. Checkout applies them automatically. |
 
 The category filter on the shop page uses each item's first category.
@@ -58,7 +58,13 @@ Start in **Sandbox**, Square's test account where no real money moves:
 
 - **Credentials** → copy the **Sandbox access token**.
 - **Locations** → copy the location ID, if her account has more than one location. (With just one, leave it blank and the shop finds it.)
-- In the sandbox seller dashboard, add a few test items with inventory tracking turned on, so there's something to show.
+- **Load test products into the sandbox.** The sandbox's own dashboard is a cut-down version of Square's, so the item editor may be hard to find or missing. Use the seed script instead. Put the sandbox token in a `.env` file at the repo root (copy `.env.example`, set `SQUARE_ACCESS_TOKEN` and `SQUARE_ENVIRONMENT=sandbox`), then run:
+
+  ```bash
+  node functions/scripts/seed-sandbox.js
+  ```
+
+  It creates seven products with photos, stock counts, and a two-size oil. One is sold out, one doesn't track stock, and one sits in "Not Online" so you can confirm it stays off the site. It only runs against sandbox, and it does nothing if the products are already there. To see them in Square, open the developer console → **Sandbox test accounts** → **Square Dashboard** next to the test account.
 
 Later, for real sales, switch the page to **Production** and copy the **Production access token** and production location ID instead.
 
@@ -150,7 +156,8 @@ Check:
 1. `/shop/` shows the Square items.
 2. Add things to the basket and press Checkout. You should land on Square's checkout page.
 3. In sandbox, pay with one of [Square's test cards](https://developer.squareup.com/docs/devtools/sandbox/payments). You should come back to `/shop/thanks/`, and the stock in the sandbox dashboard should go down.
-4. Edit an item's description in the sandbox dashboard. Within a few minutes, a new run appears on the Actions tab and the site shows the change.
+4. Make a test purchase and watch the Actions tab: nothing should run, because sales never rebuild.
+5. Change an item in the sandbox dashboard if it lets you edit items. If not, open the webhook subscription in the developer console and send a test event, if Square offers that option there. Either way, a new run should appear on the Actions tab within a few minutes.
 
 ## Going live with real money
 
@@ -183,6 +190,7 @@ When sandbox works:
 | `functions/lib/square.js` | Square API calls and catalog-to-product mapping. Used by both the build and the functions. |
 | `functions/lib/handlers.js` | Stock, checkout, and webhook logic |
 | `functions/index.js` | Wraps the handlers as Firebase functions, declares secrets |
+| `functions/scripts/seed-sandbox.js` | Loads test products into a Square sandbox account |
 | `firebase.json` | Maps `/api/stock`, `/api/checkout`, `/api/square-webhook` to the functions |
 | `src/_data/shop.js` | Build-time catalog fetch (falls back to `src/config/shop/mock-products.js`) |
 | `src/shop/` | Shop grid, product pages, thank-you page, `catalog.json` for the basket |
