@@ -16,7 +16,7 @@ Eleventy build ──► Firebase Hosting ──► /api/* ──► Firebase Fu
 ```
 
 - **Products, prices, photos, descriptions** are pulled from Square when the site builds. When Nadine edits her catalog, Square calls the `squareWebhook` function, which asks GitHub to rebuild. The site updates a couple of minutes later.
-- **Stock** is fetched live from Square on every shop page, so a sale at a fair shows up online right away. The `/api/stock` function does this.
+- **Stock** is fetched live from Square on every shop page, so a sale at a fair shows up online right away. The `/api/stock` function does this. **Sales never rebuild the site.** Only catalog edits do (new items, prices, names, descriptions, photos, categories, variations).
 - **The basket** lives in the shopper's browser. At checkout, `/api/checkout` rechecks stock with Square, then creates one Square payment link for the whole basket and sends the shopper there. Prices always come from Square; the browser only sends item ids and quantities.
 - **Stock goes down on its own.** Square adjusts inventory when an order made of catalog items is paid, the same as a sale on her reader.
 - **Without Square credentials**, the site still builds, using placeholder products. The basket works, but Checkout says "almost ready" instead of opening Square.
