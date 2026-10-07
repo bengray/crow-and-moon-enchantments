@@ -16,3 +16,4 @@ RAW-photos
 functions/node_modules
 firebase-debug.log
 crow-and-moon-shop-square.bundle
+.DS_Store
