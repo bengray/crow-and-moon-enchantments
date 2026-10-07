@@ -61,11 +61,12 @@
       <div id="top-gradient"></div>
       <div id="clt-super-header">
         <div class="logo-container">
-          <img
-            id="clt-logo"
-            src="/assets/images/logo.gif"
-            alt="Crow & Moon Enchantments Logo"
-          />
+          <a href="/"
+            ><img
+              id="clt-logo"
+              src="/assets/images/logo.gif"
+              alt="Crow & Moon Enchantments Logo"
+          /></a>
 
           <a id="clt-logo-mini" href="#skip">
             <img
@@ -78,8 +79,7 @@
       </div>
 
       <main id="main">
-        {% block main %}
-        {% include "sections/header.html" %}
+        {% block main %} {% include "sections/header.html" %}
         <div id="clt-cta-section" class="clt-section">
           {% include 'sections/cta.html' %}
         </div>

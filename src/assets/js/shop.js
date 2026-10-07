@@ -4,7 +4,31 @@
 // and live stock from Square on both. The basket drawer itself is basket.js.
 // ─────────────────────────────────────────────────────────────────────────────
 
-import { addToBasket, quantityOf, fetchStock, stockLabel, stockAttr, money, maxFor } from "./basket-store.js";
+// scroll to the id "clt-shop" any time the /shop/ page is loaded.
+window.addEventListener("DOMContentLoaded", () => {
+  const shopSection = document.querySelector("#clt-shop");
+  const backButton = document.querySelector(".shop-back");
+  // if (backButton) {
+  //   backButton.scrollIntoView({ behavior: "smooth" });
+  //   // offset about 50px from the top of the viewport
+  // }
+  if (shopSection) {
+    shopSection.scrollIntoView({ behavior: "smooth" });
+  } else if (backButton) {
+    backButton.scrollIntoView({ behavior: "smooth" });
+    // offset about 50px from the top of the viewport
+  }
+});
+
+import {
+  addToBasket,
+  quantityOf,
+  fetchStock,
+  stockLabel,
+  stockAttr,
+  money,
+  maxFor,
+} from "./basket-store.js";
 
 /* ---------- Category filter (shop page) ---------- */
 
@@ -18,7 +42,9 @@ if (filter) {
   buttons.forEach((button) => {
     button.addEventListener("click", () => {
       const chosen = button.dataset.category;
-      buttons.forEach((b) => b.setAttribute("aria-pressed", String(b === button)));
+      buttons.forEach((b) =>
+        b.setAttribute("aria-pressed", String(b === button)),
+      );
       cards.forEach((card) => {
         card.hidden = chosen !== "all" && card.dataset.category !== chosen;
       });
@@ -32,13 +58,17 @@ const product = document.querySelector("#clt-product");
 const buyForm = document.querySelector(".product-buy");
 const qtyInput = document.querySelector("#qty");
 const options = [...document.querySelectorAll(".product-option input")];
-const singleVariation = buyForm && !options.length ? buyForm.dataset.variationId : null;
+const singleVariation =
+  buyForm && !options.length ? buyForm.dataset.variationId : null;
 
 // Stock per variation on this page, from the build, then refreshed live
 const stockById = {};
 if (buyForm) {
-  if (singleVariation) stockById[singleVariation] = parseStock(buyForm.dataset.stock);
-  options.forEach((input) => (stockById[input.value] = parseStock(input.dataset.stock)));
+  if (singleVariation)
+    stockById[singleVariation] = parseStock(buyForm.dataset.stock);
+  options.forEach(
+    (input) => (stockById[input.value] = parseStock(input.dataset.stock)),
+  );
 }
 
 function parseStock(value) {
@@ -72,20 +102,34 @@ function updateProduct() {
   stockEl.textContent = stockLabel(stock);
 
   const chosen = options.find((input) => input.checked);
-  if (chosen) product.querySelector(".product-price").textContent = money(Number(chosen.dataset.price));
+  if (chosen)
+    product.querySelector(".product-price").textContent = money(
+      Number(chosen.dataset.price),
+    );
 
   // Mark sold-out options
   options.forEach((input) => {
     const optionStock = stockById[input.value];
-    input.closest(".product-option").classList.toggle("is-sold-out", optionStock !== null && optionStock <= 0);
+    input
+      .closest(".product-option")
+      .classList.toggle(
+        "is-sold-out",
+        optionStock !== null && optionStock <= 0,
+      );
   });
 
-  const allSoldOut = Object.values(stockById).every((s) => s !== null && s <= 0);
+  const allSoldOut = Object.values(stockById).every(
+    (s) => s !== null && s <= 0,
+  );
   product.classList.toggle("is-sold-out", allSoldOut);
 
   const button = buyForm.querySelector(".buy-button");
   button.disabled = soldOut || available <= 0;
-  button.textContent = soldOut ? "Sold out" : available <= 0 ? "All in your basket" : "Add to basket";
+  button.textContent = soldOut
+    ? "Sold out"
+    : available <= 0
+      ? "All in your basket"
+      : "Add to basket";
 
   buyForm.querySelector(".quantity").hidden = soldOut;
   if (qtyInput) {
@@ -116,7 +160,11 @@ if (buyForm) {
     event.preventDefault();
     const id = selectedVariation();
     if (!id) return;
-    const added = addToBasket(id, Number(qtyInput.value), maxFor(stockById[id]));
+    const added = addToBasket(
+      id,
+      Number(qtyInput.value),
+      maxFor(stockById[id]),
+    );
     const note = buyForm.querySelector(".buy-note");
     if (!added) {
       note.textContent = "You already have every one I've got in your basket.";
@@ -138,7 +186,9 @@ function applyCardStock(card, stock) {
   const ids = card.dataset.variationIds.split(",");
   const values = ids.map((id) => (id in stock ? stock[id] : undefined));
   if (values.some((v) => v === undefined)) return; // partial answer, keep build-time label
-  const total = values.some((v) => v === null) ? null : values.reduce((sum, v) => sum + v, 0);
+  const total = values.some((v) => v === null)
+    ? null
+    : values.reduce((sum, v) => sum + v, 0);
   const label = card.querySelector(".shop-stock");
   label.dataset.stock = stockAttr(total);
   label.textContent = stockLabel(total);
