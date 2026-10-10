@@ -5,6 +5,7 @@ const crypto = require("node:crypto");
 
 const square = require("../lib/square");
 const handlers = require("../lib/handlers");
+const { shippingFor, MAX_ITEMS, boxes } = require("../lib/shipping");
 const { createFakeSquare } = require("./fake-square");
 
 const config = {
@@ -117,7 +118,11 @@ test("checkout creates one payment link for the whole basket", async () => {
   assert.equal(sent.checkout_options.redirect_url, "https://www.crowandmoonenchantments.com/shop/thanks/");
   assert.equal(sent.checkout_options.ask_for_shipping_address, true);
   assert.equal(sent.checkout_options.merchant_support_email, "crowandmoonenchantments@gmail.com");
-  assert.equal(sent.checkout_options.shipping_fee, undefined, "no shipping configured");
+  assert.deepEqual(
+    sent.checkout_options.shipping_fee,
+    { name: "FedEx Shipping (Large box)", charge: { amount: shippingFor(9).cents, currency: "USD" } },
+    "9 items ship in the Large box",
+  );
   assert.ok(!JSON.stringify(sent).includes("price"), "the browser never sets prices");
 });
 
@@ -153,19 +158,52 @@ test("checkout rejects malformed baskets", async () => {
   }
 });
 
-test("flat shipping, free over a threshold", async () => {
-  const shipConfig = { ...config, SHOP_SHIPPING_FLAT_CENTS: "800", SHOP_FREE_SHIPPING_OVER_CENTS: "7500" };
+test("shipping box follows the item count, from shipping-rates.js", async () => {
+  // Every box in the config, at its fullest
+  for (const box of boxes) {
+    const { client, fake } = setup();
+    // VAR_INCENSE doesn't track stock, so any quantity up to the cap is fine
+    const result = await handlers.createCheckout(
+      { items: [{ variationId: "VAR_INCENSE", quantity: box.maxItems }] },
+      config,
+      { client },
+    );
+    assert.equal(result.status, 200, `${box.maxItems} items`);
+    assert.deepEqual(fake.state.paymentLinks[0].checkout_options.shipping_fee, {
+      name: `FedEx Shipping (${box.name} box)`,
+      charge: { amount: box.cents, currency: "USD" },
+    });
+  }
 
-  let { client, fake } = setup();
-  await handlers.createCheckout({ items: [{ variationId: "VAR_BLUE_MOON", quantity: 1 }] }, shipConfig, { client });
-  assert.deepEqual(fake.state.paymentLinks[0].checkout_options.shipping_fee, {
-    name: "Shipping",
-    charge: { amount: 800, currency: "USD" },
-  });
+  // The count is total quantity across lines, not the number of lines
+  const { client, fake } = setup();
+  await handlers.createCheckout(
+    { items: [{ variationId: "VAR_BLUE_MOON", quantity: 1 }, { variationId: "VAR_INCENSE", quantity: 2 }] },
+    config,
+    { client },
+  );
+  assert.equal(fake.state.paymentLinks[0].checkout_options.shipping_fee.name, `FedEx ${shippingFor(3).label}`);
+});
 
-  ({ client, fake } = setup());
-  await handlers.createCheckout({ items: [{ variationId: "VAR_BLUE_MOON", quantity: 3 }] }, shipConfig, { client });
-  assert.equal(fake.state.paymentLinks[0].checkout_options.shipping_fee, undefined, "$84 ships free");
+test("more than the biggest box holds asks for a quote", async () => {
+  const { client, fake } = setup();
+  const result = await handlers.createCheckout(
+    { items: [{ variationId: "VAR_INCENSE", quantity: MAX_ITEMS + 1 }] },
+    config,
+    { client },
+  );
+  assert.equal(result.status, 422);
+  assert.equal(result.body.needsQuote, true);
+  assert.equal(fake.state.paymentLinks.length, 0, "no link created");
+});
+
+test("shippingFor picks the smallest box that fits", () => {
+  const sorted = [...boxes].sort((a, b) => a.maxItems - b.maxItems);
+  assert.equal(shippingFor(1).box, sorted[0].name);
+  for (let i = 1; i < sorted.length; i++) {
+    assert.equal(shippingFor(sorted[i - 1].maxItems + 1).box, sorted[i].name);
+  }
+  assert.equal(shippingFor(MAX_ITEMS + 1), null);
 });
 
 test("Square errors surface as SquareError", async () => {

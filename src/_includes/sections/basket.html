@@ -54,13 +54,30 @@ there's something in the basket. #}
     <p class="basket-note" role="status" aria-live="polite"></p>
 
     <div class="basket-footer" hidden>
-      <p class="basket-subtotal">
-        <span>Subtotal</span>
-        <span class="basket-subtotal-amount">$0</span>
-      </p>
+      <div class="basket-sums">
+        <p class="basket-sum">
+          <span>Subtotal</span>
+          <span class="basket-subtotal-amount">$0</span>
+        </p>
+        <p class="basket-sum basket-shipping">
+          <span class="basket-shipping-label">Shipping</span>
+          <span class="basket-shipping-amount"></span>
+        </p>
+        <p class="basket-total">
+          <span>Total</span>
+          <span class="basket-total-amount">$0</span>
+        </p>
+      </div>
+      <div class="basket-quote" hidden>
+        <p>
+          That's more than fits in one shipping box. Send me a note with what
+          you'd like and I'll quote shipping for you.
+        </p>
+        <a class="basket-quote-link" href="mailto:crowandmoonenchantments@gmail.com">Email me for a quote</a>
+      </div>
       <p class="basket-fineprint">
-        Shipping and tax are added at checkout. Payment is handled securely by
-        Square.
+        Ships FedEx within the US. Sales tax is added at checkout, and payment
+        is handled securely by Square.
       </p>
       <button type="button" class="buy-button basket-checkout">Checkout</button>
       <button type="button" class="basket-keep" data-basket-close>

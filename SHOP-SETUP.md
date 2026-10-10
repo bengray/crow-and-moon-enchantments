@@ -35,6 +35,21 @@ Eleventy build ──► Firebase Hosting ──► /api/* ──► Firebase Fu
 | Write the description | Use the item description. A bulleted list (or lines starting with `* ` or `- `) becomes the starred details list. Everything else becomes paragraphs. |
 | Charge sales tax | Set up taxes on the items in Square. Checkout applies them automatically. |
 
+## Shipping
+
+Nadine ships FedEx flat rate (One Rate), US only, so shipping depends only on which box the order goes in. The box depends on how many items are in the basket (total quantity, so two of the same oil count as two).
+
+Box sizes, how many items each holds, and FedEx's price for each live in one file: **`functions/shipping-rates.js`**. The basket shows "Shipping (Medium box)" with its price and a total before tax, and checkout charges the same amount on Square's page as a shipping line. Square's own shipping settings aren't used.
+
+A basket with more items than the biggest box holds can't check out. The basket asks the shopper to email Nadine for a shipping quote, with their basket already written into the email.
+
+**When FedEx changes prices** (or the box rules change), edit `functions/shipping-rates.js`, then update both places that read it:
+
+1. Checkout, which sets what Square charges: `cd functions && npm run deploy`
+2. The site, which shows the price in the basket: push to `main` (or run the deploy workflow)
+
+Do both, or the basket and Square's checkout page will show different amounts.
+
 The category filter on the shop page uses each item's first category.
 
 Items with a variable price (priced at the register) are left off the site, because online checkout needs a fixed price.
@@ -109,8 +124,8 @@ firebase deploy --only functions
 | `SQUARE_WEBHOOK_URL` | `https://www.crowandmoonenchantments.com/api/square-webhook` |
 | `GITHUB_REPO` | `owner/repo` of this repository |
 | `SHOP_SUPPORT_EMAIL` | Shown on Square's checkout page |
-| `SHOP_SHIPPING_FLAT_CENTS` | Flat shipping in cents, e.g. `800` for $8. Blank for none. |
-| `SHOP_FREE_SHIPPING_OVER_CENTS` | Free shipping at or above this subtotal, e.g. `7500`. Blank for never. |
+
+Shipping isn't in this file. See [Shipping](#shipping) above.
 
 Use whichever domain the site is actually served on (with or without `www`) for both URLs. The webhook signature check fails if `SQUARE_WEBHOOK_URL` doesn't match Square's setting character for character.
 

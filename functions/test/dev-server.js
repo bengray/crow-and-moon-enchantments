@@ -22,7 +22,6 @@ const config = {
   SQUARE_ACCESS_TOKEN: "test-token",
   SQUARE_API_BASE: process.env.SQUARE_API_BASE || "http://localhost:4010/v2",
   SITE_URL: `http://localhost:${PORT}`,
-  SHOP_SHIPPING_FLAT_CENTS: process.env.SHOP_SHIPPING_FLAT_CENTS || "",
 };
 
 const TYPES = {

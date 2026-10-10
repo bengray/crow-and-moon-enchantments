@@ -458,17 +458,61 @@ html:has(.basket-drawer[open]) {
     }
   }
 
-  .basket-subtotal {
+  .basket-sums {
+    display: flex;
+    flex-direction: column;
+    gap: #{tools.rem(6)};
+  }
+
+  .basket-sum,
+  .basket-total {
     display: flex;
     justify-content: space-between;
     align-items: baseline;
-    font-size: #{tools.rem(26)};
+    gap: #{tools.rem(12)};
+
+    &[hidden] {
+      display: none;
+    }
 
     span:first-child {
       font-size: #{tools.rem(16)};
       letter-spacing: 0.18em;
       text-transform: uppercase;
       color: var(--bodyColorDark);
+    }
+  }
+
+  .basket-sum {
+    font-size: #{tools.rem(18)};
+  }
+
+  .basket-total {
+    margin-top: #{tools.rem(6)};
+    padding-top: #{tools.rem(10)};
+    border-top: 1px solid var(--goldDim);
+    font-size: #{tools.rem(26)};
+  }
+
+  .basket-quote {
+    font-size: #{tools.rem(18)};
+    font-style: italic;
+    color: var(--gold);
+
+    &[hidden] {
+      display: none;
+    }
+
+    a.basket-quote-link {
+      display: inline-block;
+      margin-top: #{tools.rem(10)};
+      font-style: normal;
+      font-size: #{tools.rem(16)};
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--gold);
+      text-decoration: none;
+      border-bottom: 1px solid var(--goldDim);
     }
   }
 

@@ -6,6 +6,7 @@
 // ─────────────────────────────────────────────────────────────────────────────
 
 const square = require("./square");
+const { shippingFor, MAX_ITEMS, QUOTE_EMAIL } = require("./shipping");
 
 const ID_PATTERN = /^[A-Za-z0-9_-]{1,64}$/;
 const MAX_IDS = 100;
@@ -64,6 +65,10 @@ async function getStock({ ids }, config, { client } = {}) {
  * 409 { error, problems: [{ variationId, available }] }
  *                                               something sold out or ran short;
  *                                               the basket should adjust and retry
+ * 422 { error, needsQuote: true }               more items than the biggest box
+ *                                               holds; ask Nadine for a quote
+ *
+ * Shipping is a FedEx flat-rate box chosen by item count (functions/shipping-rates.js).
  */
 async function createCheckout(body, config, { client } = {}) {
   const items = Array.isArray(body && body.items) ? body.items : null;
@@ -81,6 +86,19 @@ async function createCheckout(body, config, { client } = {}) {
     wanted.set(id, (wanted.get(id) || 0) + quantity);
   }
   const ids = [...wanted.keys()];
+
+  // Pick the box before asking Square anything: too big an order can't check out
+  const itemCount = [...wanted.values()].reduce((sum, quantity) => sum + quantity, 0);
+  const shipping = shippingFor(itemCount);
+  if (!shipping) {
+    return {
+      status: 422,
+      body: {
+        error: `That's more than fits in one shipping box (${MAX_ITEMS} items). Email me at ${QUOTE_EMAIL} and I'll quote shipping for you.`,
+        needsQuote: true,
+      },
+    };
+  }
 
   client = client || square.createClient(config);
   const locationId = await client.getLocationId();
@@ -114,18 +132,7 @@ async function createCheckout(body, config, { client } = {}) {
     };
   }
 
-  const shippingAmount = parseInt(config.SHOP_SHIPPING_FLAT_CENTS, 10) || 0;
-  const freeOver = parseInt(config.SHOP_FREE_SHIPPING_OVER_CENTS, 10) || 0;
-  let shippingFee = null;
-  if (shippingAmount > 0) {
-    const subtotal = [...wanted].reduce(
-      (sum, [id, quantity]) => sum + byId.get(id).item_variation_data.price_money.amount * quantity,
-      0,
-    );
-    if (!(freeOver > 0 && subtotal >= freeOver)) {
-      shippingFee = { name: config.SHOP_SHIPPING_LABEL || "Shipping", amount: shippingAmount };
-    }
-  }
+  const shippingFee = shipping.cents > 0 ? { name: `FedEx ${shipping.label}`, amount: shipping.cents } : null;
 
   const siteUrl = String(config.SITE_URL || "").replace(/\/$/, "");
   const link = await client.createPaymentLink({
@@ -135,7 +142,7 @@ async function createCheckout(body, config, { client } = {}) {
     shippingFee,
   });
 
-  log("info", "Created payment link", { orderId: link.order_id, lines: wanted.size });
+  log("info", "Created payment link", { orderId: link.order_id, lines: wanted.size, box: shipping.box });
   return { status: 200, body: { url: link.url || link.long_url } };
 }
 

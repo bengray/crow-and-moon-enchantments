@@ -18,6 +18,8 @@ import {
   maxFor,
   CHECKOUT_ENDPOINT,
 } from "./basket-store.js";
+// Same box rules and prices checkout uses (edit functions/shipping-rates.js)
+import { shippingFor, QUOTE_EMAIL } from "../../../functions/lib/shipping.js";
 
 const drawer = document.querySelector("#basket");
 const toggle = document.querySelector("#basket-toggle");
@@ -30,6 +32,13 @@ if (drawer && toggle) {
   const emptyEl = drawer.querySelector(".basket-empty");
   const footerEl = drawer.querySelector(".basket-footer");
   const subtotalEl = drawer.querySelector(".basket-subtotal-amount");
+  const shippingRowEl = drawer.querySelector(".basket-shipping");
+  const shippingLabelEl = drawer.querySelector(".basket-shipping-label");
+  const shippingAmountEl = drawer.querySelector(".basket-shipping-amount");
+  const totalRowEl = drawer.querySelector(".basket-total");
+  const totalEl = drawer.querySelector(".basket-total-amount");
+  const quoteEl = drawer.querySelector(".basket-quote");
+  const quoteLinkEl = drawer.querySelector(".basket-quote-link");
   const noteEl = drawer.querySelector(".basket-note");
   const checkoutButton = drawer.querySelector(".basket-checkout");
   const countEls = document.querySelectorAll("[data-basket-count]");
@@ -149,7 +158,22 @@ if (drawer && toggle) {
 
     const subtotal = lines.reduce((sum, line) => sum + variations[line.variationId].price * line.quantity, 0);
     subtotalEl.textContent = money(subtotal);
-    checkoutButton.disabled = empty || checkingOut;
+
+    // Shipping: one FedEx flat-rate box, picked by how many items there are
+    const itemCount = lines.reduce((sum, line) => sum + line.quantity, 0);
+    const shipping = shippingFor(itemCount);
+    const needsQuote = !empty && !shipping;
+    shippingRowEl.hidden = needsQuote;
+    totalRowEl.hidden = needsQuote;
+    quoteEl.hidden = !needsQuote;
+    if (shipping) {
+      shippingLabelEl.textContent = shipping.label;
+      shippingAmountEl.textContent = money(shipping.cents);
+      totalEl.textContent = money(subtotal + shipping.cents);
+    }
+    if (needsQuote) quoteLinkEl.href = quoteMailto(lines, variations);
+
+    checkoutButton.disabled = empty || checkingOut || needsQuote;
     updateBadge();
   }
 
@@ -264,6 +288,27 @@ if (drawer && toggle) {
   });
 
   updateBadge();
+}
+
+// An email to Nadine with the basket already written in
+function quoteMailto(lines, variations) {
+  const items = lines.map((line) => {
+    const entry = variations[line.variationId];
+    const name = `${entry.productName}${entry.variationName ? ` (${entry.variationName})` : ""}`;
+    return `- ${line.quantity} × ${name}`;
+  });
+  const body = [
+    "Hi,",
+    "",
+    "I'd like to order these, and need a shipping quote:",
+    "",
+    ...items,
+    "",
+    "Shipping to (city, state, ZIP):",
+    "",
+    "Thank you!",
+  ].join("\n");
+  return `mailto:${QUOTE_EMAIL}?subject=${encodeURIComponent("Shipping quote")}&body=${encodeURIComponent(body)}`;
 }
 
 function escapeHtml(text) {
