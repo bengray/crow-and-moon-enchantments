@@ -1,0 +1,19 @@
+{
+  "name": "crow-and-moon-functions",
+  "private": true,
+  "description": "Shop API for Crow & Moon Enchantments: live stock, Square checkout, and catalog webhooks.",
+  "main": "index.js",
+  "engines": {
+    "node": "22"
+  },
+  "scripts": {
+    "test": "node --test test/shop.test.js",
+    "serve": "firebase emulators:start --only functions,hosting",
+    "deploy": "firebase deploy --only functions",
+    "logs": "firebase functions:log"
+  },
+  "dependencies": {
+    "firebase-admin": "^14.5.0",
+    "firebase-functions": "^7.4.0"
+  }
+}
