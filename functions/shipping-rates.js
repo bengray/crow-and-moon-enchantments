@@ -21,7 +21,7 @@ module.exports = {
   boxes: [
     { name: "Small", maxItems: 2, price: 12.0 }, // PLACEHOLDER price
     { name: "Medium", maxItems: 5, price: 18.0 }, // PLACEHOLDER price
-    { name: "Large", maxItems: 10, price: 24.0 }, // PLACEHOLDER price
+    { name: "Large", maxItems: 10, price: 25.0 }, // PLACEHOLDER price
   ],
 
   // Where shoppers send a request for a shipping quote on big orders
