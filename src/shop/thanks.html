@@ -1,0 +1,39 @@
+---
+title: "Thank you | Crow & Moon Enchantments"
+description: "Thank you for your order from Crow & Moon Enchantments."
+permalink: "/shop/thanks/"
+eleventyExcludeFromCollections: true
+---
+
+{% extends "layouts/base.html" %}
+
+{% block head %}
+<meta name="robots" content="noindex" />
+<link rel="stylesheet" href="/assets/css/critical.css" />
+<link rel="stylesheet" href="/assets/css/local.css" />
+<link rel="stylesheet" href="/assets/css/shop.css" />
+{% endblock %}
+
+{% block main %}
+{% include "sections/header.html" %}
+
+<div id="clt-thanks-section" class="clt-section">
+  {# basket.js empties the basket when it sees data-clear-basket #}
+  <section id="clt-thanks" data-clear-basket>
+    <img src="/assets/images/section-divider-1.png" alt="" class="clt-divider one" />
+    <h2 class="clt-section-title">
+      <span class="bigger-letter">T</span>hank
+      <span class="bigger-letter">Y</span>ou
+    </h2>
+    <p class="clt-section-description">
+      Your order is in. Square will email you a receipt, and I'll get your
+      things wrapped and on their way.
+    </p>
+    <p class="clt-section-description">
+      Questions about your order? Write to me at
+      <a href="mailto:crowandmoonenchantments@gmail.com">crowandmoonenchantments@gmail.com</a>.
+    </p>
+    <p class="thanks-back"><a href="/shop/">Back to the shop</a></p>
+  </section>
+</div>
+{% endblock %}

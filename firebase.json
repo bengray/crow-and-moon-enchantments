@@ -1,4 +1,12 @@
 {
+  "functions": [
+    {
+      "source": "functions",
+      "codebase": "default",
+      "runtime": "nodejs22",
+      "ignore": ["node_modules", ".git", "test", "*.log", ".env.example"]
+    }
+  ],
   "hosting": {
     "public": "public",
     "ignore": [
@@ -8,8 +16,26 @@
     ],
     "rewrites": [
       {
+        "source": "/api/stock",
+        "function": { "functionId": "stock", "region": "us-central1" }
+      },
+      {
+        "source": "/api/checkout",
+        "function": { "functionId": "checkout", "region": "us-central1" }
+      },
+      {
+        "source": "/api/square-webhook",
+        "function": { "functionId": "squareWebhook", "region": "us-central1" }
+      },
+      {
         "source": "**",
         "destination": "/index.html"
+      }
+    ],
+    "headers": [
+      {
+        "source": "/shop/catalog.json",
+        "headers": [{ "key": "Cache-Control", "value": "public, max-age=60" }]
       }
     ]
   }

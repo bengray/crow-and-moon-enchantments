@@ -1,4 +1,5 @@
 @use "tools";
+@use "basket"; // Basket drawer, buy button, quantity stepper: needed on every page
 
 // ─────────────────────────────────────────────────────────────────────────────
 // GLOBAL STYLES
@@ -28,6 +29,12 @@
   --defaultLetterSpacing: 0.03em;
 
   --sectionPadding: #{tools.rem(20)};
+
+  // Shop and basket
+  --gold: #d3b16a;
+  --goldDim: rgba(201, 175, 130, 0.35);
+  --goldFaint: rgba(201, 175, 130, 0.18);
+  --soldOut: #9c8f84;
 }
 
 html,
