@@ -6,7 +6,8 @@
 // ─────────────────────────────────────────────────────────────────────────────
 
 const square = require("./square");
-const { shippingFor, MAX_ITEMS, QUOTE_EMAIL } = require("./shipping");
+const { shippingFor, isPrice, boxes, MAX_ITEMS, QUOTE_EMAIL, PICKUP, FULFILLMENTS } = require("./shipping");
+const fedex = require("./fedex");
 
 const ID_PATTERN = /^[A-Za-z0-9_-]{1,64}$/;
 const MAX_IDS = 100;
@@ -55,7 +56,9 @@ async function getStock({ ids }, config, { client } = {}) {
 /* ---------- POST /api/checkout ---------- */
 
 /**
- * Body: { items: [{ variationId, quantity }] }
+ * Body: { items: [{ variationId, quantity }], fulfillment?: "ship" | "pickup" }
+ *   fulfillment defaults to "ship". "pickup" has no shipping charge or box
+ *   limit, and Square doesn't ask for an address.
  *
  * Checks every line against Square (exists, sellable, enough in stock), then
  * creates a Square payment link for the whole basket. Prices always come from
@@ -68,9 +71,10 @@ async function getStock({ ids }, config, { client } = {}) {
  * 422 { error, needsQuote: true }               more items than the biggest box
  *                                               holds; ask Nadine for a quote
  *
- * Shipping is a FedEx flat-rate box chosen by item count (functions/shipping-rates.js).
+ * Shipping is a FedEx flat-rate box chosen by item count (functions/shipping-rates.js),
+ * priced from FedEx's saved rates in `rateStore` (see refreshShippingRates).
  */
-async function createCheckout(body, config, { client } = {}) {
+async function createCheckout(body, config, { client, rateStore } = {}) {
   const items = Array.isArray(body && body.items) ? body.items : null;
   if (!items || !items.length) return { status: 400, body: { error: "Your basket is empty." } };
   if (items.length > MAX_LINES) return { status: 400, body: { error: "Too many different items." } };
@@ -87,14 +91,23 @@ async function createCheckout(body, config, { client } = {}) {
   }
   const ids = [...wanted.keys()];
 
-  // Pick the box before asking Square anything: too big an order can't check out
+  const fulfillment = (body && body.fulfillment) || "ship";
+  if (!FULFILLMENTS.includes(fulfillment)) {
+    return { status: 400, body: { error: "Something in your basket doesn't look right." } };
+  }
+  const pickup = fulfillment === "pickup";
+  if (pickup && !PICKUP.enabled) {
+    return { status: 400, body: { error: "Local pickup isn't available right now. Please choose shipping." } };
+  }
+
+  // Pick the box before asking Square anything: too big an order can't ship.
+  // Pickup orders don't go in a box, so they have no limit.
   const itemCount = [...wanted.values()].reduce((sum, quantity) => sum + quantity, 0);
-  const shipping = shippingFor(itemCount);
-  if (!shipping) {
+  if (!pickup && !shippingFor(itemCount)) {
     return {
       status: 422,
       body: {
-        error: `That's more than fits in one shipping box (${MAX_ITEMS} items). Email me at ${QUOTE_EMAIL} and I'll quote shipping for you.`,
+        error: `That's more than fits in one shipping box (${MAX_ITEMS} items). Email me at ${QUOTE_EMAIL} and I'll quote shipping for you.${PICKUP.enabled ? " Or choose local pickup, which has no limit." : ""}`,
         needsQuote: true,
       },
     };
@@ -132,7 +145,8 @@ async function createCheckout(body, config, { client } = {}) {
     };
   }
 
-  const shippingFee = shipping.cents > 0 ? { name: `FedEx ${shipping.label}`, amount: shipping.cents } : null;
+  const priced = pickup ? null : shippingFor(itemCount, await savedCents(rateStore));
+  const shippingFee = priced && priced.cents > 0 ? { name: `FedEx ${priced.label}`, amount: priced.cents } : null;
 
   const siteUrl = String(config.SITE_URL || "").replace(/\/$/, "");
   const link = await client.createPaymentLink({
@@ -140,9 +154,11 @@ async function createCheckout(body, config, { client } = {}) {
     redirectUrl: siteUrl ? `${siteUrl}/shop/thanks/` : undefined,
     supportEmail: config.SHOP_SUPPORT_EMAIL,
     shippingFee,
+    askForShippingAddress: !pickup,
+    paymentNote: pickup ? PICKUP.squareNote : undefined,
   });
 
-  log("info", "Created payment link", { orderId: link.order_id, lines: wanted.size, box: shipping.box });
+  log("info", "Created payment link", { orderId: link.order_id, lines: wanted.size, fulfillment, box: priced ? priced.box : null, shippingCents: priced ? priced.cents : 0 });
   return { status: 200, body: { url: link.url || link.long_url } };
 }
 
@@ -209,4 +225,81 @@ async function handleWebhook({ rawBody, signature }, config, { fetchImpl = globa
   return { status: 200, body: { rebuilt: true } };
 }
 
-module.exports = { getStock, createCheckout, handleWebhook };
+/* ---------- Shipping rates from FedEx ---------- */
+
+/**
+ * The saved FedEx record, or null if there's no store, nothing saved yet, or
+ * the store can't be read. Callers then use each box's backupPrice, so
+ * checkout never fails over shipping.
+ */
+async function savedRecord(rateStore) {
+  if (!rateStore) return null;
+  try {
+    return await rateStore.read();
+  } catch (error) {
+    log("error", "Couldn't read saved shipping rates; using backup prices", { error: error.message });
+    return null;
+  }
+}
+
+// FedEx's saved prices by box name, like { Medium: 2435 }
+async function savedCents(rateStore) {
+  const record = await savedRecord(rateStore);
+  return (record && record.cents) || {};
+}
+
+/**
+ * GET /api/shipping-rates
+ * 200 { cents: { Small: 1955, ... }, live: true, fetchedAt }
+ *   cents     the price of every box, FedEx's where saved, otherwise the backup
+ *   live      true when every box's price came from FedEx
+ */
+async function getShippingRates(config, { rateStore } = {}) {
+  const record = await savedRecord(rateStore);
+  const saved = (record && record.cents) || {};
+  const cents = {};
+  let live = true;
+  for (const box of boxes) {
+    cents[box.name] = isPrice(saved[box.name]) ? saved[box.name] : box.backupCents;
+    if (!isPrice(saved[box.name])) live = false;
+  }
+  return { status: 200, body: { cents, live, fetchedAt: (record && record.fetchedAt) || null } };
+}
+
+/**
+ * Runs once a day (functions/index.js). Asks FedEx what each box in
+ * shipping-rates.js costs to ship to the national band and saves the prices.
+ * All boxes or nothing: if any quote fails, the saved prices stay as they were
+ * and this throws, so the failure shows in the logs.
+ */
+async function refreshShippingRates(config, { fedexClient, rateStore, now = () => new Date() } = {}) {
+  fedexClient = fedexClient || fedex.createFedexClient(config);
+
+  const cents = {};
+  const rateTypes = new Set();
+  for (const box of boxes) {
+    const quote = await fedexClient.quoteOneRate(box.fedexPackaging);
+    cents[box.name] = quote.cents;
+    rateTypes.add(quote.rateType);
+  }
+
+  const previous = await savedRecord(rateStore);
+  const record = {
+    cents,
+    fetchedAt: now().toISOString(),
+    serviceType: fedexClient.serviceType,
+    toZip: fedexClient.toZip,
+    rateType: [...rateTypes].join(","),
+  };
+  await rateStore.write(record);
+
+  const changed = boxes.filter((b) => !previous || !previous.cents || previous.cents[b.name] !== cents[b.name]);
+  log("info", "Saved FedEx shipping rates", {
+    cents,
+    rateType: record.rateType,
+    changed: changed.map((b) => b.name),
+  });
+  return record;
+}
+
+module.exports = { getStock, createCheckout, handleWebhook, getShippingRates, refreshShippingRates };

@@ -23,32 +23,55 @@ Eleventy build ──► Firebase Hosting ──► /api/* ──► Firebase Fu
 
 ## What Nadine controls in Square
 
-| She wants to... | She does this in Square |
-|---|---|
-| Add a product to the site | Create the item. It appears after the automatic rebuild. |
-| Keep an item off the website (fair-only) | Put it in a category named **Not Online** |
-| Remove a product everywhere | Archive or delete the item |
-| Show stock counts and "Only 2 left" | Turn on **inventory tracking** for the item. Untracked items always show "In stock". |
-| Mark something sold out without counting | Set it to **Sold out** at her location |
-| Offer sizes or scents | Add **variations**. They become choices on the product page. |
-| Set the photo | Upload an image to the item. The first image is used. |
-| Write the description | Use the item description. A bulleted list (or lines starting with `* ` or `- `) becomes the starred details list. Everything else becomes paragraphs. |
-| Charge sales tax | Set up taxes on the items in Square. Checkout applies them automatically. |
+| She wants to...                          | She does this in Square                                                                                                                               |
+| ---------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Add a product to the site                | Create the item. It appears after the automatic rebuild.                                                                                              |
+| Keep an item off the website (fair-only) | Put it in a category named **Not Online**                                                                                                             |
+| Remove a product everywhere              | Archive or delete the item                                                                                                                            |
+| Show stock counts and "Only 2 left"      | Turn on **inventory tracking** for the item. Untracked items always show "In stock".                                                                  |
+| Mark something sold out without counting | Set it to **Sold out** at her location                                                                                                                |
+| Offer sizes or scents                    | Add **variations**. They become choices on the product page.                                                                                          |
+| Set the photo                            | Upload an image to the item. The first image is used.                                                                                                 |
+| Write the description                    | Use the item description. A bulleted list (or lines starting with `* ` or `- `) becomes the starred details list. Everything else becomes paragraphs. |
+| Charge sales tax                         | Set up taxes on the items in Square. Checkout applies them automatically.                                                                             |
 
 ## Shipping
 
-Nadine ships FedEx flat rate (One Rate), US only, so shipping depends only on which box the order goes in. The box depends on how many items are in the basket (total quantity, so two of the same oil count as two).
+Nadine ships FedEx flat rate (One Rate), US only. The box depends on how many items are in the basket (total quantity, so two of the same oil count as two). The basket shows "Shipping (Medium box)" with its price and a total before tax, and checkout charges the same amount on Square's page as a shipping line. Square's own shipping settings aren't used.
 
-Box sizes, how many items each holds, and FedEx's price for each live in one file: **`functions/shipping-rates.js`**. The basket shows "Shipping (Medium box)" with its price and a total before tax, and checkout charges the same amount on Square's page as a shipping line. Square's own shipping settings aren't used.
+**Prices come from FedEx.** One Rate prices depend on the box, the delivery speed, and the distance (local, regional, or national band). Shoppers don't enter a ZIP before checkout, so the shop always charges the **national** price, which covers shipping anywhere in the US. Nearby shoppers pay a few dollars more than Nadine's cost, and she never loses money on shipping.
 
-A basket with more items than the biggest box holds can't check out. The basket asks the shopper to email Nadine for a shipping quote, with their basket already written into the email.
+How it works:
 
-**When FedEx changes prices** (or the box rules change), edit `functions/shipping-rates.js`, then update both places that read it:
+1. Every day at 4 a.m. Central, the `refreshShippingRates` function asks FedEx what each box costs Nadine's account to ship from her ZIP to `FEDEX_RATE_TO_ZIP`, and saves the prices in Firestore (`shop/shippingRates`).
+2. The basket reads them from `/api/shipping-rates`, and checkout reads the same saved prices. They always match.
+3. If FedEx is down, the run fails, retries, and yesterday's prices stay in use. If FedEx has _never_ answered (before the first run), each box's `backupPrice` is used.
 
-1. Checkout, which sets what Square charges: `cd functions && npm run deploy`
-2. The site, which shows the price in the basket: push to `main` (or run the deploy workflow)
+What lives where:
 
-Do both, or the basket and Square's checkout page will show different amounts.
+| Change                                                              | Where                                 |
+| ------------------------------------------------------------------- | ------------------------------------- |
+| Which boxes, how many items each holds, backup prices, local pickup | `functions/shipping-rates.js`         |
+| Nadine's ZIP, delivery speed, drop-off or pickup                    | `functions/.env` (`FEDEX_*` settings) |
+| FedEx API key, secret key, account number                           | Firebase secrets                      |
+| Today's prices                                                      | Nothing to do. FedEx, daily.          |
+
+A basket with more items than the biggest box holds can't be shipped. The basket asks the shopper to email Nadine for a shipping quote, with their basket already written into the email, or to choose local pickup.
+
+### Local pickup
+
+The basket offers **Ship it** or **Local pickup**. Pickup orders:
+
+- pay no shipping and have no box limit
+- don't get asked for an address on Square's checkout page
+- are marked on the payment in Square with a note (`LOCAL PICKUP - do not ship` by default), so Nadine can tell them apart in her Square dashboard. Square collects the shopper's contact details as usual, so she can arrange a time.
+
+The pickup text shoppers see, the note on the payment, and an on/off switch are in the `pickup` section of `functions/shipping-rates.js`. With `enabled: false`, the choice disappears from the basket and checkout refuses pickup. The basket remembers each shopper's last choice.
+
+**If you change the boxes** in `functions/shipping-rates.js`, update both places that read it, then refresh the prices (see step 3b):
+
+1. Checkout: `cd functions && npm run deploy`
+2. The site: push to `main` (or run the deploy workflow)
 
 The category filter on the shop page uses each item's first category.
 
@@ -94,6 +117,30 @@ The webhook function needs permission to start the deploy workflow.
 3. Permissions: **Contents → Read and write**. Nothing else.
 4. Copy the token. Note its expiry date: when it expires, catalog changes stop triggering rebuilds until you replace it. Pushes and the manual "Run workflow" button still work.
 
+### 3b. FedEx: prices and Firestore
+
+**Credentials.** From the [FedEx Developer Portal](https://developer.fedex.com/), using a project with the **Rates and Transit Times API** turned on and Nadine's FedEx account linked to it, you need the production **API key**, **secret key**, and her **account number**.
+
+**Firestore.** The daily price check saves its prices in Firestore. Firebase console → **Firestore Database** → Create database → **Production mode** (keeps it closed to the public; only the functions use it) → location `nam5 (United States)`.
+
+**Settings.** In `functions/.env`, set `FEDEX_SHIP_FROM_ZIP` to the ZIP she ships from, and check `FEDEX_SERVICE_TYPE` and `FEDEX_PICKUP_TYPE` (see `functions/.env.example`).
+
+**Try it before deploying.** Put the three credentials in the repo-root `.env` (git-ignored) as `FEDEX_API_KEY`, `FEDEX_SECRET_KEY`, and `FEDEX_ACCOUNT_NUMBER`, then:
+
+```bash
+node functions/scripts/check-fedex.js
+```
+
+It prints each box's price, the same way the daily job asks. It saves nothing.
+
+**After deploying (step 4),** run the price check once by hand so the shop doesn't wait until 4 a.m.: Google Cloud console → **Cloud Scheduler** → `firebase-schedule-refreshShippingRates-us-central1` → **Force run**. Or:
+
+```bash
+gcloud scheduler jobs run firebase-schedule-refreshShippingRates-us-central1 --location=us-central1 --project=crow-and-moon-enchantments
+```
+
+Then `https://<the site>/api/shipping-rates` should show `"live": true`.
+
 ### 4. Deploy the functions
 
 From the repo root, on your machine:
@@ -110,22 +157,25 @@ cd ..
 firebase functions:secrets:set SQUARE_ACCESS_TOKEN            # paste the Square token
 firebase functions:secrets:set SQUARE_WEBHOOK_SIGNATURE_KEY   # paste "pending" for now, step 5 replaces it
 firebase functions:secrets:set GITHUB_DISPATCH_TOKEN          # paste the GitHub token
+firebase functions:secrets:set FEDEX_API_KEY                  # step 3b
+firebase functions:secrets:set FEDEX_SECRET_KEY
+firebase functions:secrets:set FEDEX_ACCOUNT_NUMBER
 
 firebase deploy --only functions
 ```
 
 `functions/.env` settings (not secret):
 
-| Setting | Value |
-|---|---|
-| `SQUARE_ENVIRONMENT` | `sandbox` while testing, `production` for real |
-| `SQUARE_LOCATION_ID` | Blank if one location, otherwise the ID from step 2 |
-| `SITE_URL` | `https://www.crowandmoonenchantments.com` (no trailing slash). Shoppers return here after paying. |
-| `SQUARE_WEBHOOK_URL` | `https://www.crowandmoonenchantments.com/api/square-webhook` |
-| `GITHUB_REPO` | `owner/repo` of this repository |
-| `SHOP_SUPPORT_EMAIL` | Shown on Square's checkout page |
+| Setting              | Value                                                                                         |
+| -------------------- | --------------------------------------------------------------------------------------------- |
+| `SQUARE_ENVIRONMENT` | `sandbox` while testing, `production` for real                                                |
+| `SQUARE_LOCATION_ID` | Blank if one location, otherwise the ID from step 2                                           |
+| `SITE_URL`           | `https://crowandmoonenchantments.com` (no trailing slash). Shoppers return here after paying. |
+| `SQUARE_WEBHOOK_URL` | `https://crowandmoonenchantments.com/api/square-webhook`                                      |
+| `GITHUB_REPO`        | `owner/repo` of this repository                                                               |
+| `SHOP_SUPPORT_EMAIL` | Shown on Square's checkout page                                                               |
 
-Shipping isn't in this file. See [Shipping](#shipping) above.
+The `FEDEX_*` shipping settings are covered in step 3b.
 
 Use whichever domain the site is actually served on (with or without `www`) for both URLs. The webhook signature check fails if `SQUARE_WEBHOOK_URL` doesn't match Square's setting character for character.
 
@@ -200,18 +250,23 @@ When sandbox works:
 
 ## Where things live
 
-| File | What it does |
-|---|---|
-| `functions/lib/square.js` | Square API calls and catalog-to-product mapping. Used by both the build and the functions. |
-| `functions/lib/handlers.js` | Stock, checkout, and webhook logic |
-| `functions/index.js` | Wraps the handlers as Firebase functions, declares secrets |
-| `functions/scripts/seed-sandbox.js` | Loads test products into a Square sandbox account |
-| `firebase.json` | Maps `/api/stock`, `/api/checkout`, `/api/square-webhook` to the functions |
-| `src/_data/shop.js` | Build-time catalog fetch (falls back to `src/config/shop/mock-products.js`) |
-| `src/shop/` | Shop grid, product pages, thank-you page, `catalog.json` for the basket |
-| `src/assets/js/basket-store.js`, `basket.js`, `shop.js` | Basket storage, drawer, product page |
-| `src/_includes/sections/basket.html`, `src/assets/sass/_basket.scss` | Basket markup and styles (every page) |
-| `.github/workflows/firebase-hosting-merge.yml` | Deploys on push, on catalog change, or by hand |
+| File                                                                 | What it does                                                                                      |
+| -------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------- |
+| `functions/lib/square.js`                                            | Square API calls and catalog-to-product mapping. Used by both the build and the functions.        |
+| `functions/lib/handlers.js`                                          | Stock, checkout, and webhook logic                                                                |
+| `functions/index.js`                                                 | Wraps the handlers as Firebase functions, declares secrets                                        |
+| `functions/scripts/seed-sandbox.js`                                  | Loads test products into a Square sandbox account                                                 |
+| `functions/shipping-rates.js`                                        | Shipping boxes: items per box, FedEx box name, backup price                                       |
+| `functions/lib/shipping.js`                                          | Item count → box and price. Shared by checkout and the basket.                                    |
+| `functions/lib/fedex.js`                                             | FedEx sign-in and One Rate quotes                                                                 |
+| `functions/lib/rate-store.js`                                        | Saves and reads today's FedEx prices (Firestore `shop/shippingRates`)                             |
+| `functions/scripts/check-fedex.js`                                   | Prints today's FedEx price for each box, to test credentials                                      |
+| `firebase.json`                                                      | Maps `/api/stock`, `/api/checkout`, `/api/square-webhook`, `/api/shipping-rates` to the functions |
+| `src/_data/shop.js`                                                  | Build-time catalog fetch (falls back to `src/config/shop/mock-products.js`)                       |
+| `src/shop/`                                                          | Shop grid, product pages, thank-you page, `catalog.json` for the basket                           |
+| `src/assets/js/basket-store.js`, `basket.js`, `shop.js`              | Basket storage, drawer, product page                                                              |
+| `src/_includes/sections/basket.html`, `src/assets/sass/_basket.scss` | Basket markup and styles (every page)                                                             |
+| `.github/workflows/firebase-hosting-merge.yml`                       | Deploys on push, on catalog change, or by hand                                                    |
 
 ## Troubleshooting
 
@@ -220,4 +275,5 @@ When sandbox works:
 - **Build fails with a 401:** the token and `SQUARE_ENVIRONMENT` don't match (a sandbox token used against production, or the reverse).
 - **Checkout says it couldn't open:** run `firebase functions:log` and look for the Square error.
 - **Catalog edits don't show up:** check the webhook's delivery log in the Square developer app, then `firebase functions:log`. A 403 means the signature key or `SQUARE_WEBHOOK_URL` is wrong. "rebuilt: false" means the GitHub token is missing or expired.
+- **Shipping shows the backup prices:** `/api/shipping-rates` says `"live": false`, so FedEx has never answered. Check the `refreshShippingRates` log (`firebase functions:log --only refreshShippingRates`). "Missing FedEx settings" names what to set; a 401 means the key, secret key, or account number is wrong. Run `node functions/scripts/check-fedex.js` locally to see FedEx's exact error.
 - **Something sold out but the page still shows it:** stock is live, so this means `/api/stock` is failing. Check the functions log.

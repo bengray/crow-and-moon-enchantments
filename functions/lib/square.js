@@ -142,10 +142,22 @@ function createClient(config = process.env, { fetchImpl = globalThis.fetch } = {
     return data.objects || [];
   }
 
-  async function createPaymentLink({ lineItems, redirectUrl, supportEmail, shippingFee }) {
+  /**
+   * One checkout link for the whole basket. For local pickup pass
+   * askForShippingAddress: false and a paymentNote, which Square adds to the
+   * payment so Nadine can see it's a pickup order.
+   */
+  async function createPaymentLink({
+    lineItems,
+    redirectUrl,
+    supportEmail,
+    shippingFee,
+    askForShippingAddress = true,
+    paymentNote,
+  }) {
     const location = await getLocationId();
     const checkoutOptions = {
-      ask_for_shipping_address: true,
+      ask_for_shipping_address: askForShippingAddress,
       allow_tipping: false,
     };
     if (redirectUrl) checkoutOptions.redirect_url = redirectUrl;
@@ -159,6 +171,7 @@ function createClient(config = process.env, { fetchImpl = globalThis.fetch } = {
 
     const data = await call("POST", "/online-checkout/payment-links", {
       idempotency_key: crypto.randomUUID(),
+      ...(paymentNote ? { payment_note: paymentNote } : {}),
       order: {
         location_id: location,
         line_items: lineItems.map((line) => ({

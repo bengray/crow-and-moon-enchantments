@@ -13,13 +13,16 @@ import {
   clearBasket,
   loadCatalog,
   fetchStock,
+  loadShippingRates,
+  readFulfillment,
+  writeFulfillment,
   shopIsLive,
   money,
   maxFor,
   CHECKOUT_ENDPOINT,
 } from "./basket-store.js";
-// Same box rules and prices checkout uses (edit functions/shipping-rates.js)
-import { shippingFor, QUOTE_EMAIL } from "../../../functions/lib/shipping.js";
+// Same box rules checkout uses (functions/shipping-rates.js); prices from FedEx
+import { shippingFor, QUOTE_EMAIL, PICKUP } from "../../../functions/lib/shipping.js";
 
 const drawer = document.querySelector("#basket");
 const toggle = document.querySelector("#basket-toggle");
@@ -39,6 +42,23 @@ if (drawer && toggle) {
   const totalEl = drawer.querySelector(".basket-total-amount");
   const quoteEl = drawer.querySelector(".basket-quote");
   const quoteLinkEl = drawer.querySelector(".basket-quote-link");
+  const quotePickupEl = drawer.querySelector(".basket-quote-pickup");
+  const fulfillmentEl = drawer.querySelector(".basket-fulfillment");
+  const fulfillmentInputs = [...drawer.querySelectorAll('input[name="basket-fulfillment"]')];
+  const fineprintShipEl = drawer.querySelector(".basket-fineprint-ship");
+
+  // Ship or pick up. The choice only appears when pickup is turned on.
+  if (PICKUP.enabled) {
+    fulfillmentEl.hidden = false;
+    drawer.querySelector("[data-pickup-details]").textContent = PICKUP.details;
+    const saved = readFulfillment();
+    fulfillmentInputs.forEach((input) => (input.checked = input.value === saved));
+  }
+
+  function currentFulfillment() {
+    const chosen = fulfillmentInputs.find((input) => input.checked);
+    return PICKUP.enabled && chosen && chosen.value === "pickup" ? "pickup" : "ship";
+  }
   const noteEl = drawer.querySelector(".basket-note");
   const checkoutButton = drawer.querySelector(".basket-checkout");
   const countEls = document.querySelectorAll("[data-basket-count]");
@@ -113,7 +133,7 @@ if (drawer && toggle) {
   }
 
   async function renderOnce() {
-    const catalog = await loadCatalog();
+    const [catalog, shippingCents] = await Promise.all([loadCatalog(), loadShippingRates()]);
     const variations = catalog.variations || {};
     let lines = readBasket();
 
@@ -159,14 +179,22 @@ if (drawer && toggle) {
     const subtotal = lines.reduce((sum, line) => sum + variations[line.variationId].price * line.quantity, 0);
     subtotalEl.textContent = money(subtotal);
 
-    // Shipping: one FedEx flat-rate box, picked by how many items there are
+    // Shipping: one FedEx flat-rate box, picked by how many items there are.
+    // Local pickup: no charge and no box limit.
+    const pickup = currentFulfillment() === "pickup";
     const itemCount = lines.reduce((sum, line) => sum + line.quantity, 0);
-    const shipping = shippingFor(itemCount);
-    const needsQuote = !empty && !shipping;
+    const shipping = pickup ? null : shippingFor(itemCount, shippingCents);
+    const needsQuote = !empty && !pickup && !shipping;
     shippingRowEl.hidden = needsQuote;
     totalRowEl.hidden = needsQuote;
     quoteEl.hidden = !needsQuote;
-    if (shipping) {
+    quotePickupEl.hidden = !PICKUP.enabled;
+    fineprintShipEl.hidden = pickup;
+    if (pickup) {
+      shippingLabelEl.textContent = "Local pickup";
+      shippingAmountEl.textContent = "No charge";
+      totalEl.textContent = money(subtotal);
+    } else if (shipping) {
       shippingLabelEl.textContent = shipping.label;
       shippingAmountEl.textContent = money(shipping.cents);
       totalEl.textContent = money(subtotal + shipping.cents);
@@ -212,7 +240,7 @@ if (drawer && toggle) {
       const response = await fetch(CHECKOUT_ENDPOINT, {
         method: "POST",
         headers: { "Content-Type": "application/json", Accept: "application/json" },
-        body: JSON.stringify({ items: readBasket() }),
+        body: JSON.stringify({ items: readBasket(), fulfillment: currentFulfillment() }),
       });
       const result = await response.json().catch(() => ({}));
 
@@ -254,6 +282,14 @@ if (drawer && toggle) {
   document.querySelectorAll("[data-basket-open]").forEach((el) => el.addEventListener("click", open));
   drawer.querySelectorAll("[data-basket-close]").forEach((el) => el.addEventListener("click", close));
   checkoutButton.addEventListener("click", checkout);
+
+  fulfillmentInputs.forEach((input) =>
+    input.addEventListener("change", () => {
+      writeFulfillment(currentFulfillment());
+      setNote("");
+      render();
+    }),
+  );
 
   // Click on the dimmed backdrop closes the drawer
   drawer.addEventListener("click", (event) => {

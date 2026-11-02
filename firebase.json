@@ -28,6 +28,10 @@
         "function": { "functionId": "squareWebhook", "region": "us-central1" }
       },
       {
+        "source": "/api/shipping-rates",
+        "function": { "functionId": "shippingRates", "region": "us-central1" }
+      },
+      {
         "source": "**",
         "destination": "/index.html"
       }

@@ -4,22 +4,6 @@
 // and live stock from Square on both. The basket drawer itself is basket.js.
 // ─────────────────────────────────────────────────────────────────────────────
 
-// scroll to the id "clt-shop" any time the /shop/ page is loaded.
-window.addEventListener("DOMContentLoaded", () => {
-  const shopSection = document.querySelector("#clt-shop");
-  const backButton = document.querySelector(".shop-back");
-  // if (backButton) {
-  //   backButton.scrollIntoView({ behavior: "smooth" });
-  //   // offset about 50px from the top of the viewport
-  // }
-  if (shopSection) {
-    shopSection.scrollIntoView({ behavior: "smooth" });
-  } else if (backButton) {
-    backButton.scrollIntoView({ behavior: "smooth" });
-    // offset about 50px from the top of the viewport
-  }
-});
-
 import {
   addToBasket,
   quantityOf,

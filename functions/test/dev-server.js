@@ -15,6 +15,7 @@ const http = require("node:http");
 const fs = require("node:fs");
 const path = require("node:path");
 const handlers = require("../lib/handlers");
+const { memoryRateStore } = require("../lib/rate-store");
 
 const PORT = Number(process.env.PORT) || 8090;
 const ROOT = path.resolve(__dirname, "../../public");
@@ -23,6 +24,12 @@ const config = {
   SQUARE_API_BASE: process.env.SQUARE_API_BASE || "http://localhost:4010/v2",
   SITE_URL: `http://localhost:${PORT}`,
 };
+
+// Pretend the daily FedEx check already ran. Sample prices, not FedEx's.
+const rateStore = memoryRateStore({
+  cents: { Small: 2295, Medium: 2895, Large: 3795 },
+  fetchedAt: new Date().toISOString(),
+});
 
 const TYPES = {
   ".html": "text/html; charset=utf-8",
@@ -49,10 +56,13 @@ http
       if (url.pathname === "/api/stock" && req.method === "GET") {
         return sendJson(res, await handlers.getStock({ ids: url.searchParams.get("ids") }, config));
       }
+      if (url.pathname === "/api/shipping-rates" && req.method === "GET") {
+        return sendJson(res, await handlers.getShippingRates(config, { rateStore }));
+      }
       if (url.pathname === "/api/checkout" && req.method === "POST") {
         let raw = "";
         for await (const chunk of req) raw += chunk;
-        return sendJson(res, await handlers.createCheckout(JSON.parse(raw || "{}"), config));
+        return sendJson(res, await handlers.createCheckout(JSON.parse(raw || "{}"), config, { rateStore }));
       }
     } catch (error) {
       console.error(error);

@@ -458,6 +458,84 @@ html:has(.basket-drawer[open]) {
     }
   }
 
+  // Ship or pick up: radios dressed as framed tiles, like the product options
+  .basket-fulfillment {
+    border: none;
+    padding: 0;
+    margin: 0;
+
+    &[hidden] {
+      display: none;
+    }
+
+    legend {
+      margin-bottom: #{tools.rem(8)};
+      font-size: #{tools.rem(15)};
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--bodyColorDark);
+    }
+  }
+
+  .basket-fulfillment-list {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: #{tools.rem(10)};
+  }
+
+  .basket-fulfillment-option {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: #{tools.rem(2)};
+    padding: #{tools.rem(10)} #{tools.rem(12)};
+    border: 1px solid var(--goldFaint);
+    background: rgba(5, 5, 10, 0.4);
+    cursor: pointer;
+    transition:
+      border-color 0.3s ease,
+      background 0.3s ease;
+
+    input {
+      position: absolute;
+      opacity: 0;
+      inset: 0;
+      margin: 0;
+      cursor: pointer;
+    }
+
+    .basket-fulfillment-name {
+      font-size: #{tools.rem(19)};
+      color: var(--bodyColor);
+    }
+
+    .basket-fulfillment-detail {
+      font-size: #{tools.rem(14)};
+      line-height: 1.35;
+      color: var(--bodyColorDark);
+    }
+
+    &:hover {
+      border-color: var(--goldDim);
+    }
+
+    &:has(input:checked) {
+      border-color: var(--gold);
+      background: rgba(211, 177, 106, 0.08);
+      box-shadow: inset 0 0 0 1px var(--goldDim);
+    }
+
+    &:has(input:focus-visible) {
+      outline: 1px solid var(--bodyColor);
+      outline-offset: 3px;
+    }
+  }
+
+  .basket-quote-pickup[hidden],
+  .basket-fineprint-ship[hidden] {
+    display: none;
+  }
+
   .basket-sums {
     display: flex;
     flex-direction: column;
@@ -498,6 +576,16 @@ html:has(.basket-drawer[open]) {
     font-size: #{tools.rem(18)};
     font-style: italic;
     color: var(--gold);
+
+    // The site's paragraph size would otherwise win
+    p {
+      font-size: inherit;
+      line-height: 1.4;
+    }
+
+    p + p {
+      margin-top: #{tools.rem(6)};
+    }
 
     &[hidden] {
       display: none;

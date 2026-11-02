@@ -54,6 +54,22 @@ there's something in the basket. #}
     <p class="basket-note" role="status" aria-live="polite"></p>
 
     <div class="basket-footer" hidden>
+      {# Shown only when local pickup is turned on in functions/shipping-rates.js #}
+      <fieldset class="basket-fulfillment" hidden>
+        <legend>How would you like it?</legend>
+        <div class="basket-fulfillment-list">
+          <label class="basket-fulfillment-option">
+            <input type="radio" name="basket-fulfillment" value="ship" checked />
+            <span class="basket-fulfillment-name">Ship it</span>
+            <span class="basket-fulfillment-detail">FedEx, anywhere in the US</span>
+          </label>
+          <label class="basket-fulfillment-option">
+            <input type="radio" name="basket-fulfillment" value="pickup" />
+            <span class="basket-fulfillment-name">Local pickup</span>
+            <span class="basket-fulfillment-detail" data-pickup-details></span>
+          </label>
+        </div>
+      </fieldset>
       <div class="basket-sums">
         <p class="basket-sum">
           <span>Subtotal</span>
@@ -73,11 +89,15 @@ there's something in the basket. #}
           That's more than fits in one shipping box. Send me a note with what
           you'd like and I'll quote shipping for you.
         </p>
+        <p class="basket-quote-pickup" hidden>
+          Or choose local pickup above, which has no limit.
+        </p>
         <a class="basket-quote-link" href="mailto:crowandmoonenchantments@gmail.com">Email me for a quote</a>
       </div>
       <p class="basket-fineprint">
-        Ships FedEx within the US. Sales tax is added at checkout, and payment
-        is handled securely by Square.
+        <span class="basket-fineprint-ship">Ships FedEx within the US.</span>
+        Sales tax is added at checkout, and payment is handled securely by
+        Square.
       </p>
       <button type="button" class="buy-button basket-checkout">Checkout</button>
       <button type="button" class="basket-keep" data-basket-close>

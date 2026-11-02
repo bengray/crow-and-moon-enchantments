@@ -13,8 +13,12 @@ const STORAGE_KEY = "crowandmoon:basket:v1";
 export const STOCK_ENDPOINT = "/api/stock";
 export const CHECKOUT_ENDPOINT = "/api/checkout";
 export const CATALOG_URL = "/shop/catalog.json";
+export const SHIPPING_RATES_ENDPOINT = "/api/shipping-rates";
+
+const FULFILLMENT_KEY = "crowandmoon:fulfillment:v1";
 
 let memoryFallback = [];
+let fulfillmentFallback = "ship";
 
 /* ---------- Reading and writing ---------- */
 
@@ -83,6 +87,27 @@ export function clearBasket() {
   writeBasket([]);
 }
 
+/* ---------- Ship or pick up ---------- */
+
+// The shopper's last choice, "ship" (default) or "pickup"
+export function readFulfillment() {
+  try {
+    const value = localStorage.getItem(FULFILLMENT_KEY);
+    return value === "pickup" ? "pickup" : "ship";
+  } catch {
+    return fulfillmentFallback;
+  }
+}
+
+export function writeFulfillment(value) {
+  fulfillmentFallback = value === "pickup" ? "pickup" : "ship";
+  try {
+    localStorage.setItem(FULFILLMENT_KEY, fulfillmentFallback);
+  } catch {
+    // Private browsing: the choice still holds for this page
+  }
+}
+
 // Another tab changed the basket: tell this page
 window.addEventListener("storage", (event) => {
   if (event.key === STORAGE_KEY) {
@@ -125,6 +150,26 @@ export async function fetchStock(ids) {
   } catch {
     return null;
   }
+}
+
+/**
+ * Today's FedEx price for each box, by box name: { Small: 1955, ... }.
+ * Fetched once per page. Returns {} on a placeholder build or if the request
+ * fails, so the basket falls back to the backup prices in shipping-rates.js.
+ */
+let shippingRatesPromise = null;
+export function loadShippingRates() {
+  if (!shopIsLive()) return Promise.resolve({});
+  if (!shippingRatesPromise) {
+    shippingRatesPromise = fetch(SHIPPING_RATES_ENDPOINT, { headers: { Accept: "application/json" } })
+      .then((r) => (r.ok ? r.json() : {}))
+      .then((data) => (data && data.cents) || {})
+      .catch(() => {
+        shippingRatesPromise = null; // try again next time the basket opens
+        return {};
+      });
+  }
+  return shippingRatesPromise;
 }
 
 /* ---------- Formatting (keep in sync with src/config/filters/shop.js) ---------- */
