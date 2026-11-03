@@ -1,465 +1,167 @@
-<br/>
-<p align="center">
-  <a href="https://codestitch.app/">
-    <img src="https://codestitch.app/frontend/images/icon.png" alt="Logo" width="80" height="80">
-  </a>
+# Crow & Moon Enchantments
 
-  <h3 align="center">Intermediate Starter Kit (SASS)</h3>
+The website and online shop for **Crow & Moon Enchantments**, Nadine's shop in Warrenville, IL.
 
-  <p align="center">
-    Introducing the Intermediate Website Kit, presented by CodeStitch. This kit includes a pre-configured Eleventy environment with Nunjucks templating, along with seamless integration of Decap CMS. This setup allows you to quickly start a project while providing your client with a blog for content management. Everything is ready to go right from the start, offering a fantastic introduction to the advantages of a Static Site Generator, complete with SASS preprocessing.
-    <br/>
-    <br/>
-    <a href="https://github.com/CodeStitchOfficial/Intermediate-Website-Kit-LESS">LESS Starter Kit</a>
-    .
-    <a href="https://codestitch-intermediate.netlify.app/">View Live Result</a>
-    .
-    <a href="https://www.youtube.com/watch?v=0BNCYM4InT0&t">Watch Video</a>
-    .
-    <a href="https://codestitch.app/contact">Report Bug</a>
-  </p>
-</p>
+- **Live site:** https://crowandmoonenchantments.net
+- **Repository:** `bengray/crow-and-moon-enchantments` (GitHub)
+- **Hosting and shop API:** Firebase project `crow-and-moon-enchantments`
+- **Products, stock, payments:** Nadine's Square account (production)
+- **Shipping prices:** Nadine's FedEx account (One Rate, Express Saver)
 
-## Table of Contents
+It's a static [Eleventy](https://www.11ty.dev) site (Nunjucks templates, Sass, esbuild), started from the CodeStitch Intermediate kit and hosted on Firebase. The shop is backed by Square, with a few small Firebase Functions for live stock, checkout and shipping prices.
 
--   <a href="#overview">Overview</a>
--   <a href="#prerequisites">Prerequisites</a>
-    -   <a href="#must-knows">Must Knows</a>
-    -   <a href="#good-to-knows">Good-to-knows</a>
--   <a href="#quick-start-guide">Quick Start Guide</a>
--   <a href="#explanation-of-file-structure">Explanation of File Structure</a>
-    -   <a href="#root-files">Root Files</a>
-        -   <a href="#eleventyjs">.eleventy.js</a>
-        -   <a href="#netlifytoml">netlify.toml</a>
-        -   <a href="#packagejson-and-package-lockjson">package.json and package-lock.json</a>
-    -   <a href="#nodemodules">node_modules/</a>
-    -   <a href="#public">public/</a>
-    -   <a href="#src">src/</a>
-        -   <a href="#_data">\_data/</a>
-        -   <a href="#_includes">\_includes</a>
-            -   <a href="#nav-auto">Navigations \- Rendering Automatically</a>
-            -   <a href="#nav-manual">Navigations \- Rendering Manually</a>
-    -   <a href="#admin">admin/</a>
-    -   <a href="#assets">assets/</a>
-    -   <a href="#config">config/</a>
-    -   <a href="#content">content/</a>
-    -   <a href="#root-src-files">Root src/ Files</a>
-        -   <a href="#redirects">\_redirects</a>
-        -   <a href="#indexhtml">index.html</a>
-        -   <a href="#robotshtml">robots.html</a>
-        -   <a href="#sitemaphtml">sitemap.html</a>
--   <a href="#deployment">Deployment</a>
+This README is the "coming back to it later" guide. For the full, one-time setup of Square, Firebase, GitHub and FedEx, see [SHOP-SETUP.md](SHOP-SETUP.md).
 
-<a name="overview"></a>
-
-## Overview
-
-The Intermediate Website Kit builds off the beginner kits, mainly by including a pre-configured [Eleventy](https://www.11ty.dev) environment. This setup allows for reusable components, centralized data, and greater scalability as your clients grow. Additionally, a blog has been provided through [Decap CMS](https://decapcms.org/), enabling your clients to manage their own content. This can easily be adapted to various use cases, such as menus, job listing boards, portfolios, and more. A few additional plugins have also been included to enhance the developer experience, offering HTML/CSS minification, JS bundling/minification, and automatic sitemap generation.
-
-An example website is also provided, with easy substitution of website sections through the use of [CodeStitch's vanilla component library](https://codestitch.app/). This kit aims to get any project off the ground as quickly as possible, with deployment achievable in as little as two minutes, including CMS hosting.
-
-<a name="prerequisites"></a>
-
-## Prerequisites
-
-<a name="must-knows"></a>
-
-### Must Knows
-
-_Knowledge requirements before using the kit_
-
--   HTML/CSS
--   Beginner-level JS
--   Familiarity with working in a NodeJS-powered project (handling dependencies with npm, source vs built files, etc)
--   Familiarity with templating languages (this kit uses Nunjucks)
-
-<a name="good-to-knows"></a>
-
-### Good-to-knows
-
-_Not required for light-medium kit usage, but helpful if you want to customise the kit beyond base functionality_
-
--   Nunjucks ([Docs found here](https://mozilla.github.io/nunjucks/))
-    -   If you've never used Nunjucks before, [this excellent article by Hyunbin](https://hyunbinseo.medium.com/nunjucks-settings-for-vs-code-a0da0dc66b95) explains how to set up VSCode to best support Nunjucks, including formatting, syntax highlighting and Emmet.
--   Eleventy ([Docs found here](https://www.11ty.dev/docs/)). Key topics include:
-    -   [The Data Cascade](https://www.11ty.dev/docs/data-cascade/)
-    -   [Layouts](https://www.11ty.dev/docs/layouts/)
-    -   [Permalinks](https://www.11ty.dev/docs/permalinks/)
-    -   [Passthroughs](https://www.11ty.dev/docs/copy/)
--   Decap CMS ([Docs found here](https://decapcms.org/docs/intro/))
-
-<a name="quick-start-guide"></a>
-
-## Quick Start Guide
-
-1.  At the top of this repository page, click the **Use This Template** button to create a new repository.
-2.  Follow the instructions to create a new repository from the starter kit.
-3.  Clone the repository locally to your computer and open it in VS Code.
-4.  Run `npm install` to install all dependencies.
-5.  After the installation is complete, run `npm start` to start the development server.
-6.  Fill out the `./src/_data/client.js` file with the appropriate information for your client.
-7.  Adjust the `:root` variables in `./src/assets/[sass or less]/root.[scss or less]`
-8.  Modify the website files (use `./src`, NOT `./public`) as needed. Use the template file in `content/pages/_template.txt` to get started, or modify the existing pages.
-9.  Deploy using your preferred hosting provider.
-
-<a name="explanation-of-file-structure"></a>
-
-## Explaination of File Structure
-
-This documentation will explain all the files and directories in the starter kit, from root inwards, top to bottom. By the end, you should have a full understanding of all files and directories, and be fully equipped to adapt the kit to your needs.
-
-```
-.
-├── public/
-├── src/
-│ ├── _data/
-│ │ └── client.js
-│ ├── _includes/
-│ │ ├── components/
-│ │ └── layouts/
-│ ├── admin/
-│ │ └── config.yml
-│ ├── assets/
-│ │ ├── css/
-│ │ ├── favicons/
-│ │ ├── fonts/
-│ │ ├── images/
-│ │ ├── js/
-│ │ ├── sass or less/
-│ │ └── svgs/
-| ├── config/
-│ ├── content/
-│ │ ├── blog/
-│ │ └── pages/
-│ ├── _redirects
-│ ├── index.html
-│ ├── robots.txt
-├── .eleventy.js
-└── netlify.toml
-└── package-lock.json
-└── package.json
-```
-
-<a name="root-files"></a>
-
-### Root Files
-
-<a name="eleventyjs"></a>
-
-#### .eleventy.js
-
-The heart of the kit, the `.eleventy.js` file configures the Eleventy static site generator to work as needed. Here, we're able to define settings that control how files are processed, set up filters/shortcodes to modify data at build time, define which languages are used, and set up third-party plugins to add additional functionality to the kit.
-
-The `.eleventy.js` file is well-documented, with all necessary extra documentation provided for extra reading if desired. A full list of functionalities added via `.eleventy.js` is given below:
-
--   Sets up CSS and JS as template languages, allowing modification at build time by Eleventy. JS is bundled and minified by esbuild.
--   Adds the following plugins:
-    -   [Eleventy Navigation](https://github.com/11ty/eleventy-navigation) - Allows the option to define navigation data within the template front matter.
-    -   [Eleventy Sitemap](https://www.npmjs.com/package/@quasibit/eleventy-plugin-sitemap) - Automatically generates a sitemap from all files in `./src/content`.
-    -   [Eleventy Minification](https://github.com/benjaminrancourt/eleventy-plugin-files-minifier) - Minifies HTML and CSS (only run in production - when `npm run build` is executed).
--   Passes through all assets (in `./src/assets`) without modification by Eleventy.
--   Adds date formatting filters and a year shortcode.
--   Sets some basic server options.
-
-<a name="netlifytoml"></a>
-
-#### netlify.toml
-
-The kit is made to support deployment to Netlify out-of-the-box, enabled through this `netlify.toml` file. Here, some basic configuration is used to define the `public/` directory as serving the built website files, as well as adding a Google Lighthouse plugin to show Lighthouse scores in Netlify.
-
-<a name="packagejson-and-package-lockjson"></a>
-
-#### package.json and package-lock.json
-
-Standard NodeJS package files, containing the dependencies needed for the project to work. The only things worth noting are the `watch:eleventy` and `build:eleventy` scripts in `package.json`. When `npm start` is used, the `watch:eleventy` script is run, which contains an environment variable (`ELEVENTY_ENV=DEV`). When `npm run build` is used, the `ELEVENTY_ENV` variable is set to `PROD`.
-
-You may notice around the project (e.g., `./src/config/server.js` and `.eleventy.js`) that there is reference to an `isProduction` variable. This is used to control some functionality that is only run while the website is "in production". For example, when `npm run build` is used, we can assume the website is deployed to a live domain, so we can do things like minify the code. This allows comments to be shown in the dev tools while you're actively working on the site but have them removed, and the code minified, for the smallest file sizes and most efficiency when you deploy it.
-
-You shouldn't have to worry about this, however, as all the initial setup has been done for you. It's still good to know if you wish to expand the kit to add production-only functionality.
-
-<a name="nodemodules"></a>
-
-### node_modules/
-
-This directory contains the code for all the dependencies that power this kit. It comes as standard with any NodeJS-powered project, much like the `package.json` and `package-lock.json` files. You can safely ignore this directory in your day-to-day work.
-
-<a name="public"></a>
-
-### public/
-
-All files that have been processed and built by Eleventy are stored here. These are the files that your users will be served and see when they visit the website. It's helpful to look into this directory to debug any issues that may appear in your project, but take care not to actively work in this directory. Any changes you make here will be overwritten the next time the project is run with what's contained in `src/`.
-
-It's also good to understand how it works when a user goes to a domain. If a user goes to [www.example.com](http://www.example.com), the server will look for an `index.html` file at the root of the directory. If they then navigate to [www.example.com/about](http://www.example.com/about), the server will serve the `index.html` file in the /about directory. This is why you'll see a number of directories, all with "index.html" files contained within. If you're expecting a file to be present but you're getting 404 errors when navigating to the appropriate path, check to see if the correct directory/file is being written.
-
-<a name="src"></a>
-
-### src/
-
-<a name="_data"></a>
-
-#### \_data/
-
-This directory contains data files that are accessible within any template throughout the project. Out of the box, the kit only contains a `client.js` file, which holds some information you may wish to define for a client. It's important to fill this file out with the correct information for your client, as many HTML meta tags, the sitemap, and robots.txt all use data from this file.
-
-Consider adding the client's contact details, address, and social media information to this file. Examples have been provided in the kit. This way, you can access the client's information from a single source of truth. If a client changes their email address, you can update it in the `client.js` file and have it reflect across the website without needing to search through multiple files or use Find and Replace.
-
-As an example, we have defined the client's email address under the `email` key. In the footer (`./src/_includes/components/footer.html`), we can use `{{ client.email }}` to access this value and output "help@codestitch.app". The format for outputting the data is `{{ [FILENAME].[KEY] }}`. If we wanted to add another file for pricing information, we could create a file (`_data/pricing.json`), then use `{{ pricing.price }}` to render the price.
-
-In Eleventy, this is known as "Global Data". You can read more about Global Data [here](https://www.11ty.dev/docs/data-global/), with more information about how this works in the context of the Data Cascade [here](https://www.11ty.dev/docs/data-cascade/).
-
-<a name="_includes"></a>
-
-#### \_includes
-
-The `_includes` directory contains pieces of HTML code that you want to share between multiple pages. This code could be small components (a button or a loading spinner), larger sections (header, footer, or a stitch from [CodeStitch](https://codestitch.app/)), or a layout containing a reusable `<head>` element with all necessary meta tags.
-
-By default, the kit has two sub-directories in `_includes` - one for components and one for layouts.
-
-Components can be used on one, none, or many pages. For example, we've set up a header and a footer that we load on all pages (through `_includes/layouts/base.html`). If you want to make a change to the header or footer, you can do so within `_includes/components`, and this change will be reflected across all pages. This is done by using `{% include "components/header.html" %}`. If you want to adjust some of the data within the component (e.g., a button that has the same structure/core styles but different CTA text), you should look into using a [Nunjucks Macro](https://mozilla.github.io/nunjucks/templating#macro), which you can [import](https://mozilla.github.io/nunjucks/templating#import) where needed.
-
-Layouts define the wider page structure. The main one used in this kit is `base.html`, which contains the document type declaration, `<head>` tag with associated `<meta>` tags (using data in `_data/client.js` and the page front matter), a `<body>` with a `<main>` tag and skip-to-content link, and calls to the header and footer. All pages use `base.html`. This has been configured to work automatically, so you shouldn't need much additional work. For the blog, we have also created a `post.html` layout (which also uses the `base.html` file, through Nunjucks' `{% extends %}`) that we use to render the blog article pages.
-
-<a name="nav-auto"></a>
-
-##### Navigations - Rendering Automatically
-
-One thing you may notice in the `\_includes/header.html` file is the vast amount of Nunjucks code in the `cs-ul-wrapper` element. This is code that makes use of the `eleventyNavigation` object and keys in the frontmatter of all pages that are, by default, added to the kit. This is part of the Eleventy Navigation plugin, which allows us to create scalable navigation menus without having to constantly add new list items and dropdowns to the header whenever a new page is made. If you make a new page using the `\_template.txt` file in `content/pages`, you will be guided to add this information into the front matter, where the navigation will be remade with the new page data automatically.
-
-If you wish to use this kit, and benefit from this way of doing navigations but want to swap out the navigation for another one in the CodeStitch template library, you can copy the `cs-ul-wrapper` `<div>` element that's found in the kit and replace the `cs-ul-wrapper` in the new stitch. As the class system is the same with all Stitches, the auto-rendering functionality, including the application of active-style classes and dropdowns (if a "dropdown" Stitch is used) will remain the same.
-
-<a name="nav-manual"></a>
-
-##### Navigations - Rendering Manually
-
-Some developers may wish to continue with the "old school" way of rendering navigations and add the HTML for new navigation links to the header individually. This is fine to do too.
-
-One issue that you may run into, however, is the addition of the `cs-active` class to the page that the user is currently on. As the same navigation element is being rendered on all pages, manually adding the `cs-active` class to one of the navigation items will cause that item to be "activated" between all pages.
-
-To get around this, you will need to manually add some Nunjucks code to each of the navigation items to check the page the user is on and add `cs-active` if that particular page is being viewed. That code would look like this:
-
-```
-<a href="/contact" class="cs-li-link {% if page.url == '/contact/' %} cs-active {% endif %}">
-    Contact
-</a>
-```
-
-Note the if-check in the `class` attribute of the anchor element. Here, we're checking if `page.url` (the page we're currently on) matches the permalink of the navigation item. Make sure both leading and trailing slashes are used. If this were for the home page, we'd just check for "/", like so:
-
-```
-<a href="/" class="cs-li-link {% if page.url == '/' %} cs-active {% endif %}">
-    Home
-</a>
-```
-
-<a name="admin"></a>
-
-#### admin/
-
-The `admin/` directory sets up [Decap CMS](https://decapcms.org/) to be used within the project. It's configured as a blog that a client can access by navigating to the `/admin/` path on the deployed site, where they can create, update, and delete blog posts whenever they want. This modifies the markdown files in the source code, which will trigger a rebuild in Netlify, incorporating the new blog data. After about one minute, the client can see the new blog post on the website.
-
-Decap CMS has been chosen due to its open-source nature, good UX/DX, and stability. Very little training is required on the client's end to get it to work - the interface is clean and operates without trouble. It works through an `index.html` file in the `admin/`. This `index.html` file is processed as an Eleventy template, added to `/public/admin`, and the CMS is loaded when navigating to the `/admin` path. This kit uses DecapBridge for authentication as the Netlify Identity feature has been deprecated. Visit [Decapbridge Discord](<(https://discord.com/channels/1257728522361901219/1257728681380417600)>) and their [open-sources repos](https://github.com/decapbridge) for more information and support.
-
-The CMS is configured through a `config.yml` file, as per the Decap documentation. If you wish to use the blog as-is, you shouldn't need to make any changes here. If you want to extend the kit and modify the CMS for your own needs, we recommend referring to the Decap documentation for guidance on how to do so.
-
-Styling the Decap preview pane This template includes custom styles for the Decap CMS preview pane, so that blog posts in the admin dashboard look similar to the live site.
-
-1. How it works:
-
-The preview styles are defined in /admin/decap-preview-styles.css. The CMS preview script in /admin/index.html:
-
--   pulls the props from the collection
--   creates the DOM elements
--   registers these elements and styles for the preview panel to use
-
-2. How to update or customize:
-
-Edit /admin/decap-preview-styles.css and the preview pane script in /admin/index.html to match your site's branding or layout changes. Use Decap's documentation on [customizing the preview pane](https://decapcms.org/docs/customization/)
-
-3.Notes
-
--   The style sheet must be a CSS file
--   The style sheet does not support nested CSS.
-
-<a name="assets"></a>
-
-#### assets/
-
-All other non-content files are stored in `assets/`, which is set up in `.eleventy.js` to be passed through to `public/`. A brief overview of each of the folders within `assets/`, and any relevant notes, is provided below:
-
--   `css/` - SASS/LESS files from the `less/` or `sass/` directories are built into `css/`. From here, the CSS is processed as an Eleventy template, where we minify the code (production only), and pass it through to `public/`. **Do not** make CSS changes here - instead, use the SASS or LESS asset directory (depending on which kit you're using).
--   `favicons/` - Any favicon files can be stored here. We recommend using [this tool](https://realfavicongenerator.net/) to generate favicons for all devices.
--   `fonts/` - If you have any non-standard fonts you wish to locally host, you can put the files here. You can use [this tool](https://gwfh.mranftl.com/fonts) to download font files to be stored in `fonts/`, as well as generate the code to be put in your `root.scss` or `root.less` file.
--   `images/` - Any images can go here. No processing will occur.
--   `js/` - Put any JavaScript in this directory. It will be processed, bundled, and minified by esbuild.
--   `sass/` or `less/` - Depending on whether you're using the SASS or LESS version of the kit, you'll find your preprocessor files in one of these directories. Make your changes to styling here, not in `assets/css`
--   `svgs/` - A separate directory for SVGs. This makes it easier to bulk-compress SVGs separate from `images/` if you're using a tool like [compressor.io](https://compressor.io/).
-
-<a name="config"></a>
-
-#### config/
-
-All configurations for Eleventy are held in this directory. This includes settings for plugins, extensions, filters, and shortcodes, among other things.
-
-Unless you are confident in your Eleventy abilities, we recommend not making any changes to the files in this directory, as they have all been carefully configured to work without modification. If you are confident enough to make changes, you likely don't need a README to tell you what you're doing!
-
-<a name="content"></a>
-
-#### content/
-
-Any files that are built into HTML pages are held in `content/`. This includes standalone informational pages (held in `pages/`) and the blog markdown posts, which use the `post.html` layout (that in turn uses `base.html` through [Eleventy layout chaining](https://www.11ty.dev/docs/layout-chaining/) and [Nunjucks template inheritance](https://mozilla.github.io/nunjucks/templating#block)) to form the blog posts controlled by the CMS.
-
-You're welcome to modify any of these pages or create your own. If you wish to create your own pages, a template can be found in `pages/content/_template.txt`. Copy this file, paste it, rename it to an HTML file, and follow the structure shown in the template. This template contains some code at the top, wrapped between "---"s, which is called the front matter. This contains data specific to this page, which is used within the layout to set the `<title>` tag, `<meta>` description tag, among other things. This data will overwrite any data contained elsewhere in the [Eleventy Data Cascade](https://www.11ty.dev/docs/data-cascade/).
-
-A copy of the default front matter can be found below:
-
-```
 ---
-title: 'Page title for <title> and OG tags'
-description: 'Description for <meta> description and OG tags'
-preloadImg: '/assets/images/imagename.format'
-permalink: 'page-path/'
-eleventyNavigation:
-    key: Name to appear in navigation
-    order: 1000
-    parent: Optional - Put another page's "key" here to create a dropdown
-    hideOnMobile: Optional - set to "true" to hide on devices from, and below, 1023px
-    hideOnDesktop: Optional - set to "true" to hide on devices above, and including, 1024px
+
+## How it all fits together
+
+```
+Square (Nadine's catalog, stock, payments)          FedEx (One Rate box prices)
+   │                       ▲                              │
+   │ build: products       │ checkout: payment link       │ daily, 4 a.m. Central
+   ▼                       │ stock: live on every view    ▼
+Eleventy build ──► Firebase Hosting ──► /api/* ──► Firebase Functions ──► Firestore
+   ▲                                                    │                (saved prices)
+   └── GitHub Actions ◄── repository_dispatch ◄─────────┘
+                           (Square webhook: catalog changed)
+```
+
+- **Products** (names, prices, photos, descriptions) are read from Square when the site builds. When Nadine edits her catalog, Square calls a webhook, the webhook asks GitHub to rebuild, and the site updates a few minutes later.
+- **Stock** is fetched live from Square every time a shop page loads, so a sale at a fair shows online right away. **Sales never rebuild the site.**
+- **Sold-out items** stay visible, greyed out, at the end of the shop grid, and can't be added to the basket. Nadine can hide any item completely by putting it in her Square category **Not Online**.
+- **The basket** lives in the shopper's browser. At checkout, the server rechecks stock, works out shipping, and creates a single Square payment link. The browser only ever sends item IDs, quantities and "ship" or "pickup"; prices always come from Square and FedEx on the server.
+- **Shipping** is a FedEx One Rate box picked by item count (1–2 Small, 3–5 Medium, 6–10 Large). Prices come from FedEx once a day and are saved in Firestore, and the basket and checkout both use them. They're quoted for the far ("national") distance band, so one price covers anywhere in the US. More than 10 items can't be shipped online, and the shopper is asked to email for a quote.
+- **Local pickup** has no shipping charge and no item limit. Square doesn't ask for an address, and the payment is marked `LOCAL PICKUP - do not ship` in Nadine's Square dashboard.
+
 ---
+
+## Running it locally
+
+```bash
+npm install
+npm start            # http://localhost:8080, rebuilds as you edit
 ```
 
-Under the front matter, there is some more code:
+- With no `.env` at the repo root, the shop uses placeholder products and checkout says "almost ready." To build from real Square data, copy `.env.example` to `.env` and fill in a Square token and `SQUARE_ENVIRONMENT`.
+- Local builds have no `/api/*` functions, so live stock, shipping prices and checkout don't work under `npm start`. The page keeps the stock numbers from the build, and the basket uses the backup shipping prices.
+- **The full shop flow without any Square account:**
+  ```bash
+  node functions/test/fake-square.js                  # terminal 1: a fake Square
+  SQUARE_ACCESS_TOKEN=test-token SQUARE_API_BASE=http://localhost:4010/v2 npm run build
+  node functions/test/dev-server.js                   # terminal 2: http://localhost:8090
+  ```
 
-```
-{% extends "layouts/base.html" %}
+**Shop API tests** (Square, FedEx, checkout, shipping, pickup; all faked, no network):
 
-{% block head %}
-    <!-- Any page-specific tags that belong in the <head>, such as a page-specific stylesheet -->
-{% endblock %}
-
-{% block body %}
-    <!-- Page HTML goes here, without a <main> wrapper -->
-{% endblock %}
-```
-
-The first line, `{% extends "layouts/base.html" %}`, denotes the layout we should use. In the case of this kit, we're using the layout in `_includes/layouts/base.html`. Any code between the `{% block head %} ... {% endblock %}` will be inserted in the `<head>` of the document. This can be useful to insert stylesheets and scripts which you only want to load on this particular page. The page HTML content can be provided within the `{% block body %} ... {% endblock %}`. This will be inserted in the `<body>` of the HTML document, within a `<main>` tag.
-
-Blocks are a Nunjucks feature, which you can read more about [here](https://mozilla.github.io/nunjucks/templating#block).
-
-As mentioned, blog files are held in `content/blog`, with the CMS configured to add new posts as markdown files to this directory. As we can't define things like the layout, tags, permalink, or CSS preloads in the individual markdown files, a [directory data file](https://www.11ty.dev/docs/data-template-dir/) is used in `/blog/` to define this.
-
-A similar directory data file (`content.json`) is used in the `content/` directory to define a "sitemap" tag. This adds all pages in `content/` to the sitemap [collection](https://www.11ty.dev/docs/collections/), which renders our sitemap automatically for us.
-
-<a name="root-src-files"></a>
-
-#### Root src/ Files
-
-<a name="redirects"></a>
-
-##### \_redirects
-
-Set up any redirect rules here. More information can be found in the [Netlify Docs](https://docs.netlify.com/routing/redirects/).
-
-<a name="indexhtml"></a>
-
-##### index.html
-
-The home page. Treat it as if it were any other page in `content/pages`.
-
-<a name="robotshtml"></a>
-
-##### robots.html
-
-Set up as an HTML file so we can use the domain in `_data/client.js` to automatically create a `robots.txt` file in `/public`. We do this by setting the permalink to `/robots.txt`. Unless you need to block crawlers from other pages (we've already blocked `/admin` for you), you shouldn't need to touch this file.
-
-<a name="sitemaphtml"></a>
-
-##### sitemap.html
-
-Similar to `robots.html`, a `.html` file is used to generate a `sitemap.xml` file. It uses all HTML files that have a "sitemap" tag applied, which should be all pages in `content/`.
-
-<a name="deployment"></a>
-
-## Deployment
-
-When you're happy with your website, you can deploy it to your hosting provider of choice. As this kit uses Netlify, we have outlined some instructions below:
-
-1.  Sign in to or create an account with [Netlify](https://www.netlify.com/).
-2.  Go to [https://app.netlify.com](https://app.netlify.com), click **Sites** on the left-hand navigation, then click **Add new site**, and choose **Import an existing project**.
-3.  Choose to deploy your project with GitHub. Follow the steps to link Netlify and GitHub.
-4.  Find your project in the list of repositories.
-5.  Everything should be already configured, thanks to the `netlify.toml` file. Click **Deploy [PROJECT NAME]**.
-6.  Check to see if your site deploys without error. The site should be live, but we still need to set up the CMS.
-
-With slight modifications for usage with 11ty, this setup guide for DecapBridge was written by Geoffrey on the [Intermediate Astro Decap kit](https://github.com/CodeStitchOfficial/Intermediate-Astro-Decap-CMS/blob/main/README.md?plain=1#deployment)
-
-> [!IMPORTANT] This kit now uses decapbridge.com for its authentication solution. If you still use Netlify Identity, please refer to [the Netlify Identity branch](https://github.com/CodeStitchOfficial/Intermediate-Website-Kit-LESS/tree/deprecated---using-Netlify-Identity)
-
-> [!TIP] If you are updating your kit from Netlify Identity to decapbridge.com:
->
-> 1. Login to your Netlify account
-> 2. Navigate to Projects/Your-Site
-> 3. Navigate to Project Configuration/Identity and delete the Netlify Identity instance. This will delete your users as well. They will have to be re-created in decapbridge later.
-> 4. Delete the Netlify Identity script in src/index.html and in src/admin/index.html
-
-### On decapbridge.com:
-
-1. Make sure that your repo is on Github and your site is deployed (doesn’t have to be Netlify) before moving on to the next step.
-2. Navigate to https://decapbridge.com/ and create an account. It’s free.
-3. Navigate to the dashboard and Create New Site. You see this screen:
-
-![decapbridge.com dashboard](github/decapbridge-dashboard.png)
-
-Fill in the 3 input fields:
-
--   Github repository: it has to be in a `user-or-org/repository-name` format. e.g. `BuckyBuck135/testing-decapbridge`
--   Github access token. To create a personal access token in GitHub, follow these steps:
-
-    1. Log into your Github account.
-    2. Click on your profile picture (top right) (not the repository profile), and click the “Settings” link.
-    3. Scroll down and click the “Developer Settings” link.
-    4. Click the GitHub “Personal access tokens” link and choose `fine-grained tokens`
-    5. Click the “Generate new token” button and provide your password again if required.
-    6. Provide a name for the GitHub personal access token in the “Note” field.
-    7. Set the access token’s “expiration” timeout to “No expiration.”
-    8. Set the “Repository access” to the desired repository only.
-    9. Set the “Permissions / Repository permissions” to **read-write access** for this repository's **Contents** and **Pull requests**. (This is needed by DecapCMS to read your markdown, and write new content via Pull Requests.)
-    10. Click “Generate token.”, double check the permissions and click the Generate Token button
-    11. **Make sure to copy your GitHub Personal Access Token now as you will not be able to see this again.**
-
-        ![The Permissions settings](github/github-permissions.png)
-
-    12. Double check your permissions before generating the token. It must have read and write access to Contents and Pull Requests.
-
--   Decap CMS URL: provide the (deployed) URL of the Decap CMS dashboard. e.g [`https://testing-decapbridge.netlify.app/admin/#/`](https://testing-decapbridge.netlify.app/admin/#/)
-
-### On your CS Decap kit:
-
-1. In `/src/admin/config.yml`, edit the `backend` Decap config to paste in the snippet provided by the [DecapBridge.com](http://DecapBridge.com) dashboard. It should look something like this:
-
-```yaml
-# Use DecapBridge auth (required)
-backend:
-    name: git-gateway
-    repo: BuckyBuck135/testing-decapbridge # provided by decapbridge
-    branch: main
-    identity_url: https://auth.decapbridge.com/sites/5605bbe7-08f2-4ce5-bce2-7d97def08bed # provided by decapbridge
-    gateway_url: https://gateway.decapbridge.com # provided by decapbridge
-
-    # Quickly see who did what (optional)
-    commit_messages:
-        create: Create {{collection}} “{{slug}}” - {{author-name}} <{{author-login}}> via DecapBridge
-        update: Update {{collection}} “{{slug}}” - {{author-name}} <{{author-login}}> via DecapBridge
-        delete: Delete {{collection}} “{{slug}}” - {{author-name}} <{{author-login}}> via DecapBridge
-        uploadMedia: Upload “{{path}}” - {{author-name}} <{{author-login}}> via DecapBridge
-        deleteMedia: Delete “{{path}}” - {{author-name}} <{{author-login}}> via DecapBridge
-        openAuthoring: Message {{message}} - {{author-name}} <{{author-login}}> via DecapBridge
-
-# Better Decap + Bridge logo (optional)
-logo_url: https://decapbridge.com/decapcms-with-bridge.svg
-
-# Add site links in DecapCMS (optional)
-site_url: https://testing-decapbridge.netlify.app
+```bash
+cd functions && npm install && npm test
 ```
 
-2. Push changes to the repo and test the authentication system. As the admin of the site, your login credentials to access the Decap dashboard are the same as your decapbridge.com credentials.
-3. Invite your client from your decapbridge dashboard. This will create a decapbridge collaborator account for them. From there, they will be able to access their Decap dashboard, reset their password etc.
+**Check the FedEx connection** (prints today's price for each box, saves nothing):
+
+```bash
+node functions/scripts/check-fedex.js
+```
+
+---
+
+## Deploying
+
+There are two separate things to deploy, and they update in different ways.
+
+| What | How it deploys |
+|---|---|
+| **The site** (pages, styles, basket script, products from Square) | Automatically, by GitHub Actions, on every push to `main`, every Square catalog change, or "Run workflow" on the Actions tab. |
+| **The functions** (stock, checkout, webhook, shipping prices) | **By hand only**, from your machine: `firebase deploy --only functions` |
+
+Rules that will save you an afternoon:
+
+1. **Changed a Firebase secret or `functions/.env`? Redeploy the functions.** Functions lock in their settings when they're deployed, so changes don't take effect until you run `firebase deploy --only functions`. (A stale deploy once made every product show "Sold out.")
+2. **Deploy functions before the site** whenever `firebase.json` points at a new function. Firebase rejects a site deploy that routes to a function that doesn't exist yet.
+3. **Pull request previews use the real, production functions.** Opening a PR publishes a temporary preview site, but its stock, checkout and shipping calls go to the live functions. **A checkout on a preview is a real payment** on Nadine's account. Refund test orders.
+4. **The site and the functions must use the same Square environment.** If the site is built from one account or environment and the functions use another, Square won't recognize any item and the whole shop shows as sold out. The stock function logs a warning when this happens.
+
+---
+
+## Settings and secrets: where everything lives
+
+| Setting | Where | Notes |
+|---|---|---|
+| Square access token | Firebase secret `SQUARE_ACCESS_TOKEN` **and** GitHub secret `SQUARE_ACCESS_TOKEN` | Same production token in both. The site build uses GitHub's copy; the functions use Firebase's. |
+| Square environment | `functions/.env` **and** GitHub variable `SQUARE_ENVIRONMENT` | `production` in both. |
+| Square location | `functions/.env` and GitHub variable `SQUARE_LOCATION_ID` | Leave blank if Nadine has one location. |
+| Square webhook signature key | Firebase secret `SQUARE_WEBHOOK_SIGNATURE_KEY` | From the webhook subscription in Square's developer app (Production). |
+| GitHub token for rebuilds | Firebase secret `GITHUB_DISPATCH_TOKEN` | Fine-grained token, Contents read/write on this repo. **It expires**; when it does, catalog edits stop rebuilding the site. |
+| FedEx API key, secret key, account number | Firebase secrets `FEDEX_API_KEY`, `FEDEX_SECRET_KEY`, `FEDEX_ACCOUNT_NUMBER` | The account must be linked to the API project in the FedEx Developer Portal. |
+| Site address, webhook URL | `functions/.env`: `SITE_URL`, `SQUARE_WEBHOOK_URL` | `https://crowandmoonenchantments.net`. The webhook URL must match Square's setting character for character. |
+| FedEx ship-from ZIP, speed, drop-off/pickup | `functions/.env`: `FEDEX_*` | See `functions/.env.example` for every option. |
+| Boxes, items per box, backup prices, pickup text | `functions/shipping-rates.js` | Committed to git. |
+| The Square **Application ID** | Not used anywhere | Only needed for on-site card forms; this shop uses Square's hosted checkout. |
+
+The `.env` files are git-ignored.
+
+- **`functions/.env`** is uploaded to Firebase with the functions, so **never put secrets in it**; they'd be uploaded as plain text.
+- **The repo-root `.env`** is only for your machine: local builds and `check-fedex.js`. Keep local copies of tokens there if you want them.
+
+To set or change a Firebase secret: `firebase functions:secrets:set NAME`, paste the value, then `firebase deploy --only functions`.
+
+---
+
+## Common jobs
+
+**Change the pickup text, or turn pickup off.** Edit the `pickup` section of `functions/shipping-rates.js` (`details` is what shoppers see; `enabled: false` hides the option). Then deploy the functions and push to `main`; the basket and checkout both read this file.
+
+**Change box sizes or items per box.** Edit `boxes` in `functions/shipping-rates.js`. Deploy the functions, push to `main`, then refresh the FedEx prices (below) so any new box gets a price.
+
+**FedEx raised its prices.** Nothing to do; the daily check picks them up. To refresh right away:
+```bash
+gcloud scheduler jobs run firebase-schedule-refreshShippingRates-us-central1 --location=us-central1 --project=crow-and-moon-enchantments
+```
+Then check `https://crowandmoonenchantments.net/api/shipping-rates`, which should say `"live": true`. Nudge the `backupPrice` values in `shipping-rates.js` now and then so the fallback stays close.
+
+**Nadine adds, edits or hides products.** She does it all in Square (see the table in [SHOP-SETUP.md](SHOP-SETUP.md#what-nadine-controls-in-square)). The site rebuilds itself. To force a rebuild: GitHub → Actions → "Deploy to Firebase Hosting on merge" → Run workflow.
+
+**A token expired or was replaced** (Square, FedEx, or the GitHub dispatch token). `firebase functions:secrets:set NAME`, then `firebase deploy --only functions`. For the Square token, also update the GitHub secret, and run the deploy workflow.
+
+**The domain changes.** Update `SITE_URL` and `SQUARE_WEBHOOK_URL` in `functions/.env`, `domain` in `src/_data/client.js`, the webhook subscription URL in Square, and the custom domain in Firebase Hosting. Then deploy the functions and the site. The address must serve the site directly; a redirect (for example, bare domain → `www.`) breaks Square's webhook.
+
+**Something's wrong.** Start with `firebase functions:log`. [SHOP-SETUP.md has a troubleshooting list](SHOP-SETUP.md#troubleshooting) for the known failures: everything sold out, no rebuild after catalog edits, backup shipping prices, checkout errors.
+
+---
+
+## Where things live
+
+| Path | What it is |
+|---|---|
+| `src/index.html` | Home page |
+| `src/shop/` | Shop grid, product pages, thank-you page, `catalog.json` for the basket |
+| `src/_includes/layouts/base.html` | Page shell on every page |
+| `src/_includes/sections/` | Header, footer, CTA, about, order-inquire, basket drawer markup |
+| `src/_data/client.js` | Site name and domain (used for meta tags, sitemap, robots.txt) |
+| `src/_data/shop.js` | Build-time catalog fetch from Square (placeholder products if no token) |
+| `src/config/filters/shop.js` | Template filters: prices, stock labels, sold-out-last ordering |
+| `src/assets/js/basket-store.js`, `basket.js`, `shop.js` | Basket storage, basket drawer (shipping and pickup), shop and product pages (live stock) |
+| `src/assets/sass/` | Styles. `_basket.scss` and `shop.scss` are the shop's. |
+| `functions/index.js` | The Firebase functions: `stock`, `checkout`, `squareWebhook`, `shippingRates`, `refreshShippingRates` |
+| `functions/lib/handlers.js` | What each function does (plain, tested code) |
+| `functions/lib/square.js`, `fedex.js` | Small API clients for Square and FedEx (no SDKs) |
+| `functions/lib/shipping.js` | Item count → box and price; shared by checkout and the basket |
+| `functions/lib/rate-store.js` | Saved FedEx prices (Firestore `shop/shippingRates`) |
+| `functions/shipping-rates.js` | **The shipping and pickup settings file** |
+| `functions/scripts/` | `check-fedex.js` (test FedEx), `seed-sandbox.js` (test products for Square sandbox) |
+| `functions/test/` | Tests, plus fake Square and FedEx servers |
+| `firebase.json` | Hosting settings and the `/api/*` → function routes |
+| `.github/workflows/` | Site deploys: on push to `main` (live) and on pull requests (preview) |
+
+---
+
+## Loose ends
+
+- The pickup text (`"Pick up in Warrenville, IL. I'll email you to set a time."`) is a placeholder until Nadine confirms the wording.
+- Pickup orders are marked with a note on the Square payment, not as an official Square "pickup order." Square supports the latter, but it was left out until it can be tested.
+- `npm start` also runs `decap-server` (the `watch:cms` script) from the starter kit. The site has no CMS anymore, so that script can be removed.
+
+## Credits
+
+Built on the [CodeStitch Intermediate Website Kit (SASS)](https://github.com/CodeStitchOfficial/Intermediate-Website-Kit-SASS). See [LICENSE.md](LICENSE.md).
