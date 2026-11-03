@@ -122,6 +122,7 @@ module.exports = async function (eleventyConfig) {
   eleventyConfig.addFilter("priceRange", shopFilters.priceRange);
   eleventyConfig.addFilter("stockLabel", shopFilters.stockLabel);
   eleventyConfig.addFilter("stockAttr", shopFilters.stockAttr);
+  eleventyConfig.addFilter("soldOutLast", shopFilters.soldOutLast);
 
   // ═════════════════════════════════════════════════════════════════════════
   // SHORTCODES

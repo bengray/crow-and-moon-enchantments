@@ -30,4 +30,13 @@ function stockAttr(count) {
   return count === null || count === undefined ? "untracked" : String(count);
 }
 
-module.exports = { money, priceRange, stockLabel, stockAttr };
+// The shop grid: in-stock products first, sold-out ones at the end, each group
+// keeping Nadine's catalog order. catalogOrder lets the browser re-sort the
+// same way when live stock changes (src/assets/js/shop.js).
+function soldOutLast(products) {
+  return (products || [])
+    .map((product, catalogOrder) => ({ ...product, catalogOrder }))
+    .sort((a, b) => (a.stock === 0) - (b.stock === 0) || a.catalogOrder - b.catalogOrder);
+}
+
+module.exports = { money, priceRange, stockLabel, stockAttr, soldOutLast };

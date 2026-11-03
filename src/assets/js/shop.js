@@ -179,6 +179,22 @@ function applyCardStock(card, stock) {
   card.classList.toggle("is-sold-out", total !== null && total <= 0);
 }
 
+// Keep sold-out cards at the end of the grid, each group in catalog order,
+// matching the build (soldOutLast in src/config/filters/shop.js). Only touches
+// the page when the order actually changes.
+function sortSoldOutLast() {
+  const grid = document.querySelector(".shop-grid");
+  if (!grid || !cards.length) return;
+  const current = [...grid.querySelectorAll(".shop-card")];
+  const sorted = [...current].sort(
+    (a, b) =>
+      a.classList.contains("is-sold-out") - b.classList.contains("is-sold-out") ||
+      Number(a.dataset.order) - Number(b.dataset.order),
+  );
+  if (sorted.every((card, i) => card === current[i])) return;
+  sorted.forEach((card) => grid.appendChild(card));
+}
+
 async function refreshStock() {
   const ids = [
     ...[...cards].flatMap((card) => card.dataset.variationIds.split(",")),
@@ -188,6 +204,7 @@ async function refreshStock() {
   if (!stock) return; // placeholder build or network trouble: keep build-time numbers
 
   cards.forEach((card) => applyCardStock(card, stock));
+  sortSoldOutLast();
   Object.keys(stockById).forEach((id) => {
     if (id in stock) stockById[id] = stock[id];
   });

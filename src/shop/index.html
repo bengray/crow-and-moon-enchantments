@@ -49,10 +49,12 @@ tags: "sitemap"
     </div>
 
     <ul class="shop-grid">
-      {% for product in shop.products %}
+      {# Sold-out products go last; shop.js keeps it that way as live stock changes #}
+      {% for product in shop.products | soldOutLast %}
       <li
         class="shop-card{% if product.stock === 0 %} is-sold-out{% endif %}"
         data-category="{{ product.category }}"
+        data-order="{{ product.catalogOrder }}"
         data-variation-ids="{% for v in product.variations %}{{ v.id }}{% if not loop.last %},{% endif %}{% endfor %}"
       >
         <a class="shop-card-link" href="/shop/{{ product.slug }}/">
