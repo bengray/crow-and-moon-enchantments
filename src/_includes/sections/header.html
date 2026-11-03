@@ -1,8 +1,9 @@
 <!-- ============================================ -->
 <!--                   Header                     -->
 <!-- ============================================ -->
-{# On the home page the section links are plain anchors so custom.js can smooth-scroll to them. Everywhere else they point back to the home page. #}
-{% set home = "" if page.url == "/" else "/" %}
+{# On the home page the section links are plain anchors so custom.js can
+smooth-scroll to them. Everywhere else they point back to the home page. #} {%
+set home = "" if page.url == "/" else "/" %}
 <header id="clt-header">
   <h1 class="company-name">
     <span class="bigger-letter">C</span>row &
@@ -16,9 +17,9 @@
     <li>
       <a href="{{ home }}#clt-cta-section">OFFERINGS</a>
     </li>
-    <li>
+    <!-- <li>
       <a href="/shop/" {% if page.url.startsWith("/shop/") %}aria-current="page"{% endif %}>SHOP</a>
-    </li>
+    </li> -->
     <li>
       <a href="{{ home }}#clt-about-section">MY PRACTICE</a>
     </li>
