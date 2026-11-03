@@ -50,6 +50,22 @@ async function getStock({ ids }, config, { client } = {}) {
     if (!square.isPresentAt(object, locationId)) continue;
     stock[object.id] = square.stockFor(object, locationId, counts);
   }
+
+  // One unknown id is normal (an item deleted since the last build). Every id
+  // unknown means the site and these functions are using different Square
+  // accounts or environments, and the whole shop shows as sold out.
+  const known = new Set(objects.map((o) => o.id));
+  const unknown = requested.filter((id) => !known.has(id));
+  if (unknown.length) {
+    log("warn", unknown.length === requested.length
+      ? "Square doesn't recognize ANY of these items. Is the site built from a different Square account or environment than the functions use? Redeploy whichever is out of date."
+      : "Square doesn't recognize some items (probably deleted since the last build); showing them as sold out", {
+      environment: client.environment,
+      unknown: unknown.slice(0, 10),
+      unknownCount: unknown.length,
+      requestedCount: requested.length,
+    });
+  }
   return { status: 200, body: { stock } };
 }
 

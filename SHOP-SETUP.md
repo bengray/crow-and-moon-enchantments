@@ -170,8 +170,8 @@ firebase deploy --only functions
 | -------------------- | --------------------------------------------------------------------------------------------- |
 | `SQUARE_ENVIRONMENT` | `sandbox` while testing, `production` for real                                                |
 | `SQUARE_LOCATION_ID` | Blank if one location, otherwise the ID from step 2                                           |
-| `SITE_URL`           | `https://crowandmoonenchantments.com` (no trailing slash). Shoppers return here after paying. |
-| `SQUARE_WEBHOOK_URL` | `https://crowandmoonenchantments.com/api/square-webhook`                                      |
+| `SITE_URL`           | `https://crowandmoonenchantments.net` (no trailing slash). Shoppers return here after paying. |
+| `SQUARE_WEBHOOK_URL` | `https://crowandmoonenchantments.net/api/square-webhook`                                      |
 | `GITHUB_REPO`        | `owner/repo` of this repository                                                               |
 | `SHOP_SUPPORT_EMAIL` | Shown on Square's checkout page                                                               |
 
@@ -191,7 +191,7 @@ Hosting deploys from GitHub Actions now have to look up the functions they route
 
 In the Square developer app (same environment, Sandbox or Production) → **Webhooks** → **Subscriptions** → Add subscription:
 
-- URL: `https://www.crowandmoonenchantments.com/api/square-webhook`
+- URL: `https://crowandmoonenchantments.net/api/square-webhook`
 - API version: `2026-09-16`
 - Event: `catalog.version.updated`
 
@@ -276,4 +276,6 @@ When sandbox works:
 - **Checkout says it couldn't open:** run `firebase functions:log` and look for the Square error.
 - **Catalog edits don't show up:** check the webhook's delivery log in the Square developer app, then `firebase functions:log`. A 403 means the signature key or `SQUARE_WEBHOOK_URL` is wrong. "rebuilt: false" means the GitHub token is missing or expired.
 - **Shipping shows the backup prices:** `/api/shipping-rates` says `"live": false`, so FedEx has never answered. Check the `refreshShippingRates` log (`firebase functions:log --only refreshShippingRates`). "Missing FedEx settings" names what to set; a 401 means the key, secret key, or account number is wrong. Run `node functions/scripts/check-fedex.js` locally to see FedEx's exact error.
+- **Every product flips to "Sold out" a moment after the page loads:** the page was built from one Square account or environment, and the functions use another, so Square doesn't recognize any item. `firebase functions:log --only stock` says so. Usually the functions were deployed before a secret or `functions/.env` changed: run `firebase deploy --only functions` again. Otherwise the GitHub `SQUARE_ACCESS_TOKEN` / `SQUARE_ENVIRONMENT` don't match the functions; fix them and re-run the deploy workflow.
+- **Changed a secret or `functions/.env` and nothing happened:** functions pick these up only when they're deployed. Run `firebase deploy --only functions`.
 - **Something sold out but the page still shows it:** stock is live, so this means `/api/stock` is failing. Check the functions log.

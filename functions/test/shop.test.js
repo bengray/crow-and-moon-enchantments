@@ -11,7 +11,7 @@ const { createFakeSquare } = require("./fake-square");
 const config = {
   SQUARE_ACCESS_TOKEN: "test-token",
   SQUARE_ENVIRONMENT: "sandbox",
-  SITE_URL: "https://crowandmoonenchantments.com/",
+  SITE_URL: "https://crowandmoonenchantments.net/",
   SHOP_SUPPORT_EMAIL: "crowandmoonenchantments@gmail.com",
 };
 
@@ -160,7 +160,7 @@ test("checkout creates one payment link for the whole basket", async () => {
   });
   assert.equal(
     sent.checkout_options.redirect_url,
-    "https://www.crowandmoonenchantments.com/shop/thanks/",
+    "https://crowandmoonenchantments.net/shop/thanks/",
   );
   assert.equal(sent.checkout_options.ask_for_shipping_address, true);
   assert.equal(
@@ -298,7 +298,7 @@ test("missing token fails loudly", () => {
 const hookConfig = {
   SQUARE_WEBHOOK_SIGNATURE_KEY: "sig-key",
   SQUARE_WEBHOOK_URL:
-    "https://www.crowandmoonenchantments.com/api/square-webhook",
+    "https://www.crowandmoonenchantments.net/api/square-webhook",
   GITHUB_REPO: "bendoylegray/crow-and-moon-enchantments",
   GITHUB_DISPATCH_TOKEN: "gh-token",
 };
