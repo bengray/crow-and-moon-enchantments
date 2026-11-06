@@ -49,7 +49,7 @@ tags: "sitemap"
     </div>
 
     <ul class="shop-grid">
-      {# Sold-out products go last; shop.js keeps it that way as live stock changes #}
+      {# Alphabetical, sold-out products last; shop.js keeps it that way as live stock changes #}
       {% for product in shop.products | soldOutLast %}
       <li
         class="shop-card{% if product.stock === 0 %} is-sold-out{% endif %}"

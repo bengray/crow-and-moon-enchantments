@@ -30,11 +30,15 @@ function stockAttr(count) {
   return count === null || count === undefined ? "untracked" : String(count);
 }
 
-// The shop grid: in-stock products first, sold-out ones at the end, each group
-// keeping Nadine's catalog order. catalogOrder lets the browser re-sort the
-// same way when live stock changes (src/assets/js/shop.js).
+// The shop grid: alphabetical by name, in-stock products first and sold-out
+// ones at the end (each group still alphabetical). catalogOrder is each
+// product's alphabetical position, so the browser can re-sort the same way
+// when live stock changes (src/assets/js/shop.js).
+const byName = new Intl.Collator("en", { sensitivity: "base", numeric: true });
+
 function soldOutLast(products) {
-  return (products || [])
+  return [...(products || [])]
+    .sort((a, b) => byName.compare(String(a.name || ""), String(b.name || "")))
     .map((product, catalogOrder) => ({ ...product, catalogOrder }))
     .sort((a, b) => (a.stock === 0) - (b.stock === 0) || a.catalogOrder - b.catalogOrder);
 }

@@ -179,7 +179,7 @@ function applyCardStock(card, stock) {
   card.classList.toggle("is-sold-out", total !== null && total <= 0);
 }
 
-// Keep sold-out cards at the end of the grid, each group in catalog order,
+// Keep sold-out cards at the end of the grid, each group alphabetical,
 // matching the build (soldOutLast in src/config/filters/shop.js). Only touches
 // the page when the order actually changes.
 function sortSoldOutLast() {

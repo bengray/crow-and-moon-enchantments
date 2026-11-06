@@ -29,7 +29,7 @@ Eleventy build ──► Firebase Hosting ──► /api/* ──► Firebase Fu
 
 - **Products** (names, prices, photos, descriptions) are read from Square when the site builds. When Nadine edits her catalog, Square calls a webhook, the webhook asks GitHub to rebuild, and the site updates a few minutes later.
 - **Stock** is fetched live from Square every time a shop page loads, so a sale at a fair shows online right away. **Sales never rebuild the site.**
-- **Sold-out items** stay visible, greyed out, at the end of the shop grid, and can't be added to the basket. Nadine can hide any item completely by putting it in her Square category **Not Online**.
+- **The shop grid** is alphabetical. **Sold-out items** stay visible, greyed out, at the end of the grid, and can't be added to the basket. Nadine can hide any item completely by putting it in her Square category **Not Online**.
 - **The basket** lives in the shopper's browser. At checkout, the server rechecks stock, works out shipping, and creates a single Square payment link. The browser only ever sends item IDs, quantities and "ship" or "pickup"; prices always come from Square and FedEx on the server.
 - **Shipping** is a FedEx One Rate box picked by item count (1–2 Small, 3–5 Medium, 6–10 Large). Prices come from FedEx once a day and are saved in Firestore, and the basket and checkout both use them. They're quoted for the far ("national") distance band, so one price covers anywhere in the US. More than 10 items can't be shipped online, and the shopper is asked to email for a quote.
 - **Local pickup** has no shipping charge and no item limit. Square doesn't ask for an address, and the payment is marked `LOCAL PICKUP - do not ship` in Nadine's Square dashboard.
